@@ -15,3 +15,7 @@ Spatial hash cells are 96 px. Enemy collisions use circles; projectiles and beam
 Art is deliberately geometric and original. Stages use repeating coordinate-stable procedural decoration without blocking obstacles. Menus are built in one controller instead of empty per-page scenes. Three entry scenes exist: main menu, arena and player. Chests have a short skippable fade and grant real rewards immediately.
 
 Validation uses isolated functional tests, a sustained CPU load fixture, a full accelerated 30-minute simulation and graphical smoke tests. Load fixtures give immunity and automated choices, so they do not prove human winability. Mesa software rendering and synthetic controller events do not establish target-hardware FPS or physical controller compatibility.
+
+## Phase E work in progress
+
+E1 adds tested save/runtime/statistics foundations. E2–E6 gameplay extensions are not delivered yet. See `docs/FEATURES_PHASE_E.md` and `STATUS.md` for the exact continuation point.

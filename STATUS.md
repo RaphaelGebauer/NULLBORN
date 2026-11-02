@@ -2,6 +2,18 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## Phase E1 — completed foundation; E2–E6 not yet implemented
+
+The uploaded Phase E specification is preserved as NULLBORN_CODEX_ERWEITERUNG_PHASE_E.md. Full scope and exact continuation ledger: docs/FEATURES_PHASE_E.md.
+
+Files: scripts/run_statistics.gd (real hit/health accounting, fixed DPS buckets), scripts/rift_instability.gd (tested state/bands), scripts/data/element_tags.gd (neutral/base/evolution/fusion tags), run_model.gd (run_delta and runtime ownership), world.gd (real damage/crit accounting), save_manager.gd (additive Starlight/node defaults and validation), app.gd (next-run constellation snapshot), registry.gd and tests/test_runner.gd.
+
+Validation: Godot 4.7.2 Stable via tools/check.sh, 179 PASS / 0 FAIL, clean import, no script errors/leak reports. Existing gameplay/menu/evolution/save regression checks remain active. New migration tests preserve old gold, meta, recipes and settings; reset clears new fields. Pacing resource is unchanged.
+
+Next concrete task: E2. Add the 45 exact mutation definitions from the uploaded table; implement shared bounded hooks and inheritance before exposing mutation UI. Mutation choices must be inserted immediately after the level-up that reached Lv4; do not append behind already queued level-ups. Ordinary evolutions inherit 100%; fusion bases[0]/bases[1] inherit 100%/50%, with deterministic every-other-trigger handling for quantized echoes. Do not leak undiscovered recipes.
+
+Not delivered yet: mutation gameplay/UI, active instability/director/rift nodes, affix elites, new boss phases, reactions, Star Map purchases/bonuses/currency awards, expanded result/build UI and requested new graphical captures. No false completion claim for the expansion.
+
 ## Latest overall pacing update
 
 - Added central `resources/pacing.tres`: 0.75 hero movement, 0.65 initial enemy speed, 0.4 initial spawn density, 0.8 initial projectile/rotation speed and 1.2 initial attack intervals. Opening modifiers ease to normal over eight minutes; the run clock remains unchanged.

@@ -27,7 +27,7 @@ const META: Dictionary={
 func _init() -> void:
 	data=defaults()
 func defaults() -> Dictionary:
-	return {"version":1,"total_gold":0,"unlocked_characters":["lyra"],"unlocked_stages":["mist"],"unlocked_weapons":["arcane_needle","ash_bow","spark_orbit","thorn_halo","lightning_call","moon_blade","frost_shard","storm_bomb","shadow_fan","sun_beam","soul_well","meteor_rain","prism_disc","gravity_mine","reaper_gaze"],"unlocked_runes":["shard_star","resonance","blood_moon","ice_crown","treasure","chain_spark","shield_sign","time_anchor"],"meta_powerups":{},"achievements":[],"best_run_records":{},"seen":[],"evolved_recipes":[],"stats":{"kills":0,"bosses":0,"runs":0,"wins":0,"gold_earned":0,"best_time":0.0},"settings":{"master":.8,"music":.35,"sfx":.65,"fullscreen":false,"resolution":2,"screen_shake":true,"reduce_flash":false,"damage_texts":true,"deadzone":.2,"ui_scale":1.0}}
+	return {"version":1,"starlight":0,"constellation_nodes":[],"total_gold":0,"unlocked_characters":["lyra"],"unlocked_stages":["mist"],"unlocked_weapons":["arcane_needle","ash_bow","spark_orbit","thorn_halo","lightning_call","moon_blade","frost_shard","storm_bomb","shadow_fan","sun_beam","soul_well","meteor_rain","prism_disc","gravity_mine","reaper_gaze"],"unlocked_runes":["shard_star","resonance","blood_moon","ice_crown","treasure","chain_spark","shield_sign","time_anchor"],"meta_powerups":{},"achievements":[],"best_run_records":{},"seen":[],"evolved_recipes":[],"stats":{"kills":0,"bosses":0,"runs":0,"wins":0,"gold_earned":0,"best_time":0.0},"settings":{"master":.8,"music":.35,"sfx":.65,"fullscreen":false,"resolution":2,"screen_shake":true,"reduce_flash":false,"damage_texts":true,"deadzone":.2,"ui_scale":1.0}}
 func load_save() -> bool:
 	data=defaults()
 	if not FileAccess.file_exists(path): return true
@@ -56,6 +56,14 @@ func valid(value: Variant) -> bool:
 		if not value.has(key): continue
 		if typeof(value[key])!=typeof(base[key]) and not (value[key] is float and base[key] is int): return false
 	if float(value.get("total_gold",0))<0: return false
+	var starlight: Variant=value.get("starlight",0)
+	if not (starlight is int or starlight is float): return false
+	if not is_finite(float(starlight)) or starlight<0 or floor(float(starlight))!=float(starlight): return false
+	var nodes: Array=value.get("constellation_nodes",[])
+	var unique: Dictionary={}
+	for id in nodes:
+		if not id is String or unique.has(id): return false
+		unique[id]=true
 	for key in ["stats","settings","meta_powerups"]:
 		var content: Dictionary=value.get(key,{})
 		for entry in content:
@@ -70,7 +78,7 @@ func valid(value: Variant) -> bool:
 		if not record is Dictionary: return false
 		for field in ["time","kills","level"]:
 			if not (record.get(field,0) is int or record.get(field,0) is float): return false
-	for key in ["unlocked_characters","unlocked_stages","unlocked_weapons","unlocked_runes","achievements","seen","evolved_recipes"]:
+	for key in ["unlocked_characters","unlocked_stages","unlocked_weapons","unlocked_runes","achievements","seen","evolved_recipes","constellation_nodes"]:
 		for entry in value.get(key,[]):
 			if not entry is String: return false
 	return true

@@ -404,6 +404,52 @@ func run() -> void:
 	pace_world.update_pickups(.1)
 	check(pace_world.pickups[0].pos.x<normal_pickup_x,"Gathering Flow increases actual pickup movement")
 	pace_world.queue_free()
+	var e1_save=load("res://scripts/save_manager.gd").new()
+	e1_save.path="user://e1_migration_test.json"
+	var old_data: Dictionary=e1_save.defaults()
+	old_data.erase("starlight")
+	old_data.erase("constellation_nodes")
+	old_data.total_gold=1234
+	old_data.meta_powerups={"speed":3,"battle_rhythm":2}
+	old_data.evolved_recipes=["star_piercer"]
+	old_data.settings.music=.15
+	var old_file:=FileAccess.open(e1_save.path,FileAccess.WRITE)
+	old_file.store_string(JSON.stringify(old_data))
+	old_file.close()
+	check(e1_save.load_save() and e1_save.data.starlight==0 and e1_save.data.constellation_nodes.is_empty(),"E1 old save gains additive star-map defaults")
+	check(e1_save.data.total_gold==1234 and e1_save.data.meta_powerups.speed==3 and e1_save.data.evolved_recipes==["star_piercer"] and is_equal_approx(e1_save.data.settings.music,.15),"E1 migration preserves gold, upgrades, recipes and settings")
+	check(not e1_save.valid({"version":1,"starlight":-1}) and not e1_save.valid({"version":1,"starlight":1.5}),"E1 rejects invalid starlight values")
+	check(not e1_save.valid({"version":1,"constellation_nodes":["node","node"]}),"E1 rejects duplicate constellation IDs")
+	e1_save.data.starlight=9
+	e1_save.reset_all()
+	check(e1_save.data.starlight==0 and e1_save.data.constellation_nodes.is_empty(),"E1 full reset includes new persistent fields")
+	DirAccess.remove_absolute(e1_save.path)
+	var stats=load("res://scripts/run_statistics.gd").new()
+	stats.record_damage("arcane_needle",100,15,true,0)
+	stats.record_damage("star_piercer",20,20,false,1)
+	check(stats.total_damage==35 and stats.critical_hits==1 and stats.highest_hit==20,"E1 statistics clamp overkill and count real crits")
+	check(stats.damage_by_source.arcane_needle==15 and stats.damage_by_source.star_piercer==20,"E1 base and evolved sources stay separate")
+	stats.record_damage("Elemental Reactions",10,10,false,15)
+	check(stats.highest_ten_second_dps==3.5 and stats.bucket_seconds.size()==11,"E1 bounded rolling DPS buckets age out old hits")
+	var health_model=load("res://scripts/run_model.gd").new()
+	health_model.hp=95
+	health_model.heal(30)
+	health_model.hurt(150)
+	check(health_model.statistics.total_healing==5 and health_model.statistics.damage_taken==100,"E1 health statistics record actual healing and damage")
+	check(registry.elements_for_weapon("arcane_needle").is_empty() and registry.elements_for_weapon("dusk_storm")==["fire","frost"],"E1 neutral and fusion element tags form a unique union")
+	var rift=load("res://scripts/rift_instability.gd").new()
+	for boundary in [[24.99,0],[25,1],[49.99,1],[50,2],[74.99,2],[75,3],[89.99,3],[90,4],[100,4]]:
+		rift.change(boundary[0]-rift.value)
+		check(rift.band()==boundary[1],"E1 instability threshold "+str(boundary[0]))
+	rift.change(-1000)
+	rift.advance(1800)
+	check(is_equal_approx(rift.value,54) and rift.peak==100,"E1 clamp, backward band change and baseline gain")
+	var normal_model=load("res://scripts/run_model.gd").new()
+	var quick_model=load("res://scripts/run_model.gd").new()
+	quick_model.fast=true
+	normal_model.tick(2)
+	quick_model.tick(1)
+	check(normal_model.run_delta==quick_model.run_delta and normal_model.time==quick_model.time,"E1 quick mode shares an explicit run-time delta")
 	scene.queue_free()
 	await process_frame
 	await process_frame

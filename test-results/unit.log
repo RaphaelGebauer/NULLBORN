@@ -158,4 +158,25 @@ PASS Battle Rhythm accelerates weapons over time
 PASS Evasive Instinct adds escape speed at low HP
 PASS Escape bonus ends on recovery without stacking
 PASS Gathering Flow increases actual pickup movement
+PASS E1 old save gains additive star-map defaults
+PASS E1 migration preserves gold, upgrades, recipes and settings
+PASS E1 rejects invalid starlight values
+PASS E1 rejects duplicate constellation IDs
+PASS E1 full reset includes new persistent fields
+PASS E1 statistics clamp overkill and count real crits
+PASS E1 base and evolved sources stay separate
+PASS E1 bounded rolling DPS buckets age out old hits
+PASS E1 health statistics record actual healing and damage
+PASS E1 neutral and fusion element tags form a unique union
+PASS E1 instability threshold 24.99
+PASS E1 instability threshold 25
+PASS E1 instability threshold 49.99
+PASS E1 instability threshold 50
+PASS E1 instability threshold 74.99
+PASS E1 instability threshold 75
+PASS E1 instability threshold 89.99
+PASS E1 instability threshold 90
+PASS E1 instability threshold 100
+PASS E1 clamp, backward band change and baseline gain
+PASS E1 quick mode shares an explicit run-time delta
 Ergebnis: 0 Fehler

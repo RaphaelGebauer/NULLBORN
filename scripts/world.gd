@@ -105,12 +105,17 @@ func drop(pos: Vector2,value: float,kind: String="xp",eligible: bool=false) -> v
 func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc: bool=false,incoming_origin: Vector2=Vector2.INF) -> void:
 	if e.is_empty() or e.hp<=0: return
 	var damage: float=value
+	var critical: bool=false
 	if not proc:
 		if e.hp/e.max_hp<=.35: damage*=1+.08*model.passives.get("execution_seal",0)
-		if model.rng.randf()<model.crit: damage*=model.crit_factor
+		if model.rng.randf()<model.crit:
+			damage*=model.crit_factor
+			critical=true
 		if e.statuses.has("mark"): damage*=1.15
 		if e.kind=="shield" and ((player.position if incoming_origin==Vector2.INF else incoming_origin)-e.pos).normalized().dot(e.velocity.normalized())>.4: damage*=.65
-	e.hp-=maxf(1,round(damage))
+	var final_damage: float=maxf(1,round(damage))
+	model.statistics.record_damage(source,final_damage,e.hp,critical,model.time)
+	e.hp-=final_damage
 	e.flash=.12
 	if damage_texts and texts.size()<70: texts.append({"pos":e.pos,"text":str(roundi(damage)),"life":.6})
 	for status in ["burn","poison","slow","mark"]:

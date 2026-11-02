@@ -12,6 +12,11 @@ signal changed
 signal modal_requested(kind: String)
 signal ended(victory: bool)
 var rng := RandomNumberGenerator.new()
+var statistics: RefCounted=preload("res://scripts/run_statistics.gd").new()
+var weapon_mutations: Dictionary={}
+var constellation_nodes: Array=[]
+var run_delta: float=0
+var rift_state: RefCounted=preload("res://scripts/rift_instability.gd").new()
 var hp: float = 100
 var max_hp: float = 100
 var speed: float = 165
@@ -92,12 +97,16 @@ func add_xp(value: float, apply_growth: bool = true) -> void:
 		modal_requested.emit("LEVELUP")
 	changed.emit()
 func heal(value: float) -> void:
-	hp = minf(max_hp,hp+value)
+	var previous_hp: float=hp
+	hp = minf(max_hp,hp+maxf(0,value))
+	statistics.total_healing+=maxf(0,hp-previous_hp)
 	health_changed.emit()
 	changed.emit()
 func hurt(value: float) -> void:
 	if finished: return
+	var previous_hp: float=hp
 	hp = maxf(0,hp-maxf(1,round(value-armor)))
+	statistics.damage_taken+=maxf(0,previous_hp-hp)
 	health_changed.emit()
 	changed.emit()
 	if hp <= 0: finish(false)
@@ -107,7 +116,8 @@ func finish(victory: bool) -> void:
 	ended.emit(victory)
 func tick(delta: float) -> void:
 	if finished: return
-	time = minf(1800,time+delta*(2 if fast else 1))
+	run_delta=minf(1800-time,maxf(0,delta)*(2 if fast else 1))
+	time+=run_delta
 	if regeneration>0: heal(regeneration*delta)
 	resonance=maxf(0,resonance-delta)
 	chain_cooldown=maxf(0,chain_cooldown-delta)

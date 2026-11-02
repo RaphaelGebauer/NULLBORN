@@ -56,3 +56,7 @@ Recipe fields `weapon_level=5` and `passive_level=5` define thresholds. Existing
 - Momentum Feather: timed movement bonus described above.
 
 Caps remain: 6+6 equipment, 250 visible XP gems, 300 total pickups, 650 projectiles, 180 FX, 70 damage texts; 60% crit, area ×3, bonus amount +6, minimum cooldown 0.12 s. Max-HP changes preserve the current HP percentage. XP curve remains `round(8+9*(level-1)+0.2*(level-1)^2)`.
+
+## Phase E work in progress
+
+E1 adds tested save/runtime/statistics foundations. E2–E6 gameplay extensions are not delivered yet. See `docs/FEATURES_PHASE_E.md` and `STATUS.md` for the exact continuation point.

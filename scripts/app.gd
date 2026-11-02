@@ -123,6 +123,7 @@ func start_run() -> void:
 	model.fast=selected_fast
 	model.curse=selected_curse
 	model.weapons={catalog.get_def(selected_hero).values.weapon:1}
+	model.constellation_nodes=save.data.constellation_nodes.duplicate()
 	model.meta=save.data.meta_powerups.duplicate()
 	model.unlocked_weapons=save.data.unlocked_weapons.duplicate()
 	model.initialize_meta()

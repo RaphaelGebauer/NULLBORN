@@ -20,3 +20,5 @@ Manual target-hardware checks still recommended:
 - [ ] Release export: debug shortcuts disabled.
 
 Embedded editor windows are deliberately controlled by the editor. Run standalone to test native window sizing.
+
+Phase E1 adds legacy-save migration, bounded hit statistics, reversible instability-band state and fusion element-union tests. Phase E graphical acceptance remains pending E2–E6 implementation.

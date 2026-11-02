@@ -4,7 +4,7 @@ Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserv
 
 ## Phase E3 — implemented and verified; E4–E6 remain open
 
-Implementation commit: recorded below after committing this phase.
+Implementation commit: `aee0e53`; pushed to GitHub main and independently verified by ls-remote and a fresh bare clone (project.godot plus all three E3 helpers present).
 
 - Active 0–100 instability uses run_delta; five reversible factors apply once to existing wave/curse/pacing. Boss/elite gold only; once-per-run Unstable warning and English HUD/pause/result values.
 - Four safe proximity-only rifts at 06/12/18/24 minutes, 90-run-second expiry, F/controller Y, exactly-once healing/gold/XP choices through the paused modal FIFO after mutations. Crowded placements retry within the original slot only.

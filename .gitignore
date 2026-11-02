@@ -1,2 +1,5 @@
 .godot/
 *.tmp
+
+# Documentation captures are not gameplay assets.
+docs/screenshots/*.png.import

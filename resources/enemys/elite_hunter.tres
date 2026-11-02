@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/enemy_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "elite_hunter"
+display_name = "Elitejäger"
+description = "Elitejäger · 180 HP"
+weight = 100
+values = {"hp": 180, "speed": 115, "damage": 16, "xp": 14, "radius": 23, "boss": false, "color": 0.7333333333333333}

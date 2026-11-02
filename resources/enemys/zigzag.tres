@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/enemy_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "zigzag"
+display_name = "Kristallflieger"
+description = "Kristallflieger · 28 HP"
+weight = 100
+values = {"hp": 28, "speed": 145, "damage": 8, "xp": 3, "radius": 11, "boss": false, "color": 0.4}

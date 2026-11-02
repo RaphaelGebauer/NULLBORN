@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/rune_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "chain_spark"
+display_name = "Kettenfunke"
+description = "5 % Kettenblitz (0,25 s interne Abklingzeit)"
+weight = 100
+values = {}

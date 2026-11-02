@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/evolution_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "star_piercer"
+display_name = "Sternenstich"
+description = "Arkannadel Lv8 + Kraftstein"
+weight = 100
+values = {"bases": ["arcane_needle"], "passive": "power_core", "changes": {"count": 3, "speed": 800, "pierce": 5, "mark": 1}}

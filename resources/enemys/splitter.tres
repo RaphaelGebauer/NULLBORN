@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/enemy_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "splitter"
+display_name = "Bruchling"
+description = "Bruchling · 48 HP"
+weight = 100
+values = {"hp": 48, "speed": 90, "damage": 9, "xp": 4, "radius": 18, "boss": false, "color": 0.4666666666666667}

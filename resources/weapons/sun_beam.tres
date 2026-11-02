@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "sun_beam"
+display_name = "Sonnenlaser"
+description = "Sonnenlaser: 7 Schaden · 2.5 s · beam"
+weight = 25
+values = {"behavior": "beam", "damage": 7, "cooldown": 2.5, "speed": 0, "count": 1, "radius": 220, "duration": 1.1, "tick": 0.25, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.75}
+upgrades = Array[Dictionary]([{"delta": {"damage": 1.05}, "text": "Schaden +1.05"}, {"delta": {"duration": 0.4}, "text": "Dauer (s) +0.4"}, {"delta": {"damage": 1.05}, "text": "Schaden +1.05"}, {"delta": {"radius": 70}, "text": "Radius +70"}, {"delta": {"damage": 1.05}, "text": "Schaden +1.05"}, {"delta": {"damage": 1.05}, "text": "Schaden +1.05"}, {"delta": {"count": 1}, "text": "Anzahl +1"}])

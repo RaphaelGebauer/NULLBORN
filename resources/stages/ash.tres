@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/stage_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "ash"
+display_name = "Sternenasche"
+description = "Kristallkrater · +10 % Gegnerdichte"
+weight = 100
+values = {"density": 1.1, "background": "251d30", "accent": "88608a"}

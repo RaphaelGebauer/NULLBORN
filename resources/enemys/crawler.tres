@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/enemy_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "crawler"
+display_name = "Schlundkriecher"
+description = "Schlundkriecher · 24 HP"
+weight = 100
+values = {"hp": 24, "speed": 105, "damage": 8, "xp": 2, "radius": 14, "boss": false, "color": 0.13333333333333333}

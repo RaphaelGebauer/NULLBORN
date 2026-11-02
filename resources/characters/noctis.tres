@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/character_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "noctis"
+display_name = "Noctis · Mondjäger"
+description = "Noctis · Mondjäger"
+weight = 100
+values = {"weapon": "moon_blade", "hp": 85, "speed": 245, "bonuses": {"crit_factor": 0.15, "luck": 0.1}}

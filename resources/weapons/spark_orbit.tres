@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "spark_orbit"
+display_name = "Funkenkranz"
+description = "Funkenkranz: 9 Schaden · 0.65 s · orbit"
+weight = 100
+values = {"behavior": "orbit", "damage": 9, "cooldown": 0.65, "speed": 0, "count": 2, "radius": 70, "duration": 3, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.16666666666666666}
+upgrades = Array[Dictionary]([{"delta": {"damage": 1.35}, "text": "Schaden +1.35"}, {"delta": {"count": 1}, "text": "Anzahl +1"}, {"delta": {"rotation": 0.6}, "text": "Rotation +0.6"}, {"delta": {"damage": 1.35}, "text": "Schaden +1.35"}, {"delta": {"count": 1}, "text": "Anzahl +1"}, {"delta": {"damage": 1.35}, "text": "Schaden +1.35"}, {"delta": {"radius": 15}, "text": "Radius +15"}])

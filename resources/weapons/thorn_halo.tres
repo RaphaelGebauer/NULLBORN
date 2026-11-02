@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "thorn_halo"
+display_name = "Dornenring"
+description = "Dornenring: 5 Schaden · 0.75 s · aura"
+weight = 100
+values = {"behavior": "aura", "damage": 5, "cooldown": 0.75, "speed": 0, "count": 1, "radius": 65, "duration": 0, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.25}
+upgrades = Array[Dictionary]([{"delta": {"damage": 0.75}, "text": "Schaden +0.75"}, {"delta": {"radius": 15}, "text": "Radius +15"}, {"delta": {"damage": 0.75}, "text": "Schaden +0.75"}, {"delta": {"radius": 15}, "text": "Radius +15"}, {"delta": {"damage": 0.75}, "text": "Schaden +0.75"}, {"delta": {"slow": 1}, "text": "Verlangsamung +1"}, {"delta": {"cooldown": -0.15}, "text": "Abklingzeit (s) -0.15"}])

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/evolution_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "day_night"
+display_name = "Tag und Nacht"
+description = "Mondklinge Lv8 + Sonnenlaser Lv8 + Linsenfokus"
+weight = 100
+values = {"bases": ["moon_blade", "sun_beam"], "passive": "focus_lens", "changes": {"behavior": "orbit", "count": 2, "radius": 120, "diameter": 1, "pierce": 8}}

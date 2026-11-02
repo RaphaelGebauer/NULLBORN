@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/enemy_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "astral_guardian"
+display_name = "Astralwächter"
+description = "Astralwächter · 850 HP"
+weight = 100
+values = {"hp": 850, "speed": 65, "damage": 18, "xp": 60, "radius": 40, "boss": true, "color": 0.8}

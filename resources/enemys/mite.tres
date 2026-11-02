@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/enemy_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mite"
+display_name = "Sternenmilbe"
+description = "Sternenmilbe · 8 HP"
+weight = 100
+values = {"hp": 8, "speed": 150, "damage": 4, "xp": 1, "radius": 8, "boss": false, "color": 0.06666666666666667}

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/character_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "brann"
+display_name = "Brann · Aschenwächter"
+description = "Brann · Aschenwächter"
+weight = 100
+values = {"weapon": "ash_bow", "hp": 125, "speed": 205, "bonuses": {"armor": 1, "cooldown": -0.05}}

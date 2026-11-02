@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "frost_shard"
+display_name = "Frostsplitter"
+description = "Frostsplitter: 12 Schaden · 1 s · needle"
+weight = 60
+values = {"behavior": "needle", "damage": 12, "cooldown": 1, "speed": 520, "count": 1, "radius": 10, "duration": 0, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.5, "slow_chance": 0.3}
+upgrades = Array[Dictionary]([{"delta": {"damage": 1.8}, "text": "Schaden +1.8"}, {"delta": {"count": 1}, "text": "Anzahl +1"}, {"delta": {"damage": 1.8}, "text": "Schaden +1.8"}, {"delta": {"pierce": 1}, "text": "Durchschläge +1"}, {"delta": {"damage": 1.8}, "text": "Schaden +1.8"}, {"delta": {"damage": 1.8}, "text": "Schaden +1.8"}, {"delta": {"split": 1}, "text": "Splitter +1"}])

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "storm_bomb"
+display_name = "Sturmbombe"
+description = "Sturmbombe: 27 Schaden · 3.1 s · bomb"
+weight = 60
+values = {"behavior": "bomb", "damage": 27, "cooldown": 3.1, "speed": 0, "count": 1, "radius": 75, "duration": 0, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.5833333333333334}
+upgrades = Array[Dictionary]([{"delta": {"damage": 4.05}, "text": "Schaden +4.05"}, {"delta": {"radius": 20}, "text": "Radius +20"}, {"delta": {"damage": 4.05}, "text": "Schaden +4.05"}, {"delta": {"burn": 1}, "text": "Brennen +1"}, {"delta": {"damage": 4.05}, "text": "Schaden +4.05"}, {"delta": {"cooldown": -0.35}, "text": "Abklingzeit (s) -0.35"}, {"delta": {"echo": 1}, "text": "Nachsalve +1"}])

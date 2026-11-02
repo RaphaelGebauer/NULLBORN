@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "arcane_needle"
+display_name = "Arkannadel"
+description = "Arkannadel: 13 Schaden · 0.85 s · needle"
+weight = 100
+values = {"behavior": "needle", "damage": 13, "cooldown": 0.85, "speed": 450, "count": 1, "radius": 10, "duration": 0, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.0}
+upgrades = Array[Dictionary]([{"delta": {"damage": 1.95}, "text": "Schaden +1.95"}, {"delta": {"damage": 1.95}, "text": "Schaden +1.95"}, {"delta": {"pierce": 1}, "text": "Durchschläge +1"}, {"delta": {"damage": 1.95}, "text": "Schaden +1.95"}, {"delta": {"count": 1}, "text": "Anzahl +1"}, {"delta": {"damage": 1.95}, "text": "Schaden +1.95"}, {"delta": {"pierce": 2}, "text": "Durchschläge +2"}])

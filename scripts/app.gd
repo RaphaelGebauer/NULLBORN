@@ -9,6 +9,7 @@ var hud: Label
 var events: Array = []
 var state: String = "MENU"
 var cards: Array = []
+var banishing: bool = false
 func _ready() -> void:
 	process_mode=Node.PROCESS_MODE_ALWAYS
 	setup_input()
@@ -98,9 +99,19 @@ func show_event() -> void:
 	get_tree().paused=true
 	cards=model.offers()
 	box("STERNENAUFSTIEG · Level %d" % model.level,"Wähle eine Verstärkung. Die Welt wartet.")
-	for i in range(3): button("%d  ·  %s" % [i+1,cards[i]],choose.bind(i))
+	for i in range(3): button("%d  ·  %s\n%s" % [i+1,model.title(cards[i]),model.describe(cards[i])],choose.bind(i))
+	button("Neu würfeln [R] · %d" % model.rerolls,reroll_cards).disabled=model.rerolls<=0
+	button("Überspringen [T] · %d" % model.skips,skip_cards).disabled=model.skips<=0
+	button("Verbannen [B] · %d (danach Karte wählen)" % model.banishes,toggle_banish).disabled=model.banishes<=0
 func choose(index: int) -> void:
 	if state!="LEVELUP": return
+	if banishing:
+		var next: Array=model.banish(cards[index])
+		if next.is_empty(): return
+		banishing=false
+		cards=next
+		redraw_cards()
+		return
 	model.upgrade(cards[index])
 	world.player.invulnerable=maxf(world.player.invulnerable,0.3)
 	resume()
@@ -121,6 +132,31 @@ func _unhandled_input(event: InputEvent) -> void:
 			button("Zum Menü",menu)
 	if event is InputEventKey and event.pressed and not event.echo and state=="LEVELUP":
 		if event.keycode in [KEY_1,KEY_2,KEY_3]: choose(event.keycode-KEY_1)
+		if event.keycode==KEY_R: reroll_cards()
+		if event.keycode==KEY_T: skip_cards()
+		if event.keycode==KEY_B: toggle_banish()
 
 func focus_button(node: Button) -> void:
 	if is_instance_valid(node) and node.is_inside_tree(): node.grab_focus()
+
+func redraw_cards() -> void:
+	box("VERBANNEN: Wähle eine Karte" if banishing else "STERNENAUFSTIEG · Level %d" % model.level,"Wähle eine Verstärkung. Die Welt wartet.")
+	for i in range(3): button("%d  ·  %s\n%s" % [i+1,model.title(cards[i]),model.describe(cards[i])],choose.bind(i))
+	button("Neu würfeln [R] · %d" % model.rerolls,reroll_cards).disabled=model.rerolls<=0
+	button("Überspringen [T] · %d" % model.skips,skip_cards).disabled=model.skips<=0
+	button("Verbannen [B] · %d" % model.banishes,toggle_banish).disabled=model.banishes<=0
+func reroll_cards() -> void:
+	if state!="LEVELUP": return
+	var next: Array=model.reroll()
+	if not next.is_empty():
+		cards=next
+		banishing=false
+		redraw_cards()
+func skip_cards() -> void:
+	if state=="LEVELUP" and model.skip():
+		banishing=false
+		resume()
+func toggle_banish() -> void:
+	if state=="LEVELUP" and model.banishes>0:
+		banishing=not banishing
+		redraw_cards()

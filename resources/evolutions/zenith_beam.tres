@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/evolution_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "zenith_beam"
+display_name = "Zenithstrahl"
+description = "Sonnenlaser Lv8 + Uhrwerk"
+weight = 100
+values = {"bases": ["sun_beam"], "passive": "clockwork", "changes": {"count": 2, "duration": 2.8, "counter": 1}}

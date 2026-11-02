@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "shadow_fan"
+display_name = "Schattenfächer"
+description = "Schattenfächer: 9 Schaden · 2 s · radial"
+weight = 60
+values = {"behavior": "radial", "damage": 9, "cooldown": 2, "speed": 360, "count": 8, "radius": 10, "duration": 0, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.6666666666666666}
+upgrades = Array[Dictionary]([{"delta": {"damage": 1.35}, "text": "Schaden +1.35"}, {"delta": {"count": 4}, "text": "Anzahl +4"}, {"delta": {"damage": 1.35}, "text": "Schaden +1.35"}, {"delta": {"poison": 1}, "text": "Gift +1"}, {"delta": {"damage": 1.35}, "text": "Schaden +1.35"}, {"delta": {"damage": 1.35}, "text": "Schaden +1.35"}, {"delta": {"echo": 1}, "text": "Nachsalve +1"}])

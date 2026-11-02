@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/evolution_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "ghost_well"
+display_name = "Geisterbrunnen"
+description = "Seelensog Lv8 + Blutphiole"
+weight = 100
+values = {"bases": ["soul_well"], "passive": "blood_vial", "changes": {"count": 2, "pull": 1, "leech_kills": 20, "radius": 110}}

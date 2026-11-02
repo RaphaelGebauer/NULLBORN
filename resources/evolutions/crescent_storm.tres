@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/evolution_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "crescent_storm"
+display_name = "Sichelmondsturm"
+description = "Mondklinge Lv8 + Linsenfokus"
+weight = 100
+values = {"bases": ["moon_blade"], "passive": "focus_lens", "changes": {"count": 3, "spiral": 1, "radius": 32, "pierce": 8}}

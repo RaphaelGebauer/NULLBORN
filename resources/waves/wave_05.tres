@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/wave_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "wave_05"
+display_name = "Welle 06 · Sternenbruch"
+description = "Welle 06 · Sternenbruch"
+weight = 100
+values = {"minute": 5, "weights": {"crawler": 65, "guardian": 35}, "boss": "astral_guardian", "rune": false}

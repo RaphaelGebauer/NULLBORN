@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/evolution_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "phoenix_fan"
+display_name = "Phönixfächer"
+description = "Aschebogen Lv8 + Laufstiefel"
+weight = 100
+values = {"bases": ["ash_bow"], "passive": "runner_boots", "changes": {"count": 7, "burn": 1, "death_fire": 1}}

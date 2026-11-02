@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/enemy_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "bomber"
+display_name = "Leerenbombe"
+description = "Leerenbombe · 36 HP"
+weight = 100
+values = {"hp": 36, "speed": 110, "damage": 12, "xp": 4, "radius": 17, "boss": false, "color": 0.6666666666666666}

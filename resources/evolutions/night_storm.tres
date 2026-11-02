@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/evolution_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "night_storm"
+display_name = "Nachtgewitter"
+description = "Schattenfächer Lv8 + Mehrfachkern"
+weight = 100
+values = {"bases": ["shadow_fan"], "passive": "multiplicity", "changes": {"count": 16, "echo": 1, "poison": 1}}

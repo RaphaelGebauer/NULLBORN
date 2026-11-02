@@ -12,6 +12,7 @@ func _ready() -> void:
 	shape.shape = circle
 	add_child(shape)
 	var camera := Camera2D.new()
+	camera.name = "Camera2D"
 	camera.position_smoothing_enabled = true
 	camera.position_smoothing_speed = 10
 	add_child(camera)

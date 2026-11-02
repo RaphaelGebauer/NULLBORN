@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/wave_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "wave_18"
+display_name = "Welle 19 · Sternenbruch"
+description = "Welle 19 · Sternenbruch"
+weight = 100
+values = {"minute": 18, "weights": {"charger": 45, "zigzag": 30, "elite_hunter": 25}, "boss": "", "rune": false}

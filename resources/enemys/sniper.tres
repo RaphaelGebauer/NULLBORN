@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/enemy_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "sniper"
+display_name = "Schattenrufer"
+description = "Schattenrufer · 40 HP"
+weight = 100
+values = {"hp": 40, "speed": 75, "damage": 7, "xp": 4, "radius": 14, "boss": false, "color": 0.3333333333333333}

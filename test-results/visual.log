@@ -7,8 +7,8 @@ CAPTURE 01-menu (1920, 1080)
 CAPTURE 02-characters (1920, 1080)
 CAPTURE 03-stages (1920, 1080)
 CAPTURE 04-rune (1920, 1080)
-PASS Tastaturbewegung 114.400032043457
-PASS Simulierter Controller-Stick 55.8104858398438
+PASS keyboard movement 114.400032043457
+PASS simulated controller stick 55.8104858398438
 CAPTURE 05-arena (1920, 1080)
 CAPTURE 06-level (1920, 1080)
 CAPTURE 07-result (1920, 1080)
@@ -16,3 +16,7 @@ CAPTURE 08-shop (1920, 1080)
 CAPTURE 09-settings (1920, 1080)
 CAPTURE 10-collection (1920, 1080)
 CAPTURE 11-ui-scale (1920, 1080)
+CAPTURE 12-character-overview (1920, 1080)
+CAPTURE 13-unknown-recipes (1920, 1080)
+CAPTURE 14-known-recipes (1920, 1080)
+CAPTURE 15-reset-confirmation (1920, 1080)

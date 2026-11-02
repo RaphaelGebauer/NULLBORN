@@ -74,6 +74,28 @@ func run() -> void:
 	await capture("11-ui-scale")
 	app.save.data.settings.ui_scale=1.0
 	app.apply_settings()
+	app.menu()
+	app.character_overview()
+	await capture("12-character-overview")
+	app.start_run()
+	app.choose_rune(0)
+	app.model.weapons={"arcane_needle":5}
+	app.model.passives={"power_core":5}
+	app.record_inventory()
+	var pause:=InputEventAction.new()
+	pause.action="ui_cancel"
+	pause.pressed=true
+	app._unhandled_input(pause)
+	await capture("13-unknown-recipes")
+	app.resume()
+	app.model.evolution(true)
+	app._unhandled_input(pause)
+	await capture("14-known-recipes")
+	app.menu()
+	app.return_to_pause=false
+	app.settings()
+	app.confirm_reset()
+	await capture("15-reset-confirmation")
 	app.queue_free()
 	await create_timer(.25,true).timeout
 	await process_frame

@@ -125,4 +125,20 @@ PASS Frost Thorns retaliates with actual damage and slow
 PASS Tod und Ergebnis
 PASS Charaktermenü gebaut
 PASS Shop, Einstellungen, Sammlung gebaut
+PASS Main-menu Characters is read-only
+PASS Locked overview character shows its name only
+PASS Browsing character overview does not mark a selection
+PASS Unlocked overview character shows details without a launch button
+PASS New Run still has playable character selection
+PASS Owning components or legacy seen flags does not reveal recipes
+PASS Collection recipes also require a completed evolution
+PASS Discover through an actual eligible evolution
+PASS Completed evolution reveals its recipe in pause and collection
+PASS Completed-evolution history survives save/load
+PASS Full reset writes a fresh save
+PASS Reset persists cleared progression and default settings
+PASS Main-menu settings includes a reset entry
+PASS Reset confirmation alone never deletes progress
+PASS Cancel preserves progress
+PASS Confirmed reset clears all data and stale session selections
 Ergebnis: 0 Fehler

@@ -28,6 +28,8 @@ The opening is slower: base hero movement is 80% of the original values (Lyra: 1
 
 The Star Forge offers **16 permanent upgrades**. Fleet Foot grants immediate movement speed; Long Stride grants +1% movement speed per in-game minute **per rank**, capped after ten minutes. Additional upgrades include regeneration, crit chance, area, duration and cooldown. Reroll, skip and banish must be purchased first. Treasure Hunter can add a reroll only after that feature is unlocked.
 
+The main-menu **Characters** page is read-only: locked heroes show only their names; unlocked heroes show details. Start runs exclusively through **New Run**.
+
 The collection hides weapons, passives and heroes until selected. A starting weapon counts as acquired when starting its hero's run. Merely seeing a card or unlocking a hero does not reveal that entry. Discoveries are saved immediately.
 
 ## Equipment and evolution
@@ -44,11 +46,17 @@ An evolution requires:
 2. Its matching passive at **level 5**.
 3. A chest from a boss **spawned at 10:00 or later**. Opening an older chest later does not upgrade its eligibility.
 
-Example: **Arcane Needle Lv5+ + Power Core Lv5 → Star Piercer** in an eligible boss chest. The weapon is replaced and the passive is kept. Passives do not evolve independently. Fusions require both base weapons at Lv5+ and their matching passive at Lv5; both bases become one weapon, freeing a slot. Recipes are listed in the pause screen and discovered collection entries.
+Example: **Arcane Needle Lv5+ + Power Core Lv5 → Star Piercer** in an eligible boss chest. The weapon is replaced and the passive is kept. Passives do not evolve independently. Fusions require both base weapons at Lv5+ and their matching passive at Lv5; both bases become one weapon, freeing a slot. Recipes are listed in the pause screen and collection **only after successfully performing that evolution or fusion**. Until then, pause shows only a count of undiscovered paths involving your current weapons. Merely owning components does not reveal names or recipes.
 
 ## Save compatibility
 
 Save data uses `user://savegame.json`. Existing gold, upgrades, unlocks and settings are retained; the new weapons are added to existing offer pools. Invalid saves are backed up as `.corrupt.bak`. Gold is banked once per run. Meta purchases apply to the next run.
+
+### Reset for testing
+
+From the main menu choose **Settings → Reset All Data… → Reset Everything**. A confirmation is required, with Cancel focused by default. Reset clears gold, meta upgrades, unlocks, discoveries, completed evolution history, achievements, records, statistics and settings; current menu selections return to defaults. The reset action is intentionally not available during an active run.
+
+Completion history is stored separately as `evolved_recipes`. Older saves did not distinguish component discovery from completed evolution, so ambiguous old recipe discoveries remain hidden until performed again. Existing gold and other progress are retained unless you explicitly reset them.
 
 ## Validation
 

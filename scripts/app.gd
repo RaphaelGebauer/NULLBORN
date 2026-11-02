@@ -103,11 +103,13 @@ func menu() -> void:
 	get_tree().paused=false
 	state="MENU"
 	if is_instance_valid(world):
-		remove_child(world)
-		world.queue_free()
+		var previous_world: Node2D=world
+		world=null
+		if previous_world.get_parent()==self: remove_child(previous_world)
+		previous_world.queue_free()
 	box("S T E R N E N B R U C H","Survive the rift. Forge your star.")
 	button("New Run",character_select)
-	button("Characters",character_select)
+	button("Characters",character_overview)
 	button("Collection / Bestiary",collection)
 	button("Meta-Upgrades · %d Gold" % save.data.total_gold,shop)
 	button("Settings",func(): return_to_pause=false; settings())
@@ -295,13 +297,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			state="PAUSED"
 			get_tree().paused=true
 			box("PAUSE",build_text())
-			var recipes: String=""
-			for recipe in catalog.catalogs.evolution.values():
-				var owned: bool=false
-				for base in recipe.values.bases:
-					if model.weapons.has(base): owned=true
-				if owned: recipes+=recipe.display_name+": "+recipe.description+"\n"
-			label(recipes,14)
+			label(pause_recipe_text(),14)
 			button("Resume",resume)
 			button("Settings",func(): return_to_pause=true; settings())
 			button("End Run",confirm_end)
@@ -347,8 +343,7 @@ func character_select() -> void:
 	for id in catalog.catalogs.character:
 		var d: Resource=catalog.get_def(id)
 		var locked: bool=not id in save.data.unlocked_characters
-		var requirement: String={"lyra":"Available now","brann":"1,000 total kills","noctis":"Survive 10 minutes","eira":"Defeat a boss"}[id]
-		button("%s · %d HP · %d speed\n%s · %s" % [d.display_name,d.values.hp,roundi(d.values.speed*.8),catalog.get_def(d.values.weapon).display_name,"Locked: "+requirement if locked else {"lyra":"+10 % XP","brann":"+1 armor / −5 % cooldown","noctis":"+15 % critical damage / +10 % luck","eira":"+15 % Radius / +10 % projectile speed"}[id]],select_hero.bind(id)).disabled=locked
+		button(d.display_name if locked else character_details(id),select_hero.bind(id)).disabled=locked
 	preview=Control.new()
 	preview.custom_minimum_size=Vector2(700,55)
 	panel.add_child(preview)
@@ -408,11 +403,7 @@ func confirm_end() -> void:
 func record_inventory() -> void:
 	for owned in [model.weapons.keys(),model.passives.keys(),model.runes]:
 		for id in owned: save.mark_seen(id)
-	for recipe in catalog.catalogs.evolution.values():
-		var valid: bool=model.passives.has(recipe.values.passive)
-		for base in recipe.values.bases:
-			if not model.weapons.has(base): valid=false
-		if valid: save.mark_seen(recipe.id)
+	for id in model.evolutions: save.mark_evolved(id)
 	save.save()
 	check_unlocks()
 func check_unlocks() -> void:
@@ -494,6 +485,7 @@ func settings() -> void:
 		var hint:=Label.new()
 		hint.text="Window size is controlled by the editor. Run in a separate window to change it."
 		rows.add_child(hint)
+	if not return_to_pause: button("Reset All Data…",confirm_reset)
 	button("Back",func():
 		if return_to_pause: resume()
 		else: menu())
@@ -515,3 +507,54 @@ func style_button(node: Button) -> void:
 	node.add_theme_stylebox_override("pressed",flat(Color("31555b"),Color("e3c48b"),2))
 	node.add_theme_stylebox_override("focus",flat(Color.TRANSPARENT,Color("f1d59a"),2))
 	node.add_theme_stylebox_override("disabled",flat(Color("171d29"),Color("2b303c"),1))
+
+func character_details(id: String) -> String:
+	var d: Resource=catalog.get_def(id)
+	var bonus: String={"lyra":"+10% XP","brann":"+1 armor / -5% cooldown","noctis":"+15% critical damage / +10% luck","eira":"+15% radius / +10% projectile speed"}[id]
+	return "%s · %d HP · %d speed\n%s · %s" % [d.display_name,d.values.hp,roundi(d.values.speed*.8),catalog.get_def(d.values.weapon).display_name,bonus]
+func character_overview() -> void:
+	state="MENU"
+	box("CHARACTERS","Your heroes. Start a run through New Run in the main menu.")
+	for id in catalog.catalogs.character:
+		var d: Resource=catalog.get_def(id)
+		label(character_details(id) if id in save.data.unlocked_characters else d.display_name,20)
+	button("Back",menu)
+func pause_recipe_text() -> String:
+	var lines: Array[String]=[]
+	var unknown: int=0
+	for recipe in catalog.catalogs.evolution.values():
+		var relevant: bool=model.weapons.has(recipe.id)
+		for base in recipe.values.bases:
+			if model.weapons.has(base): relevant=true
+		if not relevant: continue
+		if save.discovered(recipe.id,"evolution"):
+			lines.append(recipe.display_name+": "+recipe.description)
+		else: unknown+=1
+	if unknown>0:
+		lines.append("Your current weapons connect to %d undiscovered evolution path%s.\nExperiment with equipment to uncover them." % [unknown,"s" if unknown!=1 else ""])
+	if lines.is_empty(): lines.append("No evolution paths for your current weapons.")
+	return "\n".join(lines)
+func confirm_reset() -> void:
+	if return_to_pause: return
+	state="RESET_CONFIRM"
+	box("RESET ALL DATA?","This permanently clears gold, meta upgrades, unlocks, discoveries,\nrecords, achievements and settings. This cannot be undone.")
+	var cancel:=button("Cancel",func(): state="MENU"; settings())
+	button("Reset Everything",reset_all_progress)
+	focus_button.call_deferred(cancel)
+func reset_all_progress() -> void:
+	if state!="RESET_CONFIRM": return
+	if not save.reset_all():
+		box("RESET FAILED",save.warning)
+		button("Back",func(): state="MENU"; settings())
+		return
+	events.clear()
+	selected_hero="lyra"
+	selected_stage="mist"
+	selected_fast=false
+	selected_curse=0
+	banishing=false
+	return_to_pause=false
+	# Discard session state so an old result cannot restore pre-reset gold/unlocks.
+	model=null
+	menu()
+	apply_settings()

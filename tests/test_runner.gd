@@ -294,6 +294,60 @@ func run() -> void:
 	scene.settings()
 	scene.collection()
 	check(scene.panel.get_child_count()>=3,"Shop, Einstellungen, Sammlung gebaut")
+	scene.save.data=scene.save.defaults()
+	scene.menu()
+	for child in scene.panel.get_children():
+		if child is Button and child.text=="Characters": child.pressed.emit(); break
+	var overview_buttons: Array=scene.panel.get_children().filter(func(child):return child is Button)
+	check(overview_buttons.size()==1 and overview_buttons[0].text=="Back","Main-menu Characters is read-only")
+	var brann_name: String=registry.get_def("brann").display_name
+	check(scene.panel.get_children().any(func(child):return child is Label and child.text==brann_name),"Locked overview character shows its name only")
+	check(not scene.save.discovered("brann","character"),"Browsing character overview does not mark a selection")
+	scene.save.data.unlocked_characters.append("brann")
+	scene.character_overview()
+	check(scene.panel.get_children().any(func(child):return child is Label and child.text.contains("Ash Bow")),"Unlocked overview character shows details without a launch button")
+	scene.character_select()
+	check(scene.panel.get_children().any(func(child):return child is Button and child.text.contains("Lyra") and not child.disabled),"New Run still has playable character selection")
+	scene.model=load("res://scripts/run_model.gd").new()
+	scene.model.weapons={"arcane_needle":5}
+	scene.model.passives={"power_core":5}
+	scene.save.mark_seen("star_piercer")
+	scene.record_inventory()
+	var hidden_text: String=scene.pause_recipe_text()
+	check(not hidden_text.contains("Star Piercer") and hidden_text.contains("undiscovered evolution"),"Owning components or legacy seen flags does not reveal recipes")
+	check(not scene.save.discovered("star_piercer","evolution"),"Collection recipes also require a completed evolution")
+	check(scene.model.evolution(true)=="star_piercer","Discover through an actual eligible evolution")
+	scene.record_inventory()
+	check(scene.pause_recipe_text().contains("Star Piercer") and scene.save.discovered("star_piercer","evolution"),"Completed evolution reveals its recipe in pause and collection")
+	var reset_save=load("res://scripts/save_manager.gd").new()
+	reset_save.path="user://reset_regression_test.json"
+	reset_save.data.total_gold=500
+	reset_save.mark_evolved("star_piercer")
+	reset_save.save()
+	var persisted=load("res://scripts/save_manager.gd").new()
+	persisted.path=reset_save.path
+	check(persisted.load_save() and persisted.discovered("star_piercer","evolution"),"Completed-evolution history survives save/load")
+	reset_save.data.meta_powerups={"rerolls":2}
+	reset_save.data.settings.master=.2
+	reset_save.data.stats.kills=1000
+	check(reset_save.reset_all(),"Full reset writes a fresh save")
+	check(persisted.load_save() and persisted.data.total_gold==0 and persisted.data.meta_powerups.is_empty() and persisted.data.evolved_recipes.is_empty() and persisted.data.stats.kills==0 and is_equal_approx(persisted.data.settings.master,.8),"Reset persists cleared progression and default settings")
+	DirAccess.remove_absolute(reset_save.path)
+	scene.save.data.total_gold=500
+	scene.return_to_pause=false
+	scene.settings()
+	check(scene.panel.get_children().any(func(child):return child is Button and child.text=="Reset All Data…"),"Main-menu settings includes a reset entry")
+	scene.confirm_reset()
+	check(scene.save.data.total_gold==500,"Reset confirmation alone never deletes progress")
+	for child in scene.panel.get_children():
+		if child is Button and child.text=="Cancel": child.pressed.emit(); break
+	check(scene.save.data.total_gold==500 and scene.state=="MENU","Cancel preserves progress")
+	scene.selected_hero="brann"
+	scene.selected_stage="ash"
+	scene.confirm_reset()
+	for child in scene.panel.get_children():
+		if child is Button and child.text=="Reset Everything": child.pressed.emit(); break
+	check(scene.save.data==scene.save.defaults() and scene.model==null and scene.selected_hero=="lyra" and scene.selected_stage=="mist" and scene.state=="MENU","Confirmed reset clears all data and stale session selections")
 	scene.queue_free()
 	await process_frame
 	await process_frame

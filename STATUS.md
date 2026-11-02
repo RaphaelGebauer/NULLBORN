@@ -2,7 +2,15 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
-## Current revision
+## Latest character/discovery/reset update
+
+- Main-menu Characters is a read-only overview. Locked characters show their names only; no character entry can start a run. New Run retains its separate playable character picker.
+- Successful evolutions/fusions persist in a separate `evolved_recipes` list. Pause and collection reveal only explicitly completed recipes. Component ownership and legacy `seen` flags do not leak them. Pause counts unknown paths linked to current weapons without naming recipes.
+- Main-menu Settings includes Reset All Data with explicit confirmation and Cancel focused by default. It restores all save fields and settings, resets menu selections and drops stale session state. Tests use isolated save paths and do not reset real player progress.
+- Fixed a stale removed-world reference exposed by resetting during repeated menu transitions in one frame.
+- Current validation: 141 PASS, zero FAIL; clean import, no script errors or reported leaks. Graphical runner now renders 15 states including the overview, hidden/known recipes and reset confirmation. Combat balance is unchanged from the previous validated full run.
+
+## Previous gameplay revision
 
 Completed:
 
@@ -22,7 +30,7 @@ Completed:
 All current tests use **4.7.2.stable.official.ed1daf0bf**. The downloaded engine was verified against the official SHA512 manifest during initial setup. System-wide `godot` is older and must not be used.
 
 - Import/parser/resource checks: passed. `test-results/import.log`.
-- **125 PASS, zero FAIL**, no script errors or reported leaks in the current functional suite. Includes real new-weapon damage, ricochets, mine pull/slow, execution multiplier, passive retaliation, meta charge gating, timed speed growth, collection hiding, audio isolation, and Lv5/Lv5 thresholds. `test-results/unit.log`.
+- **141 PASS, zero FAIL**, no script errors or reported leaks in the current functional suite. Includes real new-weapon damage, ricochets, mine pull/slow, execution multiplier, passive retaliation, meta charge gating, timed speed growth, collection hiding, audio isolation, and Lv5/Lv5 thresholds. `test-results/unit.log`.
 - Native graphical window test: ten audio changes cause no display requests; all three actual window sizes verified. `test-results/window.log`.
 - True native embedded test, launched with `--wid`: no native window requests, no resize spam; settings explain editor ownership. `test-results/embedded.log`. The software driver emits only its known VSync-support warning.
 - Graphical smoke test: English screens rendered at 1920×1080; keyboard movement ~114.4 px and simulated stick movement ~55.8 px confirm the slower movement. Rotated arrow and settings screenshots visually inspected. `test-results/visual.log`, `docs/screenshots/`.

@@ -2,6 +2,7 @@
 
 Automated with **Godot 4.7.2 Stable**:
 
+- Read-only Characters, locked name-only entries, explicit completed-recipe discovery, reset confirmation/cancel and persisted reset: `tests/test_runner.gd`.
 - Import, resource dependencies and real combat tests: `tools/check.sh`.
 - Slot rules, offer uniqueness, meta-gated tools, XP overflow, statuses, runes, Lv5/Lv5 evolution/fusion and serialized paused modals: `tests/test_runner.gd`.
 - New weapon damage, disc bounce, mine pull/slow, execution bonus, timed movement, regeneration and collection visibility: same suite.

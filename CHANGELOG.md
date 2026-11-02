@@ -1,5 +1,12 @@
 # Changelog
 
+## Character overview, hidden evolution history and reset
+
+- Characters in the main menu is a read-only overview; locked heroes expose names only. New Run remains separate.
+- Recipes require an explicitly completed evolution/fusion before being named in pause or collection. Unknown current-weapon paths are summarized without spoilers.
+- Added a confirmed full save/settings reset at the bottom of main-menu Settings, with Cancel focused by default.
+- Added persistence, UI-routing, reset/cancel and legacy-discovery regression tests; 141 tests pass.
+
 ## Window, progression and English-content update
 
 - Separated audio settings from display mutations; added Godot 4.7's explicit native embedding detection.

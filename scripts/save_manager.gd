@@ -23,7 +23,7 @@ const META: Dictionary={
 func _init() -> void:
 	data=defaults()
 func defaults() -> Dictionary:
-	return {"version":1,"total_gold":0,"unlocked_characters":["lyra"],"unlocked_stages":["mist"],"unlocked_weapons":["arcane_needle","ash_bow","spark_orbit","thorn_halo","lightning_call","moon_blade","frost_shard","storm_bomb","shadow_fan","sun_beam","soul_well","meteor_rain","prism_disc","gravity_mine","reaper_gaze"],"unlocked_runes":["shard_star","resonance","blood_moon","ice_crown","treasure","chain_spark","shield_sign","time_anchor"],"meta_powerups":{},"achievements":[],"best_run_records":{},"seen":[],"stats":{"kills":0,"bosses":0,"runs":0,"wins":0,"gold_earned":0,"best_time":0.0},"settings":{"master":.8,"music":.35,"sfx":.65,"fullscreen":false,"resolution":2,"screen_shake":true,"reduce_flash":false,"damage_texts":true,"deadzone":.2,"ui_scale":1.0}}
+	return {"version":1,"total_gold":0,"unlocked_characters":["lyra"],"unlocked_stages":["mist"],"unlocked_weapons":["arcane_needle","ash_bow","spark_orbit","thorn_halo","lightning_call","moon_blade","frost_shard","storm_bomb","shadow_fan","sun_beam","soul_well","meteor_rain","prism_disc","gravity_mine","reaper_gaze"],"unlocked_runes":["shard_star","resonance","blood_moon","ice_crown","treasure","chain_spark","shield_sign","time_anchor"],"meta_powerups":{},"achievements":[],"best_run_records":{},"seen":[],"evolved_recipes":[],"stats":{"kills":0,"bosses":0,"runs":0,"wins":0,"gold_earned":0,"best_time":0.0},"settings":{"master":.8,"music":.35,"sfx":.65,"fullscreen":false,"resolution":2,"screen_shake":true,"reduce_flash":false,"damage_texts":true,"deadzone":.2,"ui_scale":1.0}}
 func load_save() -> bool:
 	data=defaults()
 	if not FileAccess.file_exists(path): return true
@@ -66,7 +66,7 @@ func valid(value: Variant) -> bool:
 		if not record is Dictionary: return false
 		for field in ["time","kills","level"]:
 			if not (record.get(field,0) is int or record.get(field,0) is float): return false
-	for key in ["unlocked_characters","unlocked_stages","unlocked_weapons","unlocked_runes","achievements","seen"]:
+	for key in ["unlocked_characters","unlocked_stages","unlocked_weapons","unlocked_runes","achievements","seen","evolved_recipes"]:
 		for entry in value.get(key,[]):
 			if not entry is String: return false
 	return true
@@ -89,7 +89,20 @@ func buy(id: String) -> bool:
 	save()
 	return true
 func discovered(id: String, kind: String) -> bool:
+	if kind=="evolution": return id in data.evolved_recipes
 	return kind=="stage" or id in data.seen
+func reset_all() -> bool:
+	var previous: Dictionary=data
+	data=defaults()
+	if not save():
+		data=previous
+		warning="Could not reset the save file. Your progress has been kept."
+		return false
+	warning=""
+	return true
+func mark_evolved(id: String) -> void:
+	if not id in data.evolved_recipes: data.evolved_recipes.append(id)
+	mark_seen(id)
 func mark_seen(id: String) -> void:
 	if not id in data.seen: data.seen.append(id)
 func unlocks(kills: int,bosses: int,time: float,won: bool,evolutions: Array,passives: Dictionary) -> Array:
@@ -114,6 +127,7 @@ func unlocks(kills: int,bosses: int,time: float,won: bool,evolutions: Array,pass
 func finish_run(model: RefCounted,victory: bool) -> Array:
 	if model.banked: return []
 	model.banked=true
+	for id in model.evolutions: mark_evolved(id)
 	var earned: int=roundi(model.gold*(1+model.curse))
 	data.total_gold+=earned
 	data.stats.gold_earned+=earned

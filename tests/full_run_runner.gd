@@ -55,9 +55,10 @@ func run() -> void:
 			counts.append([world.enemies.size(),world.shots.size(),world.pickups.size()])
 			print("RUN ",int(model.time)," s · ",counts[-1]," · Kills ",model.kills)
 		if model.finished: break
-	var valid: bool=model.finished and outcomes==[true] and world.minute==29 and model.runes.size()==3 and model.weapon_mutations.size()==6 and model.rifts_stabilized==2 and model.rifts_overcharged==2 and model.elite_kills>0 and not phase_changes.is_empty()
+	var valid: bool=model.finished and outcomes==[true] and world.minute==29 and model.runes.size()==3 and model.weapon_mutations.size()==6 and model.rifts_stabilized==2 and model.rifts_overcharged==2 and model.elite_kills>0 and not phase_changes.is_empty() and world.reactions.events_total>0
 	print("PASS" if valid else "FAIL"," voller 30-Minuten-Run; Zeit ",model.time,"; Ergebnis ",outcomes,"; Runen ",model.runes.size(),"; Laufzeit ",(Time.get_ticks_msec()-start)/1000.0," s; Kills ",model.kills)
 	print("E3: boss phase transitions ",phase_changes,"; elites ",model.elite_kills,"; affixes ",model.affixes_seen,"; rifts ",model.rifts_stabilized,"/",model.rifts_overcharged,"; peak/final instability ",model.rift_state.peak,"/",model.instability)
+	print("E4: reactions ",world.reactions.events_total,"; by kind ",world.reactions.counts,"; damage ",model.statistics.damage_by_source.get("Elemental Reactions",0))
 	world.queue_free()
 	await process_frame
 	await process_frame

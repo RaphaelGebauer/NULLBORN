@@ -1,9 +1,13 @@
 extends RefCounted
 var catalogs: Dictionary = {}
 var errors: Array[String] = []
+var reaction_definitions: Array=preload("res://scripts/element_reactions.gd").DEFINITIONS
 var affix_definitions: Dictionary=preload("res://scripts/elite_affixes.gd").DEFINITIONS
 func _init() -> void:
 	var ids: Dictionary={}
+	if reaction_definitions.size()!=4: errors.append("Expected four elemental reactions")
+	for reaction in reaction_definitions:
+		if reaction.elements.size()!=2 or reaction.elements[0]==reaction.elements[1] or reaction.name.is_empty(): errors.append("Invalid reaction "+reaction.id)
 	if affix_definitions.size()!=7: errors.append("Expected seven elite affixes")
 	for id in affix_definitions:
 		if affix_definitions[id].get("name", "").is_empty() or affix_definitions[id].size()<2: errors.append("Invalid elite affix "+id)

@@ -1,0 +1,114 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Four validated reaction definitions
+PASS First tag cannot react arc_freezefalse
+PASS Bidirectional reaction arc_freezefalse
+PASS Actual primary bonus arc_freezefalse
+PASS Bounded secondary reach arc_freezefalse
+PASS Secondary proc cannot apply reaction elements arc_freezefalse
+PASS Separate attributed reaction damage arc_freezefalse
+PASS Shared target cooldown arc_freezefalse
+PASS Reaction never rolls crit arc_freezefalse
+PASS No damage double-accounting arc_freezefalse
+PASS First tag cannot react arc_freezetrue
+PASS Bidirectional reaction arc_freezetrue
+PASS Actual primary bonus arc_freezetrue
+PASS Bounded secondary reach arc_freezetrue
+PASS Secondary proc cannot apply reaction elements arc_freezetrue
+PASS Separate attributed reaction damage arc_freezetrue
+PASS Shared target cooldown arc_freezetrue
+PASS Reaction never rolls crit arc_freezetrue
+PASS No damage double-accounting arc_freezetrue
+PASS First tag cannot react blightburstfalse
+PASS Bidirectional reaction blightburstfalse
+PASS Actual primary bonus blightburstfalse
+PASS Bounded secondary reach blightburstfalse
+PASS Secondary proc cannot apply reaction elements blightburstfalse
+PASS Separate attributed reaction damage blightburstfalse
+PASS Blightburst applies light burn
+PASS Shared target cooldown blightburstfalse
+PASS Reaction never rolls crit blightburstfalse
+PASS No damage double-accounting blightburstfalse
+PASS First tag cannot react blightbursttrue
+PASS Bidirectional reaction blightbursttrue
+PASS Actual primary bonus blightbursttrue
+PASS Bounded secondary reach blightbursttrue
+PASS Secondary proc cannot apply reaction elements blightbursttrue
+PASS Separate attributed reaction damage blightbursttrue
+PASS Blightburst applies light burn
+PASS Shared target cooldown blightbursttrue
+PASS Reaction never rolls crit blightbursttrue
+PASS No damage double-accounting blightbursttrue
+PASS First tag cannot react void_shatterfalse
+PASS Bidirectional reaction void_shatterfalse
+PASS Actual primary bonus void_shatterfalse
+PASS Bounded secondary reach void_shatterfalse
+PASS Secondary proc cannot apply reaction elements void_shatterfalse
+PASS Separate attributed reaction damage void_shatterfalse
+PASS Void Shatter actual 0.75-second slow
+PASS Shared target cooldown void_shatterfalse
+PASS Reaction never rolls crit void_shatterfalse
+PASS No damage double-accounting void_shatterfalse
+PASS First tag cannot react void_shattertrue
+PASS Bidirectional reaction void_shattertrue
+PASS Actual primary bonus void_shattertrue
+PASS Bounded secondary reach void_shattertrue
+PASS Secondary proc cannot apply reaction elements void_shattertrue
+PASS Separate attributed reaction damage void_shattertrue
+PASS Void Shatter actual 0.75-second slow
+PASS Shared target cooldown void_shattertrue
+PASS Reaction never rolls crit void_shattertrue
+PASS No damage double-accounting void_shattertrue
+PASS First tag cannot react rift_conductionfalse
+PASS Bidirectional reaction rift_conductionfalse
+PASS Actual primary bonus rift_conductionfalse
+PASS Bounded secondary reach rift_conductionfalse
+PASS Secondary proc cannot apply reaction elements rift_conductionfalse
+PASS Separate attributed reaction damage rift_conductionfalse
+PASS Shared target cooldown rift_conductionfalse
+PASS Reaction never rolls crit rift_conductionfalse
+PASS No damage double-accounting rift_conductionfalse
+PASS First tag cannot react rift_conductiontrue
+PASS Bidirectional reaction rift_conductiontrue
+PASS Actual primary bonus rift_conductiontrue
+PASS Bounded secondary reach rift_conductiontrue
+PASS Secondary proc cannot apply reaction elements rift_conductiontrue
+PASS Separate attributed reaction damage rift_conductiontrue
+PASS Shared target cooldown rift_conductiontrue
+PASS Reaction never rolls crit rift_conductiontrue
+PASS No damage double-accounting rift_conductiontrue
+PASS Three-second window edge 2.99
+PASS Three-second window edge 3.0
+PASS Three-second window edge 3.001
+PASS Cooldown not ready at 1.49
+PASS Cooldown ready exactly at 1.5
+PASS Neutral attacks do not create tags
+PASS Same element on two weapons cannot self-react
+PASS Fusion applies union without first-hit self-reaction
+PASS Fusion inherited frost really reacts
+PASS Fixed table priority when multiple pairs match
+PASS Boss bonus damage halved arc_freeze
+PASS Boss bonus damage halved blightburst
+PASS Boss bonus damage halved void_shatter
+PASS Boss Void Shatter slow 0.35 seconds
+PASS Boss bonus damage halved rift_conduction
+PASS Global 40-event cap for fifty targets
+PASS At most six subtle reaction labels
+PASS Global budget replenishes next combat second
+PASS Reaction visuals expire without retained enemy references
+PASS Proc damage neither applies tags nor triggers reaction
+PASS Final crit/execute/armor hit used once for reaction
+PASS Reaction kill blocks explosion/lifesteal cascade
+PASS Pool reuse clears history, cooldown and DoT ownership
+PASS Reaction burn remains attributed and cannot re-enter
+PASS Blightburst cap eight including primary
+PASS Rift Conduction hits only two additional targets
+PASS Select actual Charged Air mutation
+PASS Charged Air participates without recursive mutation procs
+PASS Unrelated hits cannot extend fire regeneration lock
+PASS Actual fire DoT extends regeneration lock
+PASS Arc Freeze exact 120-pixel chain radius ignores expanded broadphase
+PASS Only actually applied status tags enable a neutral weapon reaction
+PASS Unrelated hits never refresh another weapon's element timestamp
+PASS A persistent old burn cannot fake a recent fire hit
+Reaction checks: 111 PASS / 0 FAIL

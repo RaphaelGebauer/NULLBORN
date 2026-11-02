@@ -15,14 +15,18 @@ Specification: `NULLBORN_CODEX_ERWEITERUNG_PHASE_E.md` (preserved verbatim).
 
 All 45 definitions and processors; mandatory paused Lv4 choice; normal/evolved effect tests for all 45; inheritance for all 15 normal evolutions and both primary/echo fusions. Shared proc budget, deterministic echo cadence, genuine projectiles/mines/secondary damage, timed zones, hit/cast/expiry counters, real contact retaliation and healing cap. No extra slots, no changed evolution gates and no recipe spoilers. English pause/build imprint display and three-resolution graphical captures. Existing full-run and stress fixtures now exercise real mutated/evolved loadouts.
 
+## E3 — implemented
+
+ active five-band instability/HUD/director/gold, four proximity-only paused risk/reward nodes, all seven bounded elite affixes, separate half-HP boss phases with real dashes, starfalls, curved bolts, capped summons/null zones and safe-gap rings/beams. See BALANCE.md and tests/rift_runner.gd.
+
+## E4 — implemented
+
+ four bidirectional reactions with final-hit attribution, cached base/evolution/fusion tags and successful mutation/status tags, fixed priority, per-target 3-second history/1.5-second cooldown, forty-events-per-combat-second budget, capped feedback, boss dampening, bounded chain/AoE, result damage entry and general pause legend. Real Burn/Poison ownership and no proc reentry; exhaustive functional, graphical, stress and full-run verification.
+
 ## Remaining delivery
-
-E3 implemented: active five-band instability/HUD/director/gold, four proximity-only paused risk/reward nodes, all seven bounded elite affixes, separate half-HP boss phases with real dashes, starfalls, curved bolts, capped summons/null zones and safe-gap rings/beams. See BALANCE.md and tests/rift_runner.gd.
-
-E4: four bidirectional reactions, per-target timestamps/cooldown, proc protection, global event budget, boss dampening and attribution tests.
 
 E5: 18 constellation nodes, persistent Starlight awards capped at eight, rollback-safe purchases, actual next-run bonuses and Star Map UI.
 
 E6: subtle feedback, detailed statistics/result UI, spoiler-safe Build Details, graphical smoke captures, stress/full-run validation, documentation synchronization.
 
-E3 is delivered; E4–E6 remain pending. Do not change `resources/pacing.tres`, weapon IDs, 6+6 slots, Lv5/Lv5 evolution gates, historical chest eligibility or completed-recipe privacy.
+E1–E4 are delivered; E5–E6 remain pending. Do not change `resources/pacing.tres`, weapon IDs, 6+6 slots, Lv5/Lv5 evolution gates, historical chest eligibility or completed-recipe privacy.

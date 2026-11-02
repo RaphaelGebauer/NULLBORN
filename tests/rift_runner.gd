@@ -142,6 +142,16 @@ func run() -> void:
 	check(e.pos==origin,"Blink cannot teleport early")
 	world.elite_director.update(e,.011)
 	check(e.pos.distance_to(origin)>=100 and e.pos.distance_to(origin)<=150 and e.pos.distance_to(world.player.position)>90,"Blink safe side displacement")
+
+	e=elite("blinking")
+	origin=e.pos
+	e.elite_state.blink=0
+	world.grid.rebuild(world.enemies)
+	world.update_enemy(e,.01)
+	world.update_enemy(e,.29)
+	check(e.pos==origin,"Blink warning freezes movement in actual World AI")
+	world.update_enemy(e,.02)
+	check(e.pos.distance_to(origin)>=100 and e.pos.distance_to(origin)<=150,"World blink displacement remains within exact range")
 	e=elite("hexbound")
 	world.elite_director.update(e,5.99)
 	check(world.shots.is_empty(),"Hexbound waits six seconds")
@@ -201,6 +211,16 @@ func run() -> void:
 	e.boss_recovery=0
 	world.bosses.update(e,Vector2.LEFT,.01)
 	check(world.hazards.size()==3 and world.hazards.all(func(h):return h.radius==65 and h.delay==1 and h.pos.distance_to(world.player.position)>h.radius+13),"Guardian three starfalls leave center corridor")
+
+	clear()
+	e=world.spawn_enemy("astral_guardian",Vector2(300,0))
+	world.spawn_enemy("guardian",e.pos+Vector2(0,10))
+	world.grid.rebuild(world.enemies)
+	e.dash_state=2
+	e.dash_left=.7
+	e.dash_direction=Vector2.LEFT
+	world.update_enemy(e,.1)
+	check(e.velocity.y==0 and e.velocity.x<0,"Crowded World integration keeps Guardian dash straight")
 	clear()
 	e=world.spawn_enemy("void_queen",Vector2(300,0))
 	for i in range(10): world.bosses.safe_summons(e)

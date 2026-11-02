@@ -102,3 +102,9 @@ Rift Instability rises with run time, boss/elite kills and overcharging. Five re
 Four proximity-only nodes appear at 06:00, 12:00, 18:00 and 24:00 and expire after 90 run seconds. Stabilize removes 20 instability and restores 10% maximum HP; Overcharge adds 20, grants scaled gold and 35% next-level XP. Decisions pause the game.
 
 Elites use seven real affixes, distinct gold rings and bounded spawn intervals. Bosses switch once at half HP: Guardian gains starfalls/faster warned dashes, Queen gains null zones with capped summons, and Storm alternates safe-gap rings and warned beams. Orange indicates a warning. No new evolution chest bypasses are added.
+
+## Element reactions (E4)
+
+Actual hits apply Fire, Frost, Storm, Toxin or Void tags. A different compatible element within three combat seconds triggers one reaction, with a shared 1.5-second cooldown per target: Frost + Storm = **Arc Freeze**, Fire + Toxin = **Blightburst**, Frost + Void = **Void Shatter**, Storm + Void = **Rift Conduction**. Neutral attacks do not add a tag. Evolutions/fusions inherit their base element union and successful mutation effects contribute their actual tags.
+
+Short names/rings identify reactions in combat; Pause includes a general legend without revealing evolution recipes. Results show real `Elemental Reactions` damage separately. Procs never react again, bosses take half bonus damage, and global reaction events are capped at 40 per combat second.

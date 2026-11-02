@@ -2,6 +2,25 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## Phase E4 — implemented and verified; E5–E6 remain open
+
+Implementation commit: recorded after committing this phase. E3 implementation `aee0e53` is already published and independently verified on GitHub main.
+
+- scripts/element_reactions.gd implements Arc Freeze, Blightburst, Void Shatter and Rift Conduction in both orders, on actual final hits, with fixed priority, 3-second element history, shared 1.5-second target cooldown and global forty-events-per-combat-second budget.
+- Cached immutable weapon/evolution/fusion tag unions plus successfully applied mutation/status tags; existing Ice Crown contributes Frost only on its real successful hit. No inventory-only or stale-status triggers; no first-hit self-reaction from a fusion union.
+- Real bounded primary/chain/AoE effects, exact center-distance radii, half bonus against boss recipients, no repeated crit/execution/armor pipeline and no reaction/mutation/lifesteal/death-fire recursion. Separate actual `Elemental Reactions` damage with no overkill duplication. Burn/Poison retain their real source, reaction Burn stays reaction-attributed and boss-damped without duplicate ticks.
+- At most six brief visual labels/rings with nearby label coalescing, Reduce Flashes respected; English pause legend and actual damage/event result entry. No secret recipe disclosure.
+- Integration review fixed three existing edge cases: unrelated hits during Burn no longer extend Regenerating's fire lock; boss dashes cannot be bent by crowd separation; blinking elites remain still during the warning and teleport frame, preserving their exact displacement. New real-World regression tests cover these cases.
+- Saves, all existing equipment/imprints/evolution gates, ordinary 6+6 slots and resources/pacing.tres preserved. No E5 purchases/currency awards or E6 completion claim.
+
+Final validation: Godot **4.7.2.stable.official.ed1daf0bf**, `STERNENBRUCH_LOG_DIR=/workspace/runtime/e4-complete ./tools/check.sh --long`. **179 existing/E1 + 404 mutations + 103 rift/elite/boss + 111 reactions = 797 PASS / 0 FAIL**. Import clean; no script errors, error lines or leaked instances. Logs in test-results/. Graphical `tests/reaction_visual_runner.gd` rendered and inspected all four reactions plus actual result damage at 1280×720; E3 captures cover 1600×900 and 1920×1080. Only known llvmpipe VSync warning.
+
+Final full-run fixture: **30:00**, one victory, three runes, 26,502 kills, 24 affixed elites, six Phase II transitions across the three boss kinds, two stabilizations/two overcharges, peak/final instability 94.7. **17,847 reactions**, all four types (6,186 Void Shatter / 2,529 Arc Freeze / 7,918 Blightburst / 1,214 Rift Conduction); 372,579.89 actual reaction damage, 96.523 s CPU wall time.
+
+Final stress: 180 simulated seconds / 5,400 steps, three Phase II bosses and affixed elites at Critical instability; peaks **382 enemies / 261 shots / 300 pickups**; 12,665 kills, 7,200 bounded reaction events, 50.230 s wall time, no cap or runtime failures. Immunity/automatic movement/choices are explicit harness aids. No claim of real GPU frame rate, physical controller testing or a human thirty-minute balance pass.
+
+Next concrete phase: **E5**, specification section 7. Implement the exact eighteen Star Map nodes, three prerequisite chains and listed costs/effects, capped Starlight finish awards, rollback-safe persistent purchases and controller-accessible scrollable Star Map. Apply purchased bonuses through the existing next-run constellation snapshot, never mutate an active run. Save migration/reset foundation already exists; preserve all 797 tests. Test/commit/push E5 separately, then E6 subtle feedback, complete result statistics and spoiler-safe Build Details. Do not recreate any existing systems.
+
 ## Phase E3 — implemented and verified; E4–E6 remain open
 
 Implementation commit: `aee0e53`; pushed to GitHub main and independently verified by ls-remote and a fresh bare clone (project.godot plus all three E3 helpers present).

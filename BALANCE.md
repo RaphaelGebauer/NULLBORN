@@ -86,3 +86,20 @@ Instability gains 0.03 per run second, 4 per boss and 0.5 per affixed elite; ord
 Elite rewards: 45 gold plus band bonus, 15% chance of a 10-HP heal pickup. Gold still passes through existing Greed on collection. Rift gold is direct round(120 × (1 + run_time / 1800)); XP is 0.35 × current required XP with no Growth multiplier. Rifts retry safe placement within their own 90-second slot only.
 
 `boss_patterns.gd` owns separate HP phase/pattern state, 0.6-second transition, fixed dash warning/duration, safe-gap salvos, six children per Queen and four null zones globally. Hazards cap at 100 and projectiles at 650. Null zones warn for 1 second, last 2.5 active seconds, tick no faster than 0.8 seconds and refresh a nonstacking one-second 20% slow. Volatile explosions snapshot their values before pool reuse. No new factors modify immutable enemy definitions or the opening pacing resource.
+
+## E4 element reactions
+
+Definitions live in `scripts/element_reactions.gd`, validated by Registry. Window: inclusive 3.0 combat seconds, target cooldown: 1.5, global cap: 40 events per integer combat second, at most six short visual labels (nearby labels coalesce). Combat time uses `combat.elapsed`, as existing status/mutation timers do; it stops on pause. Quick Mode doubles the run schedule, not combat movement/status time.
+
+| Priority | Pair | Reaction | Actual effect based on final triggering-hit damage |
+|---:|---|---|---|
+| 1 | Frost + Storm | Arc Freeze | 35% primary, one additional target within 120 px for 30% |
+| 2 | Fire + Toxin | Blightburst | 45% primary and up to seven others within 60 px; light existing Burn |
+| 3 | Frost + Void | Void Shatter | 50% primary; 0.75-s slow (boss: 0.35 s) |
+| 4 | Storm + Void | Rift Conduction | 25% to at most two additional targets within 140 px |
+
+Boss recipients take 50% of these bonuses. Final triggering damage includes the original crit, execution and armor calculation once; bonus hits bypass that pipeline, round to the existing integer minimum-one damage, and cannot crit/mutate/react/leech or trigger death-fire chains. Radius checks use center distances after spatial broadphase; no target-hitbox expansion leaks into reaction range. Overkill is excluded by RunStatistics.
+
+History stores at most five element timestamps/source IDs on each enemy. Fusion tags are a set union; one hit checks only prior history before applying all of its own tags. Secondary procs cannot apply new reaction history. Actual successful mutation/status applications can contribute tags; merely owning an off-target weapon or observing an old status cannot. Burn/Poison ownership is stored per enemy, overwritten on real refresh and reset on pool reuse; reaction Burn remains in `Elemental Reactions` and boss-damped, without a second Burn loop. Regenerating's fire lock now extends only on actual fire/status application or fire DoT, not unrelated hits during a visible burn.
+
+World integration keeps all boss dashes free of crowd-separation drift. Blink warning/teleport frames suppress ordinary movement, so the 100–150 px side displacement remains true in actual AI, not just in the helper. These are regression-tested.

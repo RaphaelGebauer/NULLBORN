@@ -13,7 +13,7 @@ var next_spawn: float=300
 func prepare(e: Dictionary) -> void:
 	e.elite=false
 	e.affixes=[]
-	e.elite_state={"hex":6.0,"blink":7.0,"warning":0.0,"blink_target":Vector2.ZERO,"vampiric_ready":0.0,"fire_until":0.0}
+	e.elite_state={"hex":6.0,"blink":7.0,"warning":0.0,"blink_target":Vector2.ZERO,"vampiric_ready":0.0,"fire_until":0.0,"teleported":false}
 func active_count() -> int:
 	var total: int=0
 	for e in world.enemies:
@@ -67,6 +67,7 @@ func director() -> void:
 func update(e: Dictionary,delta: float) -> void:
 	if not e.elite or e.hp<=0: return
 	var s: Dictionary=e.elite_state
+	s.teleported=false
 	if e.affixes.has("regenerating") and e.age>=s.fire_until:
 		e.hp=minf(e.max_hp,e.hp+e.max_hp*DEFINITIONS.regenerating.healing*delta)
 	if e.affixes.has("hexbound"):
@@ -79,6 +80,7 @@ func update(e: Dictionary,delta: float) -> void:
 			s.warning=maxf(0,s.warning-delta)
 			if s.warning<=0 and s.blink_target.distance_to(world.player.position)>90:
 				e.pos=s.blink_target
+				s.teleported=true
 			return
 		s.blink-=delta
 		if s.blink<=0:
@@ -89,9 +91,9 @@ func update(e: Dictionary,delta: float) -> void:
 			if target.distance_to(world.player.position)>90:
 				s.blink_target=target
 				s.warning=DEFINITIONS.blinking.warning
-func hit(e: Dictionary,source: String,values: Dictionary) -> void:
+func hit(e: Dictionary,source: String,values: Dictionary,extra: Array=[]) -> void:
 	if not e.elite: return
-	if "fire" in world.model.registry.elements_for_weapon(source) or values.get("burn",0)>0 or e.statuses.has("burn"):
+	if "fire" in world.model.registry.elements_for_weapon(source) or values.get("burn",0)>0 or "fire" in extra or values.get("dot_element","")=="fire":
 		e.elite_state.fire_until=e.age+DEFINITIONS.regenerating.fire_lock
 func contact(e: Dictionary,succeeded: bool) -> void:
 	if succeeded and e.elite and e.affixes.has("vampiric") and e.age>=e.elite_state.vampiric_ready:

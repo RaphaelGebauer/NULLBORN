@@ -57,6 +57,9 @@ PASS Promote blinking
 PASS Blink announces destination for 0.3 seconds
 PASS Blink cannot teleport early
 PASS Blink safe side displacement
+PASS Promote blinking
+PASS Blink warning freezes movement in actual World AI
+PASS World blink displacement remains within exact range
 PASS Promote hexbound
 PASS Hexbound waits six seconds
 PASS Hexbound real slow hostile shot
@@ -85,6 +88,7 @@ PASS Guardian waits whole dash warning
 PASS Guardian fixed direction and 240 speed
 PASS Guardian dash bounded to 0.7 seconds
 PASS Guardian three starfalls leave center corridor
+PASS Crowded World integration keeps Guardian dash straight
 PASS Queen cap six safe children
 PASS Queen two curved warned bolts
 PASS Queen maximum four 1+2.5-second zones
@@ -99,4 +103,4 @@ PASS Rift follows mutation and preserves pending FIFO
 PASS Rift choice genuinely pauses simulation
 PASS No clock advance during choice
 PASS Choice resumes exactly once
-Rift checks: 99 PASS / 0 FAIL
+Rift checks: 103 PASS / 0 FAIL

@@ -29,3 +29,7 @@ Model mutation requests are independent of normal level offers. App inserts pend
 ### E3 implementation
 
 `rift_nodes.gd`, `elite_affixes.gd` and `boss_patterns.gd` are bounded helpers owned by the existing World. They use its pools, damage pipeline, projectiles, hazards and seeded model RNG. Rift decisions enter the existing paused queue after mutations and before other pending events. Boss HP phase is separate from the original charger `phase`. Instability is current derived pressure, not repeated mutation of enemy resources. All new pooled fields are initialized in `spawn_enemy`; death is protected by World membership. Saves and existing inventory/evolution rules are unchanged.
+
+### E4 implementation
+
+`element_reactions.gd` is owned by World and shares its hit pipeline, spatial hash and actual combat clock. It caches immutable base/evolved/fusion tags, checks previous per-enemy history in fixed priority order, then updates this hit's actual tags. Mutation `on_hit` returns successfully applied elements; no UI-created status or inferred inventory-only reaction is used. `proc=true` forbids reaction reentry and mutation recursion. Reaction damage records one source in RunStatistics and the result UI. Per-status DoT attribution keeps reaction Burn out of normal weapon totals, with no duplicate ticks. Global integer-second event budget and local cooldown are independent; visuals/candidates are bounded and pooled state is reset.

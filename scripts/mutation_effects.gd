@@ -120,7 +120,8 @@ func new_impact(source: String,entry: Dictionary,suffix: String,values: Dictiona
 	if counters.get(id,-1)==values.impact_token: return false
 	counters[id]=values.impact_token
 	return true
-func on_hit(source: String,enemy: Dictionary,damage_value: float,values: Dictionary,killed: bool,slow_base: float=0) -> void:
+func on_hit(source: String,enemy: Dictionary,damage_value: float,values: Dictionary,killed: bool,slow_base: float=0) -> Array:
+	var applied_elements: Array=[]
 	for entry in entries(source):
 		var d: Dictionary=definition(entry).values
 		match d.effect:
@@ -128,11 +129,19 @@ func on_hit(source: String,enemy: Dictionary,damage_value: float,values: Diction
 				enemy.statuses.imprint_mark=3.0
 				enemy.imprint_mark_bonus=maxf(enemy.get("imprint_mark_bonus",0),d.value*entry.strength)
 			"burn_chance":
-				if world.model.rng.randf()<d.value*entry.strength: enemy.statuses.burn=3.0
-			"poison": enemy.statuses.poison=d.value*entry.strength
+				if world.model.rng.randf()<d.value*entry.strength:
+					enemy.statuses.burn=3.0
+					applied_elements.append("fire")
+			"poison":
+				enemy.statuses.poison=d.value*entry.strength
+				applied_elements.append("toxin")
 			"slow_chance":
-				if world.model.rng.randf()<d.value*entry.strength: enemy.statuses.slow=1.0
-			"charged": enemy.statuses.charged=d.value*entry.strength
+				if world.model.rng.randf()<d.value*entry.strength:
+					enemy.statuses.slow=1.0
+					applied_elements.append("frost")
+			"charged":
+				enemy.statuses.charged=d.value*entry.strength
+				applied_elements.append("storm")
 			"slow_duration":
 				# Refresh from this hit's normal duration, never compound an existing timer.
 				if slow_base>0: enemy.statuses.slow=slow_base*(1+d.value*entry.strength)
@@ -141,11 +150,13 @@ func on_hit(source: String,enemy: Dictionary,damage_value: float,values: Diction
 				if enemy.hits.get(tag,-1.0)<=world.combat.elapsed:
 					enemy.hits[tag]=world.combat.elapsed+d.interval/entry.strength
 					enemy.statuses.slow=1.0
+					applied_elements.append("frost")
 			"sunburn":
 				var tag: String="burn:"+source+":"+entry.id
 				if enemy.hits.get(tag,-1.0)<=world.combat.elapsed:
 					enemy.hits[tag]=world.combat.elapsed+d.interval/entry.strength
 					enemy.statuses.burn=3.0
+					applied_elements.append("fire")
 			"heal_hits":
 				if every(source,entry,"hit",d.interval) and healed<3:
 					world.model.heal(1)
@@ -169,6 +180,7 @@ func on_hit(source: String,enemy: Dictionary,damage_value: float,values: Diction
 				if ready(source,entry,"residual",d.interval): lingering(source,enemy.pos,70,damage_value*d.value,d.interval,true)
 			"kill_chain":
 				if killed and every(source,entry,"kill",d.interval): secondary(source,enemy.pos,150,damage_value*d.value,0,1,enemy.id)
+	return applied_elements
 func lingering(source: String,pos: Vector2,radius: float,damage_value: float,duration: float,slow: bool) -> void:
 	if budget<=0: return
 	budget-=1

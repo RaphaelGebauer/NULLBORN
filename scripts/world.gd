@@ -17,6 +17,7 @@ var grid := Hash.new()
 var combat := Combat.new()
 var elite_director=preload("res://scripts/elite_affixes.gd").new()
 var rifts=preload("res://scripts/rift_nodes.gd").new()
+var reactions=preload("res://scripts/element_reactions.gd").new()
 var bosses=preload("res://scripts/boss_patterns.gd").new()
 var budget: float=0
 var lantern_timer: float=20
@@ -37,6 +38,7 @@ func _ready() -> void:
 	elite_director.world=self
 	rifts.world=self
 	bosses.world=self
+	reactions.world=self
 	combat.world=self
 	combat.modifiers.world=self
 func ring_position() -> Vector2:
@@ -61,6 +63,7 @@ func spawn_enemy(id: String="wisp",pos: Vector2=Vector2.INF,child: bool=false) -
 	e.merge({"id":serial,"kind":id,"pos":pos,"hp":v.hp*hp_scale,"max_hp":v.hp*hp_scale,"speed":v.speed*minf(1.35,1+.012*m)*(1+.35*model.curse),"damage":v.damage*(1+.035*m),"xp":v.xp,"radius":float(v.radius),"velocity":Vector2.ZERO,"boss":boss,"timer":2.0,"phase":0,"charge":Vector2.ZERO,"age":0.0,"hits":{},"statuses":{},"dot":0.0,"child":child,"spawn_minute":m,"flash":0.0,"leech_source":""})
 	elite_director.prepare(e)
 	bosses.prepare(e)
+	reactions.prepare(e)
 	enemies.append(e)
 	return e
 func nearest(pos: Vector2) -> Dictionary:
@@ -124,7 +127,7 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 		if e.statuses.has("mark"): damage*=1.15
 		elif e.statuses.has("imprint_mark"): damage*=1+e.get("imprint_mark_bonus",.08)
 		if e.kind=="shield" and ((player.position if incoming_origin==Vector2.INF else incoming_origin)-e.pos).normalized().dot(e.velocity.normalized())>.4: damage*=.65
-	if e.elite and e.affixes.has("armored"): damage*=.8
+	if e.elite and e.affixes.has("armored") and not values.get("reaction",false): damage*=.8
 	var final_damage: float=maxf(1,round(damage))
 	model.statistics.record_damage(source,final_damage,e.hp,critical,model.time)
 	e.hp-=final_damage
@@ -133,19 +136,31 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 	if damage_texts and texts.size()<70: texts.append({"pos":e.pos,"text":str(roundi(damage)),"life":.6})
 	var mutation_slow_base: float=2.0 if values.get("slow",0)>0 else 0.0
 	for status in ["burn","poison","slow","mark"]:
-		if values.get(status,0)>0: e.statuses[status]=3.0 if status in ["burn","mark"] else 4.0 if status=="poison" else 2.0
+		if values.get(status,0)>0:
+			e.statuses[status]=3.0 if status in ["burn","mark"] else 4.0 if status=="poison" else 2.0
+			if status in ["burn","poison"]: e.dot_sources[status]=source
+	var applied_elements: Array=[]
 	if values.get("slow_chance",0)>model.rng.randf():
 		e.statuses.slow=1.5
+		applied_elements.append("frost")
 		mutation_slow_base=1.5
-	if values.get("freeze_chance",0)>model.rng.randf(): e.statuses.freeze=.4 if e.boss else .5
+	if values.get("freeze_chance",0)>model.rng.randf():
+		e.statuses.freeze=.4 if e.boss else .5
+		applied_elements.append("frost")
 	if values.get("death_fire",0)>0: e.statuses.death_fire=4.0
 	if e.hp<=0: e.leech_source=source if values.has("leech_kills") and not proc else ""
-	if not proc: combat.modifiers.on_hit(source,e,final_damage,values,e.hp<=0,mutation_slow_base)
-	elite_director.hit(e,source,values)
+	if not proc:
+		if "ice_crown" in model.runes and model.rng.randf()<.08:
+			e.statuses.slow=2
+			applied_elements.append("frost")
+		applied_elements.append_array(combat.modifiers.on_hit(source,e,final_damage,values,e.hp<=0,mutation_slow_base))
+		if "fire" in applied_elements and e.statuses.has("burn"): e.dot_sources.burn=source
+		if "toxin" in applied_elements and e.statuses.has("poison"): e.dot_sources.poison=source
+		reactions.on_hit(e,source,final_damage,values,applied_elements)
+	elite_director.hit(e,source,values,applied_elements)
 	if not e.boss and e.kind not in ["guardian","shield","elite_hunter"]:
 		e.pos+=player.position.direction_to(e.pos)*3
 	if not proc:
-		if "ice_crown" in model.runes and model.rng.randf()<.08: e.statuses.slow=2
 		if "chain_spark" in model.runes and model.chain_cooldown<=0 and model.rng.randf()<.05:
 			model.chain_cooldown=.25
 			for other in grid.query(e.pos,180):
@@ -213,6 +228,7 @@ func _physics_process(delta: float) -> void:
 			enemy_pool.append(e)
 	update_pickups(delta)
 	update_hazards(delta)
+	reactions.update(delta)
 	update_lanterns(delta)
 	for text in texts:
 		text.life-=delta
@@ -233,8 +249,8 @@ func update_enemy(e: Dictionary,delta: float) -> void:
 	e.dot+=delta
 	if e.dot>=1:
 		e.dot-=1
-		if e.statuses.has("burn"): hit(e,4,{},"burn",true)
-		if e.statuses.has("poison"): hit(e,3,{},"poison",true)
+		if e.statuses.has("burn"): hit_dot(e,"burn",4)
+		if e.statuses.has("poison"): hit_dot(e,"poison",3)
 	if e.hp<=0: return
 	var direction: Vector2=e.pos.direction_to(player.position)
 	var factor: float=1
@@ -275,6 +291,11 @@ func update_enemy(e: Dictionary,delta: float) -> void:
 		if diff.length_squared()>1: separation+=diff.normalized()*25
 		count+=1
 		if count>=5: break
+	# Boss tells/dashes must not be bent or moved by crowd separation.
+	if e.boss: separation=Vector2.ZERO
+	if e.elite and (e.elite_state.warning>0 or e.elite_state.teleported):
+		velocity=Vector2.ZERO
+		separation=Vector2.ZERO
 	e.velocity=(velocity+separation)*factor*model.opening_factor("enemy_speed")*model.rift_state.MODIFIERS[model.rift_state.band()].speed
 	if e.elite: e.velocity=e.velocity.limit_length(320)
 	e.pos+=e.velocity*delta
@@ -473,6 +494,9 @@ func _draw() -> void:
 		if p.kind=="xp" and p.value>10: r=9;c=Color("a89cff")
 		if p.kind=="chest": draw_rect(Rect2(p.pos-Vector2(12,9),Vector2(24,18)),c)
 		else: draw_colored_polygon(PackedVector2Array([p.pos+Vector2(0,-r),p.pos+Vector2(r,0),p.pos+Vector2(0,r),p.pos+Vector2(-r,0)]),c)
+	for effect in reactions.visuals:
+		draw_arc(effect.pos,effect.radius,0,TAU,16,Color("a8d2d9",.35 if reduce_flash else .65),1)
+		draw_string(ThemeDB.fallback_font,effect.pos+Vector2(-24,-20),effect.name,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("bed4db"))
 	for e in enemies:
 		var c:=Color.from_hsv(model.registry.get_def(e.kind).values.color,.5,.85)
 		if e.flash>0 and not reduce_flash: c=Color.WHITE
@@ -535,3 +559,8 @@ func _draw() -> void:
 		else: draw_arc(h.pos,h.radius,0,TAU,24,c,2 if h.delay>0 else 8)
 	if damage_texts:
 		for t in texts: draw_string(ThemeDB.fallback_font,t.pos,t.text,HORIZONTAL_ALIGNMENT_LEFT,-1,15,Color(1,1,.8,t.life/.6))
+
+func hit_dot(e: Dictionary,status: String,damage: float) -> void:
+	var source: String=e.dot_sources.get(status,status)
+	var reaction: bool=source==reactions.SOURCE
+	hit(e,damage*(.5 if reaction and e.boss else 1),{"reaction":reaction,"dot_element":"fire" if status=="burn" else "toxin"},source,true)

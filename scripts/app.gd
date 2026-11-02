@@ -322,6 +322,7 @@ func result(victory: bool) -> void:
 	box("THE RIFT IS SEALED" if victory else "YOUR STAR FADES","Level %d · %d Kills · %02d:%02d" % [model.level,model.kills,int(model.time)/60,int(model.time)%60])
 	label("%d Gold earned (curse bonus included) · %d Bosses\n%s\nUnlocked: %s" % [roundi(model.gold*(1+model.curse)),model.bosses,build_text(),", ".join(added) if not added.is_empty() else "—"],16)
 	label("Peak Instability %.1f · Final %.1f\nRifts Stabilized %d · Overcharged %d · Elites Defeated %d\nAffixes encountered: %s" % [model.rift_state.peak,model.instability,model.rifts_stabilized,model.rifts_overcharged,model.elite_kills,affix_summary()],15)
+	label("Elemental Reactions: %.0f damage · %d events" % [model.statistics.damage_by_source.get("Elemental Reactions",0),world.reactions.events_total],15)
 	button("Try Again",func(): menu(); start_run())
 	button("Main Menu",menu)
 func _unhandled_input(event: InputEvent) -> void:
@@ -349,6 +350,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			box("PAUSE",build_text())
 			label(pause_recipe_text(),14)
 			label(instability_details(),15)
+			label(preload("res://scripts/element_reactions.gd").legend(),14)
 			button("Resume",resume)
 			button("Settings",func(): return_to_pause=true; settings())
 			button("End Run",confirm_end)

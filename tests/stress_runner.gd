@@ -57,6 +57,7 @@ func run() -> void:
 			return
 	var seconds: float=(Time.get_ticks_msec()-start)/1000.0
 	print("PASS 180 simulierte Sekunden / 5400 Schritte; Laufzeit ",seconds," s; Peaks Gegner/Projektile/Pickups: ",peak_enemies,"/",peak_shots,"/",peak_pickups,"; Kills ",model.kills)
+	print("E4: reaction events ",world.reactions.events_total,"; capped visual peak <=6; hazards <=100")
 	world.queue_free()
 	await process_frame
 	await process_frame

@@ -1,11 +1,12 @@
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 RUN 0 s · [0, 36, 0] · Kills 0
-RUN 300 s · [5, 141, 273] · Kills 440
-RUN 600 s · [13, 126, 300] · Kills 2023
-RUN 900 s · [27, 110, 300] · Kills 5025
-RUN 1200 s · [78, 74, 300] · Kills 9743
-RUN 1500 s · [64, 108, 300] · Kills 17338
-RUN 1800 s · [153, 25, 300] · Kills 26550
-PASS voller 30-Minuten-Run; Zeit 1800.0; Ergebnis [true]; Runen 3; Laufzeit 92.759 s; Kills 26550
-E3: boss phase transitions [["astral_guardian", 2], ["void_queen", 2], ["astral_guardian", 2], ["void_queen", 2], ["astral_guardian", 2], ["storm_core", 2]]; elites 23; affixes { "blinking": 4, "volatile": 5, "hexbound": 6, "swift": 2, "regenerating": 2, "vampiric": 3, "armored": 6 }; rifts 2/2; peak/final instability 94.2000000000305/94.2000000000305
+RUN 300 s · [5, 140, 278] · Kills 440
+RUN 600 s · [22, 124, 300] · Kills 1982
+RUN 900 s · [30, 116, 300] · Kills 5001
+RUN 1200 s · [80, 55, 300] · Kills 9704
+RUN 1500 s · [58, 92, 300] · Kills 17272
+RUN 1800 s · [140, 20, 300] · Kills 26502
+PASS voller 30-Minuten-Run; Zeit 1800.0; Ergebnis [true]; Runen 3; Laufzeit 96.523 s; Kills 26502
+E3: boss phase transitions [["astral_guardian", 2], ["void_queen", 2], ["astral_guardian", 2], ["void_queen", 2], ["astral_guardian", 2], ["storm_core", 2]]; elites 24; affixes { "blinking": 4, "regenerating": 8, "volatile": 4, "vampiric": 3, "swift": 2, "armored": 3, "hexbound": 2 }; rifts 2/2; peak/final instability 94.7000000000305/94.7000000000305
+E4: reactions 17847; by kind { "void_shatter": 6186, "arc_freeze": 2529, "blightburst": 7918, "rift_conduction": 1214 }; damage 372579.89012921

@@ -5,6 +5,7 @@ var reaction_definitions: Array=preload("res://scripts/element_reactions.gd").DE
 var affix_definitions: Dictionary=preload("res://scripts/elite_affixes.gd").DEFINITIONS
 func _init() -> void:
 	var ids: Dictionary={}
+	errors.append_array(preload("res://scripts/data/constellations.gd").validate())
 	if reaction_definitions.size()!=4: errors.append("Expected four elemental reactions")
 	for reaction in reaction_definitions:
 		if reaction.elements.size()!=2 or reaction.elements[0]==reaction.elements[1] or reaction.name.is_empty(): errors.append("Invalid reaction "+reaction.id)

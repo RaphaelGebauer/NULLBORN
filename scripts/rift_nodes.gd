@@ -40,9 +40,9 @@ func choose(overcharge: bool) -> bool:
 		world.model.rifts_overcharged+=1
 		world.model.rift_state.change(20)
 		world.model.gold+=roundi(120*(1+world.model.time/1800))
-		world.model.add_xp(world.model.required_xp()*.35,false)
+		world.model.add_xp(world.model.required_xp()*.35*(1.05 if world.model.has_star("risk_seeker") else 1),false)
 	else:
 		world.model.rifts_stabilized+=1
-		world.model.rift_state.change(-20)
-		world.model.heal(world.model.max_hp*.1)
+		world.model.rift_state.change(-23 if world.model.has_star("clear_horizon") else -20)
+		world.model.heal(world.model.max_hp*.1+(4 if world.model.has_star("second_breath") else 0))
 	return true

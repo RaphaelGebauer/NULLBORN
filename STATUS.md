@@ -2,6 +2,14 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## Phase E5 — complete and tested; E6 next
+
+Implementation hash recorded after commit. Data: scripts/data/constellations.gd; interactive connected three-branch Star Map: scripts/star_map.gd and app.gd. All eighteen specified nodes/costs/prerequisites and real combat/stat/rift/timed hooks are implemented. Total cost 63 Starlight; rewards capped at eight, booked exactly once at finish. Save failures roll back both purchases and finish rewards and expose a retry message. Existing version-1 saves/migration/reset retained; active runs use independent snapshots. No changes to opening pacing or mutation/evolution gates.
+
+Godot 4.7.2 Stable, tools/check.sh: **797 preserved + 85 constellation tests = 882 PASS / 0 FAIL**, no script errors/leaks. Tests cover all nodes, costs, prerequisites, restart persistence, failed-write rollback/retry, capped/idempotent finish, every bonus, six Still Heart boundaries in both modes, no recalculation stacking, real rift/elite/boss/projectile integration, UI focus and snapshot isolation. Real graphical captures at 1280×720, 1600×900 and 1920×1080; 1280 capture inspected, all eighteen stars, inspector and Back visible. Known llvmpipe VSync warning only. Logs in test-results/constellations.log and star-visual.log.
+
+Next E6: subtle bounded feedback, complete measured statistics/result view with fixed reachable actions, spoiler-safe Build Details, full regression/30-minute/stress/window/embedded checks and synchronized documentation. Do not claim E6 complete before these checks.
+
 ## Phase E4 — implemented and verified; E5–E6 remain open
 
 Implementation commit: `8f07815`; pushed to GitHub main and independently verified with ls-remote plus a fresh bare clone containing project.godot, the reaction helper, tests and STATUS.md. E3 implementation `aee0e53` is also published and verified.

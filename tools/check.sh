@@ -22,6 +22,7 @@ check unit --headless --path . -s res://tests/test_runner.gd
 check mutations --headless --path . -s res://tests/mutation_runner.gd
 check rifts --headless --path . -s res://tests/rift_runner.gd
 check reactions --headless --path . -s res://tests/reaction_runner.gd
+check constellations --headless --path . -s res://tests/constellation_runner.gd
 if [[ "${1:-}" == "--long" ]]; then
  check stress --headless --path . -s res://tests/stress_runner.gd
  check full-run --headless --path . -s res://tests/full_run_runner.gd

@@ -103,7 +103,7 @@ func death(e: Dictionary) -> void:
 	if not e.elite: return
 	world.model.elite_kills+=1
 	world.model.rift_state.change(.5)
-	world.drop(e.pos+Vector2(18,0),roundi(45*(1+world.model.rift_state.modifiers().reward_gold)),"gold")
+	world.drop(e.pos+Vector2(18,0),roundi(45*(1+world.model.rift_state.modifiers().reward_gold)*(1.05 if world.model.instability>=50 and world.model.has_star("tainted_treasure") else 1)),"gold")
 	if world.model.rng.randf()<.15: world.drop(e.pos,1,"small_heal")
 	if e.affixes.has("volatile"):
 		# Snapshot numbers/position only; never retain the pooled enemy dictionary.

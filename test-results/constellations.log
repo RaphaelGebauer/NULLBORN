@@ -1,0 +1,88 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Eighteen unique valid nodes across three complete paths
+PASS Cannot skip prerequisites
+PASS Purchase correct chain: comet_spark
+PASS Exact cost and no duplicate purchase: comet_spark
+PASS Purchase correct chain: gathering_tail
+PASS Exact cost and no duplicate purchase: gathering_tail
+PASS Purchase correct chain: swift_orbit
+PASS Exact cost and no duplicate purchase: swift_orbit
+PASS Purchase correct chain: astral_insight
+PASS Exact cost and no duplicate purchase: astral_insight
+PASS Purchase correct chain: rush_of_stars
+PASS Exact cost and no duplicate purchase: rush_of_stars
+PASS Purchase correct chain: far_traveler
+PASS Exact cost and no duplicate purchase: far_traveler
+PASS Purchase correct chain: veil_seed
+PASS Exact cost and no duplicate purchase: veil_seed
+PASS Purchase correct chain: quiet_pulse
+PASS Exact cost and no duplicate purchase: quiet_pulse
+PASS Purchase correct chain: guarded_orbit
+PASS Exact cost and no duplicate purchase: guarded_orbit
+PASS Purchase correct chain: second_breath
+PASS Exact cost and no duplicate purchase: second_breath
+PASS Purchase correct chain: still_heart
+PASS Exact cost and no duplicate purchase: still_heart
+PASS Purchase correct chain: last_star
+PASS Exact cost and no duplicate purchase: last_star
+PASS Purchase correct chain: rift_sense
+PASS Exact cost and no duplicate purchase: rift_sense
+PASS Purchase correct chain: tainted_treasure
+PASS Exact cost and no duplicate purchase: tainted_treasure
+PASS Purchase correct chain: hunters_star
+PASS Exact cost and no duplicate purchase: hunters_star
+PASS Purchase correct chain: clear_horizon
+PASS Exact cost and no duplicate purchase: clear_horizon
+PASS Purchase correct chain: risk_seeker
+PASS Exact cost and no duplicate purchase: risk_seeker
+PASS Purchase correct chain: fracture_mastery
+PASS Exact cost and no duplicate purchase: fracture_mastery
+PASS All stars persist across restart
+PASS Star transactions preserve existing gold and meta
+PASS Invalid and unaffordable purchases are safe
+PASS Failed purchase rolls back currency and node
+PASS Reward capped at eight; defeat retains earned points
+PASS Run rewards credited once
+PASS Failed result save rolls back all rewards and remains retryable
+PASS Retry awards once after storage recovers
+PASS Full reset clears star progression
+PASS Real stat bonus: comet_spark
+PASS No recalculation stacking: comet_spark
+PASS Real stat bonus: gathering_tail
+PASS No recalculation stacking: gathering_tail
+PASS Real stat bonus: swift_orbit
+PASS No recalculation stacking: swift_orbit
+PASS Real stat bonus: astral_insight
+PASS No recalculation stacking: astral_insight
+PASS Real stat bonus: far_traveler
+PASS No recalculation stacking: far_traveler
+PASS Real stat bonus: veil_seed
+PASS No recalculation stacking: veil_seed
+PASS Real stat bonus: quiet_pulse
+PASS No recalculation stacking: quiet_pulse
+PASS Rush of Stars real movement
+PASS Rush refresh never stacks
+PASS Rush expires
+PASS Still Heart heals exactly at five-minute boundary
+PASS Still Heart does not repeat every frame
+PASS Still Heart requires below half HP
+PASS Last Star heals once below 25 percent
+PASS Last Star cannot retrigger
+PASS Six exact Still Heart opportunities; quick=false
+PASS Six exact Still Heart opportunities; quick=true
+PASS Last Star cannot resurrect
+PASS Clear Horizon and Second Breath affect real stabilization
+PASS Risk Seeker applies once without Growth
+PASS Hunter's Star only boosts elite direct hits once
+PASS Tainted Treasure boosts actual elite gold at threshold
+PASS Fracture Mastery boosts boss at Unstable
+PASS Fracture Mastery has no global/low-instability bonus
+PASS Guarded Orbit mitigates actual boss projectile
+PASS Real star map creates all nodes and descriptive tooltips
+PASS Star map purchase uses real save transaction
+PASS Keyboard/controller focus updates inspector
+PASS Run snapshot isolated from subsequent purchases
+PASS Next threshold hidden without Rift Sense
+PASS Rift Sense reveals next threshold
+Constellation checks: 85 PASS / 0 FAIL

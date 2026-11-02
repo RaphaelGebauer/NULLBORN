@@ -33,3 +33,7 @@ Model mutation requests are independent of normal level offers. App inserts pend
 ### E4 implementation
 
 `element_reactions.gd` is owned by World and shares its hit pipeline, spatial hash and actual combat clock. It caches immutable base/evolved/fusion tags, checks previous per-enemy history in fixed priority order, then updates this hit's actual tags. Mutation `on_hit` returns successfully applied elements; no UI-created status or inferred inventory-only reaction is used. `proc=true` forbids reaction reentry and mutation recursion. Reaction damage records one source in RunStatistics and the result UI. Per-status DoT attribution keeps reaction Burn out of normal weapon totals, with no duplicate ticks. Global integer-second event budget and local cooldown are independent; visuals/candidates are bounded and pooled state is reset.
+
+## E5 Star Map
+
+Constellations are separately maintained immutable data, validated by Registry and untouched by catalog generators. Star Map uses real focusable nodes, explicit directional links and drawn prerequisite connections. SaveManager transactions roll back on write failures; finish banking is set only after a successful atomic save. Model snapshots own purchased nodes; stats derive bonuses once, timed effects use run boundaries/deadlines and situational damage hooks stay in World.

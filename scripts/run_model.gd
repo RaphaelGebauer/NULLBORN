@@ -20,6 +20,15 @@ var statistics: RefCounted=preload("res://scripts/run_statistics.gd").new()
 var weapon_mutations: Dictionary={}
 var pending_mutations: Array[String]=[]
 var constellation_nodes: Array=[]
+var starlight_earned: int=0
+var unlocked_this_run: Array=[]
+var rush_until: float=0
+var still_heart_boundary: int=0
+var last_star_used: bool=false
+func has_star(id: String) -> bool: return id in constellation_nodes
+func boss_killed() -> void:
+	if has_star("rush_of_stars"): rush_until=time+20
+	update_movement_speed()
 var run_delta: float=0
 var rift_state: RefCounted=preload("res://scripts/rift_instability.gd").new()
 var rifts_stabilized: int=0
@@ -92,7 +101,7 @@ func update_attack_speed() -> void:
 	cooldown=maxf(.15,cooldown_base-.01*meta.get("battle_rhythm",0)*minf(10,time/60))
 func update_movement_speed() -> void:
 	var minutes: float=minf(10,time/60)
-	speed=minf(500,speed_base*(speed_bonus+(.03*meta.get("evasive_instinct",0) if hp/max_hp<.5 else 0)+.01*meta.get("long_stride",0)*minutes+.02*passives.get("momentum_feather",0)*minf(5,time/60)))
+	speed=minf(500,speed_base*(speed_bonus+(.02 if time<rush_until else 0)+(.03*meta.get("evasive_instinct",0) if hp/max_hp<.5 else 0)+.01*meta.get("long_stride",0)*minutes+.02*passives.get("momentum_feather",0)*minf(5,time/60)))
 
 func _init() -> void:
 	rng.seed = 72047
@@ -128,6 +137,9 @@ func hurt(value: float) -> void:
 	statistics.damage_taken+=maxf(0,previous_hp-hp)
 	health_changed.emit()
 	changed.emit()
+	if hp>0 and hp/max_hp<.25 and has_star("last_star") and not last_star_used:
+		last_star_used=true
+		heal(8)
 	if hp <= 0: finish(false)
 func finish(victory: bool) -> void:
 	if finished: return
@@ -138,6 +150,9 @@ func tick(delta: float) -> void:
 	run_delta=minf(1800-time,maxf(0,delta)*(2 if fast else 1))
 	time+=run_delta
 	rift_state.advance(run_delta)
+	while still_heart_boundary<mini(6,int(time/300)):
+		still_heart_boundary+=1
+		if has_star("still_heart") and hp/max_hp<.5: heal(2)
 	if regeneration>0: heal(regeneration*delta)
 	resonance=maxf(0,resonance-delta)
 	chain_cooldown=maxf(0,chain_cooldown-delta)
@@ -204,18 +219,18 @@ func recalculate() -> void:
 		stats[v.stat]+=v.bonus*passives[id]
 	stats.max_hp+=0.05*meta.get("max_hp",0)
 	stats.might+=0.03*meta.get("might",0)
-	stats.speed+=0.05*meta.get("speed",0)
-	stats.projectile_speed+=.06*meta.get("projectile_speed",0)
+	stats.speed+=0.05*meta.get("speed",0)+(.01 if has_star("comet_spark") else 0)+(.01 if has_star("far_traveler") else 0)
+	stats.projectile_speed+=.06*meta.get("projectile_speed",0)+(.03 if has_star("swift_orbit") else 0)
 	pickup_speed=1+.12*meta.get("pickup_speed",0)
 	stats.area+=.04*meta.get("area",0)
 	stats.duration+=.05*meta.get("duration",0)
 	stats.cooldown-=.02*meta.get("cooldown",0)
-	regeneration=.15*meta.get("regeneration",0)+.25*passives.get("recovery_moss",0)
-	stats.magnet+=10*meta.get("magnet",0)
-	stats.growth+=0.04*meta.get("growth",0)
+	regeneration=(.05 if has_star("quiet_pulse") else 0)+.15*meta.get("regeneration",0)+.25*passives.get("recovery_moss",0)
+	stats.magnet+=10*meta.get("magnet",0)+(6 if has_star("gathering_tail") else 0)+(6 if has_star("far_traveler") else 0)
+	stats.growth+=0.04*meta.get("growth",0)+(.02 if has_star("astral_insight") else 0)
 	stats.greed+=0.05*meta.get("greed",0)+(.25 if "treasure" in runes else 0)
 	stats.armor+=floori(meta.get("armor",0)/2.0)
-	max_hp=h.hp*stats.max_hp
+	max_hp=h.hp*stats.max_hp+(3 if has_star("veil_seed") else 0)
 	hp=clampf(ratio*max_hp,0,max_hp)
 	speed_base=h.speed*pacing.values.player_speed
 	speed_bonus=stats.speed

@@ -123,6 +123,7 @@ func menu() -> void:
 	button("Characters",character_overview)
 	button("Collection / Bestiary",collection)
 	button("Meta-Upgrades · %d Gold" % save.data.total_gold,shop)
+	button("Star Map · %d Starlight" % save.data.starlight,star_map)
 	button("Settings",func(): return_to_pause=false; settings())
 	if save.warning!="": label(save.warning,14)
 	button("Quit",func(): get_tree().quit())
@@ -257,8 +258,8 @@ func show_event() -> void:
 				else: resume()
 				return
 			box("RIFT NODE","Choose stability or claim a dangerous reward. This node can be used once.")
-			button("Stabilize Rift\n-20 Instability · Heal 10% maximum HP",choose_rift.bind(false))
-			button("Overcharge Rift\n+20 Instability · +%d Gold · +35%% next-level XP" % roundi(120*(1+model.time/1800)),choose_rift.bind(true))
+			button("Stabilize Rift\n-%d Instability · Heal 10%% maximum HP%s" % [23 if model.has_star("clear_horizon") else 20," +4 HP" if model.has_star("second_breath") else ""],choose_rift.bind(false))
+			button("Overcharge Rift\n+20 Instability · +%d Gold · +%.2f%% next-level XP" % [roundi(120*(1+model.time/1800)),36.75 if model.has_star("risk_seeker") else 35],choose_rift.bind(true))
 		"LEVELUP":
 			cards=model.offers()
 			redraw_cards()
@@ -323,6 +324,8 @@ func result(victory: bool) -> void:
 	label("%d Gold earned (curse bonus included) · %d Bosses\n%s\nUnlocked: %s" % [roundi(model.gold*(1+model.curse)),model.bosses,build_text(),", ".join(added) if not added.is_empty() else "—"],16)
 	label("Peak Instability %.1f · Final %.1f\nRifts Stabilized %d · Overcharged %d · Elites Defeated %d\nAffixes encountered: %s" % [model.rift_state.peak,model.instability,model.rifts_stabilized,model.rifts_overcharged,model.elite_kills,affix_summary()],15)
 	label("Elemental Reactions: %.0f damage · %d events" % [model.statistics.damage_by_source.get("Elemental Reactions",0),world.reactions.events_total],15)
+	label("+%d Starlight · Bosses (up to 3), victory +3, twenty minutes +1, peak instability 75+ +1 · Cap 8" % model.starlight_earned,14)
+	if save.warning!="": label(save.warning,14)
 	button("Try Again",func(): menu(); start_run())
 	button("Main Menu",menu)
 func _unhandled_input(event: InputEvent) -> void:
@@ -642,7 +645,10 @@ func show_instability_warning() -> void:
 	audio.play("hurt")
 func instability_details() -> String:
 	var values: Dictionary=model.rift_state.modifiers()
-	return "Rift Instability: %.1f / 100 · %s\nEnemy density ×%.2f · Speed ×%.2f · Contact ×%.2f · Boss/Elite gold +%d%%\nRift nodes appear at 06:00 / 12:00 / 18:00 / 24:00 and last 90 run seconds.\nPress F or controller Y within 90 px to stabilize or overcharge.\nAffixes encountered: %s" % [model.instability,model.rift_state.NAMES[model.rift_state.band()],values.spawn,values.speed,values.contact,roundi(values.reward_gold*100),affix_summary()]
+	var next: String=""
+	if model.has_star("rift_sense"):
+		next="\nRift Sense: "+("Maximum band reached" if model.rift_state.band()==4 else "Next threshold: %.0f" % model.rift_state.THRESHOLDS[model.rift_state.band()+1])
+	return next+"\nRift Instability: %.1f / 100 · %s\nEnemy density ×%.2f · Speed ×%.2f · Contact ×%.2f · Boss/Elite gold +%d%%\nRift nodes appear at 06:00 / 12:00 / 18:00 / 24:00 and last 90 run seconds.\nPress F or controller Y within 90 px to stabilize or overcharge.\nAffixes encountered: %s" % [model.instability,model.rift_state.NAMES[model.rift_state.band()],values.spawn,values.speed,values.contact,roundi(values.reward_gold*100),affix_summary()]
 func choose_rift(overcharge: bool) -> void:
 	if state!="RIFT": return
 	state="TRANSITION"
@@ -654,3 +660,11 @@ func affix_summary() -> String:
 	var ids: Array=model.affixes_seen.keys()
 	ids.sort_custom(func(a,b):return model.affixes_seen[a]>model.affixes_seen[b])
 	return "None" if ids.is_empty() else ", ".join(ids.map(func(id):return "%s ×%d" % [catalog.affix_definitions[id].name,model.affixes_seen[id]]))
+
+func star_map() -> void:
+	state="STAR_MAP"
+	box("STAR MAP","Awaken three constellations. Select a star, inspect its effect, then unlock it.")
+	var map=preload("res://scripts/star_map.gd").new()
+	map.save=save
+	panel.add_child(map)
+	button("Back to Main Menu",menu)

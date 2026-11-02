@@ -108,3 +108,7 @@ Elites use seven real affixes, distinct gold rings and bounded spawn intervals. 
 Actual hits apply Fire, Frost, Storm, Toxin or Void tags. A different compatible element within three combat seconds triggers one reaction, with a shared 1.5-second cooldown per target: Frost + Storm = **Arc Freeze**, Fire + Toxin = **Blightburst**, Frost + Void = **Void Shatter**, Storm + Void = **Rift Conduction**. Neutral attacks do not add a tag. Evolutions/fusions inherit their base element union and successful mutation effects contribute their actual tags.
 
 Short names/rings identify reactions in combat; Pause includes a general legend without revealing evolution recipes. Results show real `Elemental Reactions` damage separately. Procs never react again, bosses take half bonus damage, and global reaction events are capped at 40 per combat second.
+
+## Star Map
+
+Open **Star Map** in the main menu to inspect three connected constellations with eighteen stars. Each path costs 1/2/3/4/5/6 Starlight in order (63 total). Boss kills (up to three), victory (+3), twenty minutes (+1) and peak instability 75+ (+1) award up to eight per run, including earned defeat rewards. Purchases persist immediately and apply from the next run. Hover or focus a star to see effects/prerequisites, then select Unlock. Arrow keys/D-pad navigate the map; Back returns to the menu.

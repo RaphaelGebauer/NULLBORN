@@ -119,6 +119,8 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 	var damage: float=value
 	var critical: bool=false
 	if not proc:
+		if e.elite and model.has_star("hunters_star"): damage*=1.03
+		if e.boss and model.instability>=75 and model.has_star("fracture_mastery"): damage*=1.03
 		damage=combat.modifiers.damage(source,e,damage,values)
 		if e.hp/e.max_hp<=.35: damage*=1+.08*model.passives.get("execution_seal",0)
 		if model.rng.randf()<model.crit:
@@ -321,7 +323,7 @@ func update_shots(delta: float) -> void:
 		s.pos+=s.velocity*delta
 		if s.hostile:
 			if player.position.distance_to(Geometry2D.get_closest_point_to_segment(player.position,old,s.pos))<18:
-				hurt_player(s.damage)
+				hurt_player(s.damage*(.97 if s.values.get("boss",false) and model.has_star("guarded_orbit") else 1))
 				s.life=0
 		else:
 			var middle: Vector2=(old+s.pos)*.5
@@ -370,6 +372,7 @@ func kill_enemy(e: Dictionary) -> void:
 	if e.boss:
 		model.rift_state.change(4)
 		model.bosses+=1
+		model.boss_killed()
 		model.boss_changed.emit()
 		drop(e.pos,1,"chest",e.spawn_minute>=10)
 		drop(e.pos+Vector2(24,0),roundi(model.rng.randi_range(20,50)*(1+model.rift_state.modifiers().reward_gold)),"gold")

@@ -1,4 +1,5 @@
 extends RefCounted
+const Stars=preload("res://scripts/data/constellations.gd")
 var path: String="user://savegame.json"
 var persistent: bool=true
 var data: Dictionary={}
@@ -88,7 +89,9 @@ func save() -> bool:
 	if file==null: return false
 	file.store_string(JSON.stringify(data,"\t"))
 	file.flush()
+	var write_error: Error=file.get_error()
 	file.close()
+	if write_error!=OK: return false
 	return DirAccess.rename_absolute(path+".tmp",path)==OK
 func price(id: String) -> int:
 	return META[id].cost*int(pow(data.meta_powerups.get(id,0)+1,2))
@@ -138,7 +141,9 @@ func unlocks(kills: int,bosses: int,time: float,won: bool,evolutions: Array,pass
 	return added
 func finish_run(model: RefCounted,victory: bool) -> Array:
 	if model.banked: return []
-	model.banked=true
+	var before: Dictionary=data.duplicate(true)
+	model.starlight_earned=Stars.reward(model,victory)
+	data.starlight+=model.starlight_earned
 	for id in model.evolutions: mark_evolved(id)
 	var earned: int=roundi(model.gold*(1+model.curse))
 	data.total_gold+=earned
@@ -152,5 +157,29 @@ func finish_run(model: RefCounted,victory: bool) -> Array:
 	var key: String=model.stage+("_fast" if model.fast else "_normal")
 	var previous: Dictionary=data.best_run_records.get(key,{"time":0,"kills":0})
 	if model.time>=previous.time: data.best_run_records[key]={"time":model.time,"kills":model.kills,"level":model.level}
-	save()
+	if not save():
+		data=before
+		warning="Could not save run rewards. Reopen the result screen to retry."
+		return []
+	warning=""
+	model.banked=true
+	model.unlocked_this_run=added.duplicate()
 	return added
+
+func star_available(id: String) -> bool:
+	if not Stars.NODES.has(id) or id in data.constellation_nodes: return false
+	var previous: String=Stars.predecessor(id)
+	return (previous.is_empty() or previous in data.constellation_nodes) and data.starlight>=Stars.NODES[id].rank
+func buy_star(id: String) -> bool:
+	if not star_available(id):
+		warning="Already owned, missing prerequisite, or not enough Starlight."
+		return false
+	var previous: Dictionary=data.duplicate(true)
+	data.starlight-=Stars.NODES[id].rank
+	data.constellation_nodes.append(id)
+	if not save():
+		data=previous
+		warning="Could not save this purchase. Your Starlight and progress have been kept."
+		return false
+	warning=""
+	return true

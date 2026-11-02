@@ -7,4 +7,4 @@ RUN 900 s · [27, 118, 300] · Kills 4898
 RUN 1200 s · [70, 71, 300] · Kills 9268
 RUN 1500 s · [57, 99, 300] · Kills 16294
 RUN 1800 s · [132, 26, 300] · Kills 23923
-PASS voller 30-Minuten-Run; Zeit 1800.0; Ergebnis [true]; Runen 3; Laufzeit 75.481 s; Kills 23923
+PASS voller 30-Minuten-Run; Zeit 1800.0; Ergebnis [true]; Runen 3; Laufzeit 76.527 s; Kills 23923

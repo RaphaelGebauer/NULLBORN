@@ -8,7 +8,11 @@ The uploaded Phase E specification is preserved as NULLBORN_CODEX_ERWEITERUNG_PH
 
 Files: scripts/run_statistics.gd (real hit/health accounting, fixed DPS buckets), scripts/rift_instability.gd (tested state/bands), scripts/data/element_tags.gd (neutral/base/evolution/fusion tags), run_model.gd (run_delta and runtime ownership), world.gd (real damage/crit accounting), save_manager.gd (additive Starlight/node defaults and validation), app.gd (next-run constellation snapshot), registry.gd and tests/test_runner.gd.
 
+E1 implementation commit: `9737363`.
+
 Validation: Godot 4.7.2 Stable via tools/check.sh, 179 PASS / 0 FAIL, clean import, no script errors/leak reports. Existing gameplay/menu/evolution/save regression checks remain active. New migration tests preserve old gold, meta, recipes and settings; reset clears new fields. Pacing resource is unchanged.
+
+Full-run regression with E1: 30:00, one victory, three runes, 23,923 kills, 76.527 s wall time, no script errors/leak reports. See test-results/full-run.log.
 
 Next concrete task: E2. Add the 45 exact mutation definitions from the uploaded table; implement shared bounded hooks and inheritance before exposing mutation UI. Mutation choices must be inserted immediately after the level-up that reached Lv4; do not append behind already queued level-ups. Ordinary evolutions inherit 100%; fusion bases[0]/bases[1] inherit 100%/50%, with deterministic every-other-trigger handling for quantized echoes. Do not leak undiscovered recipes.
 

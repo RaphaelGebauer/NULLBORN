@@ -27,7 +27,7 @@ var reduce_flash: bool=false
 var screen_shake: bool=true
 signal sound_requested(kind: String)
 func _ready() -> void:
-	player=Player.new()
+	player=preload("res://scenes/player.tscn").instantiate()
 	add_child(player)
 	combat.world=self
 func ring_position() -> Vector2:

@@ -79,6 +79,47 @@ func run() -> void:
 	combat_world.collect(coin)
 	combat_world.collect(coin)
 	check(scene.model.gold==before+5,"Gold nur einmal gesammelt")
+	var evo=load("res://scripts/run_model.gd").new()
+	evo.weapons={"arcane_needle":8}
+	check(evo.evolution(true)=="","Evolution braucht Katalysator")
+	evo.passives={"power_core":1}
+	check(evo.evolution(false)=="","Alte Boss-Truhe bleibt nicht evolutionsfähig")
+	check(evo.evolution(true)=="star_piercer" and evo.weapons.size()==1 and not evo.weapons.has("arcane_needle"),"Evolution ersetzt Basis, erhält Slotzahl")
+	evo.weapons={"ash_bow":8,"frost_shard":8}
+	evo.passives={"runner_boots":1}
+	check(evo.evolution(true)=="dusk_storm" and evo.weapons.size()==1,"Fusion hat Vorrang und gibt Slot frei")
+	for recipe in registry.catalogs.evolution.values():
+		var v: Dictionary=registry.weapon_values(recipe.id,1)
+		check(v.damage>0 and v.get("evolved",false),"Funktionale Evolutionsdaten "+recipe.id)
+	for pair in [[5,"astral_guardian"],[10,"void_queen"],[29,"storm_core"]]:
+		combat_world.enemies.clear()
+		scene.model.time=pair[0]*60
+		combat_world._physics_process(.016)
+		check(combat_world.enemies.any(func(enemy):return enemy.kind==pair[1]),"Bosswelle "+str(pair[0]))
+	var winner=load("res://scripts/run_model.gd").new()
+	var results: Array=[]
+	winner.ended.connect(func(v):results.append(v))
+	winner.time=1799.9
+	winner.tick(.2)
+	winner.finish(true)
+	winner.hurt(999)
+	check(results==[true],"Sieg bei 30:00 und genau ein Endereignis")
+	scene.events=["LEVELUP","CHEST","RUNE"]
+	scene.show_event()
+	check(scene.state=="LEVELUP" and paused,"Level-Modal pausiert SceneTree")
+	var clock: float=scene.model.time
+	var combat_clock: float=combat_world.combat.elapsed
+	await process_frame
+	await physics_frame
+	check(scene.model.time==clock and combat_world.combat.elapsed==combat_clock,"Pause stoppt Timer, Kampf und Welt")
+	scene.choose(0)
+	scene.show_event()
+	check(scene.state=="CHEST","Truhe nach Level-up serialisiert")
+	scene.resume()
+	scene.show_event()
+	check(scene.state=="RUNE" and scene.cards.size()==3,"Runensegen nach Truhe serialisiert")
+	scene.choose_rune(0)
+	check(scene.state=="RUNNING" and not paused and scene.events.is_empty(),"Drei Modals ohne Deadlock aufgelöst")
 	scene.model.hurt(1000)
 	check(scene.state=="DEFEAT","Tod und Ergebnis")
 	scene.queue_free()

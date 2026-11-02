@@ -4,6 +4,6 @@
 script = ExtResource("1")
 id = "clockwork"
 display_name = "Uhrwerk"
-description = "-7 % cooldown je Stufe"
+description = "-7 % Abklingzeit je Stufe"
 weight = 100
 values = {"stat": "cooldown", "bonus": -0.07}

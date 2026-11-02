@@ -1,0 +1,102 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Standardheld
+PASS XP-Startkurve
+PASS XP-Overflow und Level-Queue
+PASS Drei eindeutige Karten
+PASS Heilungsdeckel
+PASS Echtes automatisches Projektil tötet Gegner
+PASS Registry validiert Ressourcen und Abhängigkeiten
+PASS Katalog weapon
+PASS Katalog passive
+PASS Katalog enemy
+PASS Katalog character
+PASS Katalog wave
+PASS Katalog evolution
+PASS Katalog rune
+PASS Katalog stage
+PASS Sieben echte Upgrades: arcane_needle
+PASS Sieben echte Upgrades: ash_bow
+PASS Sieben echte Upgrades: frost_shard
+PASS Sieben echte Upgrades: lightning_call
+PASS Sieben echte Upgrades: meteor_rain
+PASS Sieben echte Upgrades: moon_blade
+PASS Sieben echte Upgrades: shadow_fan
+PASS Sieben echte Upgrades: soul_well
+PASS Sieben echte Upgrades: spark_orbit
+PASS Sieben echte Upgrades: storm_bomb
+PASS Sieben echte Upgrades: sun_beam
+PASS Sieben echte Upgrades: thorn_halo
+PASS 6+6 voll und maximal: keine illegalen Angebote
+PASS Drei verschiedene Fallbacks
+PASS Reroll verbraucht Charge
+PASS Banish schließt Item aus
+PASS Skip mit XP und Charge
+PASS Passivwerte deterministisch
+PASS Keine multiplikative Stat-Drift
+PASS Echter Schaden durch needle
+PASS Echter Schaden durch aura
+PASS Echter Schaden durch orbit
+PASS Echter Schaden durch beam
+PASS Echter Schaden durch bomb
+PASS XP-Merging erhält Wert
+PASS Gold nur einmal gesammelt
+PASS Evolution braucht Katalysator
+PASS Alte Boss-Truhe bleibt nicht evolutionsfähig
+PASS Evolution ersetzt Basis, erhält Slotzahl
+PASS Fusion hat Vorrang und gibt Slot frei
+PASS Funktionale Evolutionsdaten blood_thorns
+PASS Funktionale Evolutionsdaten comet_shower
+PASS Funktionale Evolutionsdaten crescent_storm
+PASS Funktionale Evolutionsdaten day_night
+PASS Funktionale Evolutionsdaten dusk_storm
+PASS Funktionale Evolutionsdaten ghost_well
+PASS Funktionale Evolutionsdaten ice_prism
+PASS Funktionale Evolutionsdaten meteor_heart
+PASS Funktionale Evolutionsdaten night_storm
+PASS Funktionale Evolutionsdaten phoenix_fan
+PASS Funktionale Evolutionsdaten solar_orbit
+PASS Funktionale Evolutionsdaten star_piercer
+PASS Funktionale Evolutionsdaten thunder_grid
+PASS Funktionale Evolutionsdaten zenith_beam
+PASS Bosswelle 5
+PASS Bosswelle 10
+PASS Bosswelle 29
+PASS Sieg bei 30:00 und genau ein Endereignis
+PASS Level-Modal pausiert SceneTree
+PASS Pause stoppt Timer, Kampf und Welt
+PASS Truhe nach Level-up serialisiert
+PASS Runensegen nach Truhe serialisiert
+PASS Drei Modals ohne Deadlock aufgelöst
+PASS Save-Defaults
+PASS Shop blockiert unbezahlbaren Kauf
+PASS Shop-Kauf und Preis
+PASS Save/Load inklusive Settings
+PASS Korrupter Save wird gesichert und abgefangen
+PASS Save-Schema lehnt falsche Typen ab
+PASS Gold mit Fluchbonus nur einmal verbucht
+PASS Vier Helden und zweite Arena durch echte Erfolge freigeschaltet
+PASS I-Frames verhindern mehrfachen Kontaktschaden
+PASS Rüstung korrekt abgezogen
+PASS Regeneration nutzt Spielzeit
+PASS Max-HP-Änderung erhält HP-Anteil
+PASS Rune registriert: blood_moon
+PASS Rune registriert: chain_spark
+PASS Rune registriert: ice_crown
+PASS Rune registriert: resonance
+PASS Rune registriert: shard_star
+PASS Rune registriert: shield_sign
+PASS Rune registriert: time_anchor
+PASS Rune registriert: treasure
+PASS Blutmond heilt höchstens 30 HP pro Minute
+PASS Kampfresonanz alle 20 Kills
+PASS Resonanz läuft in Spielzeit aus
+PASS Schatzsucher gibt Goldbonus und Reroll
+PASS Brennen/Gift ticken und Slow bleibt aktiv
+PASS Status-Effekte laufen aus
+PASS Splitterstern erzeugt zusätzliches echtes Projektil
+PASS Zeitanker verlängert echten Beam
+PASS Tod und Ergebnis
+PASS Charaktermenü gebaut
+PASS Shop, Einstellungen, Sammlung gebaut
+Ergebnis: 0 Fehler

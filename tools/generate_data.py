@@ -24,7 +24,7 @@ def resource(kind,id,name,values,desc='',upgrades=None,weight=100):
  s=f'[gd_resource type="Resource" script_class="" load_steps=2 format=3]\n[ext_resource type="Script" path="res://scripts/data/{kind}_definition.gd" id="1"]\n[resource]\nscript = ExtResource("1")\n'
  for k,v in dict(id=id,display_name=name,description=desc or name,weight=weight,values=values).items():s+=k+' = '+variant(v)+'\n'
  if upgrades:s+='upgrades = Array[Dictionary]('+variant(upgrades)+')\n'
- put(Path(f'resources/{kind}s/{id}.tres'),s)
+ put(Path(f'resources/{"enemies" if kind=="enemy" else kind+"s"}/{id}.tres'),s)
 weapons=[
  ('arcane_needle','Arkannadel','needle',13,.85,450,1,10,0,0),
  ('ash_bow','Aschebogen','fan',8,1.35,330,3,10,0,0),
@@ -59,10 +59,11 @@ for i,(id,name,behavior,damage,cd,speed,count,radius,duration,tick) in enumerate
   upgrades.append(dict(delta=delta,text=', '.join(f'{labels[k]} {v:+g}' for k,v in delta.items())))
  vals=dict(behavior=behavior,damage=damage,cooldown=cd,speed=speed,count=count,radius=radius,duration=duration,tick=tick,pierce=0,spread=.7,rotation=2.4,color=i/12)
  if id=='frost_shard':vals['slow_chance']=.3
- resource('weapon',id,name,vals,f'{name}: {damage} Schaden · {cd:g} s · {behavior}',upgrades,100 if i<4 else 60 if i<9 else 25)
+ resource('weapon',id,name,vals,f'{name}: {damage} Schaden · {cd:g} s · '+{'needle':'Zielgeschoss','fan':'Richtungsfächer','orbit':'kreisende Kugeln','aura':'permanente Aura','lightning':'Blitzeinschlag','boomerang':'kehrende Sichel','bomb':'verzögerte Explosion','radial':'Rundumsalve','beam':'rotierender Strahl','zone':'stationäre Sogzone','meteor':'Meteoreinschläge'}[behavior],upgrades,100 if i<4 else 60 if i<9 else 25)
 passives=[('power_core','Kraftstein','might',.1),('clockwork','Uhrwerk','cooldown',-.07),('runner_boots','Laufstiefel','speed',.08),('focus_lens','Linsenfokus','area',.1),('multiplicity','Mehrfachkern','amount',1),('lasting_seal','Dauersiegel','duration',.12),('magnet_ring','Magnetring','magnet',25),('blood_vial','Blutphiole','max_hp',.15),('iron_skin','Eisenhaut','armor',1),('growth_crown','Wachstumskrone','growth',.1),('lucky_die','Glückswürfel','luck',.1),('wind_feather','Windfeder','projectile_speed',.1),('greed_amulet','Goldamulett','greed',.12)]
 for id,name,stat,bonus in passives:
- desc='+1 Projektil auf Lv2/4, sonst +5 % Projektilschaden' if id=='multiplicity' else (f'{bonus*100:+g} % {stat} je Stufe' if abs(bonus)<1 else f'{bonus:+g} {stat} je Stufe')
+ stat_name={'might':'Waffenschaden','cooldown':'Abklingzeit','speed':'Lauftempo','area':'Flächenradius','amount':'Projektilanzahl','duration':'Wirkdauer','magnet':'Magnetradius (px)','max_hp':'maximale HP','armor':'Rüstung','growth':'XP-Ausbeute','luck':'Glück','projectile_speed':'Projektiltempo','greed':'Goldertrag'}[stat]
+ desc='+1 Projektil auf Lv2/4, sonst +5 % Projektilschaden' if id=='multiplicity' else (f'{bonus*100:+g} % {stat_name} je Stufe' if abs(bonus)<1 else f'{bonus:+g} {stat_name} je Stufe')
  resource('passive',id,name,dict(stat=stat,bonus=bonus),desc)
 enemies=[('wisp','Flackergeist',14,85,6,1,12),('mite','Sternenmilbe',8,150,4,1,8),('crawler','Schlundkriecher',24,105,8,2,14),('guardian','Nebelwächter',70,60,12,4,22),('charger','Splitterläufer',35,95,10,3,13),('sniper','Schattenrufer',40,75,7,4,14),('zigzag','Kristallflieger',28,145,8,3,11),('splitter','Bruchling',48,90,9,4,18),('shield','Eisenhüter',110,65,14,6,22),('healer','Dunstpriester',50,70,7,5,16),('bomber','Leerenbombe',36,110,12,4,17),('elite_hunter','Elitejäger',180,115,16,14,23),('astral_guardian','Astralwächter',850,65,18,60,40),('void_queen','Leerenkönigin',1250,75,20,80,43),('storm_core','Sturmkern',2400,80,24,100,48)]
 for i,(id,name,hp,speed,damage,xp,radius) in enumerate(enemies): resource('enemy',id,name,dict(hp=hp,speed=speed,damage=damage,xp=xp,radius=radius,boss=i>=12,color=i/15),name+' · '+str(hp)+' HP')
@@ -74,7 +75,7 @@ for base,recipe in zip(weapons,recipes):
  resource('evolution',id,name,dict(bases=[base[0]],passive=passive,changes=changes),base[1]+' Lv8 + '+next(p[1] for p in passives if p[0]==passive))
 resource('evolution','dusk_storm','Dämmersturm',dict(bases=['ash_bow','frost_shard'],passive='runner_boots',changes={'behavior':'radial','count':20,'burn':1,'slow':1,'echo':1}), 'Aschebogen Lv8 + Frostsplitter Lv8 + Laufstiefel')
 resource('evolution','day_night','Tag und Nacht',dict(bases=['moon_blade','sun_beam'],passive='focus_lens',changes={'behavior':'orbit','count':2,'radius':120,'diameter':1,'pierce':8}), 'Mondklinge Lv8 + Sonnenlaser Lv8 + Linsenfokus')
-runes=[('shard_star','Splitterstern','Nadel/Frost: +1 Projektil'),('resonance','Kampfresonanz','Alle 20 Kills −15 % Cooldown für 3 s'),('blood_moon','Blutmond','Alle 30 Kills +3 HP (max. 30 HP/min)'),('ice_crown','Eiskrone','8 % Slow-Chance bei direkten Treffern'),('treasure','Schatzsucher','+25 % Gold und sofort +1 Reroll'),('chain_spark','Kettenfunke','5 % Kettenblitz (0,25 s interne Abklingzeit)'),('shield_sign','Schildzeichen','10 % Chance auf Schadensblock'),('time_anchor','Zeitanker','+25 % Orbit-/Zonen-/Laserdauer')]
+runes=[('shard_star','Splitterstern','Nadel/Frost: +1 Projektil'),('resonance','Kampfresonanz','Alle 20 Kills −15 % Abklingzeit für 3 s'),('blood_moon','Blutmond','Alle 30 Kills +3 HP (max. 30 HP/min)'),('ice_crown','Eiskrone','8 % Verlangsamungschance bei direkten Treffern'),('treasure','Schatzsucher','+25 % Gold und sofort +1 Neuwürfeln'),('chain_spark','Kettenfunke','5 % Kettenblitz (0,25 s interne Abklingzeit)'),('shield_sign','Schildzeichen','10 % Chance auf Schadensblock'),('time_anchor','Zeitanker','+25 % Orbit-/Zonen-/Laserdauer')]
 for id,name,desc in runes:resource('rune',id,name,{},desc)
 resource('stage','mist','Nebelheide',{'density':1.0,'background':'101e29','accent':'416d69'},'Dunkle Heide unter gebrochenen Sternen')
 resource('stage','ash','Sternenasche',{'density':1.1,'background':'251d30','accent':'88608a'},'Kristallkrater · +10 % Gegnerdichte')

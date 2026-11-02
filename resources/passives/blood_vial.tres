@@ -4,6 +4,6 @@
 script = ExtResource("1")
 id = "blood_vial"
 display_name = "Blutphiole"
-description = "+15 % max_hp je Stufe"
+description = "+15 % maximale HP je Stufe"
 weight = 100
 values = {"stat": "max_hp", "bonus": 0.15}

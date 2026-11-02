@@ -4,7 +4,7 @@
 script = ExtResource("1")
 id = "soul_well"
 display_name = "Seelensog"
-description = "Seelensog: 6 Schaden · 5 s · zone"
+description = "Seelensog: 6 Schaden · 5 s · stationäre Sogzone"
 weight = 25
 values = {"behavior": "zone", "damage": 6, "cooldown": 5, "speed": 0, "count": 1, "radius": 80, "duration": 3, "tick": 0.5, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.8333333333333334}
 upgrades = Array[Dictionary]([{"delta": {"damage": 0.9}, "text": "Schaden +0.9"}, {"delta": {"duration": 1.5}, "text": "Dauer (s) +1.5"}, {"delta": {"damage": 0.9}, "text": "Schaden +0.9"}, {"delta": {"pull": 1}, "text": "Sog +1"}, {"delta": {"damage": 0.9}, "text": "Schaden +0.9"}, {"delta": {"radius": 25}, "text": "Radius +25"}, {"delta": {"count": 1}, "text": "Anzahl +1"}])

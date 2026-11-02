@@ -19,9 +19,18 @@ var hp_bar: ProgressBar
 var xp_bar: ProgressBar
 var build_label: Label
 var boss_label: Label
+var save=preload("res://scripts/save_manager.gd").new()
+var audio: Node
+var preview: Control
+var preview_time: float=0
+var return_to_pause: bool=false
 func _ready() -> void:
 	process_mode=Node.PROCESS_MODE_ALWAYS
+	save.load_save()
+	audio=preload("res://scripts/audio_manager.gd").new()
+	add_child(audio)
 	setup_input()
+	apply_settings()
 	ui=CanvasLayer.new()
 	add_child(ui)
 	menu()
@@ -37,6 +46,9 @@ func setup_input() -> void:
 		stick.axis=JOY_AXIS_LEFT_X if action in ["move_left","move_right"] else JOY_AXIS_LEFT_Y
 		stick.axis_value=-1 if action in ["move_left","move_up"] else 1
 		InputMap.action_add_event(action,stick)
+	var start:=InputEventJoypadButton.new()
+	start.button_index=JOY_BUTTON_START
+	InputMap.action_add_event("ui_cancel",start)
 func clear_ui() -> void:
 	for child in ui.get_children():
 		ui.remove_child(child)
@@ -47,9 +59,21 @@ func box(title: String, subtitle: String="") -> void:
 	background.color=Color(0.015,0.025,0.06,0.94)
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	ui.add_child(background)
+	background.draw.connect(func():
+		var size: Vector2=background.size
+		for i in range(65):
+			var pos:=Vector2(fposmod(i*173.7,size.x),fposmod(i*i*31.2,size.y))
+			background.draw_circle(pos,1.0+(i%3)*.5,Color(.35,.7,.75,.1))
+		background.draw_arc(Vector2(size.x*.5,size.y*.5),280,-.6,3.5,70,Color(.2,.6,.6,.07),2))
+	var scroll:=ScrollContainer.new()
+	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	scroll.horizontal_scroll_mode=ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.follow_focus=true
+	ui.add_child(scroll)
 	var center:=CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	ui.add_child(center)
+	center.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	center.size_flags_vertical=Control.SIZE_EXPAND_FILL
+	scroll.add_child(center)
 	panel=VBoxContainer.new()
 	panel.custom_minimum_size=Vector2(700,0)
 	panel.add_theme_constant_override("separation",16)
@@ -60,6 +84,7 @@ func label(text: String, size: int=20) -> Label:
 	var node:=Label.new()
 	node.text=text
 	node.add_theme_font_size_override("font_size",size)
+	if size>=30: node.modulate=Color("f0d5a1")
 	node.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	panel.add_child(node)
 	return node
@@ -68,7 +93,8 @@ func button(text: String, action: Callable) -> Button:
 	node.text=text
 	node.custom_minimum_size.y=52
 	node.add_theme_font_size_override("font_size",20)
-	node.pressed.connect(action)
+	node.pressed.connect(func(): audio.play("choose"); action.call())
+	style_button(node)
 	panel.add_child(node)
 	if panel.get_child_count()<=3: focus_button.call_deferred(node)
 	return node
@@ -80,7 +106,11 @@ func menu() -> void:
 		world.queue_free()
 	box("S T E R N E N B R U C H","Überlebe den Riss. Schmiede deinen Stern.")
 	button("Neues Spiel",character_select)
+	button("Charaktere",character_select)
 	button("Sammlung / Bestiarium",collection)
+	button("Meta-Upgrades · %d Gold" % save.data.total_gold,shop)
+	button("Einstellungen",func(): return_to_pause=false; settings())
+	if save.warning!="": label(save.warning,14)
 	button("Beenden",func(): get_tree().quit())
 func start_run() -> void:
 	model=Model.new()
@@ -90,7 +120,15 @@ func start_run() -> void:
 	model.fast=selected_fast
 	model.curse=selected_curse
 	model.weapons={catalog.get_def(selected_hero).values.weapon:1}
+	model.meta=save.data.meta_powerups.duplicate()
+	model.unlocked_weapons=save.data.unlocked_weapons.duplicate()
+	model.rerolls+=int(model.meta.get("rerolls",0))
+	model.skips+=int(model.meta.get("skips",0))
+	model.banishes+=int(model.meta.get("banishes",0))
 	model.recalculate()
+	model.inventory_changed.connect(record_inventory)
+	model.kills_changed.connect(check_unlocks)
+	model.rune_changed.connect(record_inventory)
 	events.clear()
 	model.modal_requested.connect(func(kind): events.append(kind))
 	model.ended.connect(result)
@@ -98,8 +136,15 @@ func start_run() -> void:
 	world.model=model
 	world.process_mode=Node.PROCESS_MODE_PAUSABLE
 	add_child(world)
+	world.sound_requested.connect(audio.play)
+	world.screen_shake=save.data.settings.screen_shake
+	world.reduce_flash=save.data.settings.reduce_flash
+	world.player.reduce_flash=save.data.settings.reduce_flash
+	world.damage_texts=save.data.settings.damage_texts
+	record_inventory()
 	events.append("RUNE")
 	resume()
+	show_event()
 func resume() -> void:
 	if model.finished: return
 	state="RUNNING"
@@ -112,11 +157,15 @@ func resume() -> void:
 	hp_bar.position=Vector2(20,46)
 	hp_bar.size=Vector2(300,18)
 	hp_bar.show_percentage=false
+	hp_bar.add_theme_stylebox_override("fill",flat(Color("d66879")))
+	hp_bar.add_theme_stylebox_override("background",flat(Color("292a42")))
 	ui.add_child(hp_bar)
 	xp_bar=ProgressBar.new()
 	xp_bar.position=Vector2(340,46)
 	xp_bar.size=Vector2(600,18)
 	xp_bar.show_percentage=false
+	xp_bar.add_theme_stylebox_override("fill",flat(Color("57cfc5")))
+	xp_bar.add_theme_stylebox_override("background",flat(Color("292a42")))
 	ui.add_child(xp_bar)
 	build_label=Label.new()
 	build_label.position=Vector2(20,72)
@@ -139,6 +188,9 @@ func build_text() -> String:
 	rows.append("Runen: "+" · ".join(names))
 	return "\n".join(rows)
 func _process(_delta: float) -> void:
+	if is_instance_valid(preview) and preview.is_inside_tree():
+		preview_time+=_delta
+		preview.queue_redraw()
 	if state=="RUNNING":
 		hud.text="HP %d/%d   |   LV %d   XP %d/%d   |   %02d:%02d   |   %d Kills   |   %d Gold   |   Welle %d" % [model.hp,model.max_hp,model.level,model.xp,model.required_xp(),int(model.time)/60,int(model.time)%60,model.kills,model.gold,mini(30,int(model.time)/60+1)]
 		hp_bar.max_value=model.max_hp
@@ -148,6 +200,7 @@ func _process(_delta: float) -> void:
 		build_label.text=build_text()
 		boss_label.text=""
 		for e in world.enemies:
+			save.mark_seen(e.kind)
 			if e.boss: boss_label.text+="%s   %d / %d HP\n" % [model.title(e.kind),maxi(0,int(e.hp)),int(e.max_hp)]
 		var seconds: int=int(model.time)%60
 		if seconds>=50 and int(model.time)/60 in [4,9,14,19,24,28]: boss_label.text+="⚠ Boss-Ankunft in %d Sekunden" % (60-seconds)
@@ -171,6 +224,7 @@ func show_event() -> void:
 		"CHEST","CHEST_EVOLUTION": open_chest(state=="CHEST_EVOLUTION")
 func choose_rune(index: int) -> void:
 	if state!="RUNE" or index>=cards.size(): return
+	state="TRANSITION"
 	model.add_rune(cards[index])
 	resume()
 func open_chest(eligible: bool) -> void:
@@ -195,6 +249,10 @@ func open_chest(eligible: bool) -> void:
 	model.gold+=roundi(reward*model.greed)
 	state="CHEST"
 	box("STERNENTRUHE",lines+"\n+%d Gold" % roundi(reward*model.greed))
+	panel.modulate.a=0
+	var tween:=panel.create_tween()
+	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tween.tween_property(panel,"modulate:a",1.0,.25)
 	button("Belohnung annehmen",resume)
 func choose(index: int) -> void:
 	if state!="LEVELUP": return
@@ -205,16 +263,32 @@ func choose(index: int) -> void:
 		cards=next
 		redraw_cards()
 		return
+	state="TRANSITION"
 	model.upgrade(cards[index])
 	world.player.invulnerable=maxf(world.player.invulnerable,0.3)
 	resume()
 func result(victory: bool) -> void:
+	var added: Array=save.finish_run(model,victory)
 	state="VICTORY" if victory else "DEFEAT"
 	get_tree().paused=true
 	box("DER RISS IST GESCHLOSSEN" if victory else "DEIN STERN VERGLÜHT","Level %d · %d Kills · %02d:%02d" % [model.level,model.kills,int(model.time)/60,int(model.time)%60])
+	label("%d Gold erhalten (Fluchbonus inklusive) · %d Bosse\n%s\nFreigeschaltet: %s" % [roundi(model.gold*(1+model.curse)),model.bosses,build_text(),", ".join(added) if not added.is_empty() else "—"],16)
 	button("Erneut versuchen",func(): menu(); start_run())
 	button("Zum Menü",menu)
 func _unhandled_input(event: InputEvent) -> void:
+	if OS.is_debug_build() and event is InputEventKey and event.pressed and not event.echo and is_instance_valid(world) and state=="RUNNING":
+		if event.keycode in [KEY_F6,KEY_F7,KEY_F8,KEY_F9]:
+			var times: Dictionary={KEY_F6:590,KEY_F7:600,KEY_F8:1200,KEY_F9:1740}
+			model.time=times[event.keycode]
+			world.minute=-1
+		if event.keycode==KEY_F10: model.add_xp(500)
+		if event.keycode==KEY_F11:
+			model.weapons={"arcane_needle":8,"ash_bow":8,"frost_shard":8}
+			model.passives={"power_core":1,"runner_boots":1}
+			model.recalculate()
+		if event.keycode==KEY_F12:
+			world.drop(world.player.position,1,"chest",true)
+			model.gold+=500
 	if event.is_action_pressed("ui_cancel") and state in ["RUNNING","PAUSED"]:
 		if state=="PAUSED": resume()
 		else:
@@ -229,6 +303,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				if owned: recipes+=recipe.display_name+": "+recipe.description+"\n"
 			label(recipes,14)
 			button("Weiter",resume)
+			button("Einstellungen",func(): return_to_pause=true; settings())
 			button("Run beenden",confirm_end)
 	if event is InputEventKey and event.pressed and not event.echo and state=="RUNE":
 		if event.keycode in [KEY_1,KEY_2,KEY_3]: choose_rune(event.keycode-KEY_1)
@@ -268,7 +343,16 @@ func character_select() -> void:
 	box("WÄHLE DEINEN STERN","Jeder Held beginnt mit einer eigenen Waffe.")
 	for id in catalog.catalogs.character:
 		var d: Resource=catalog.get_def(id)
-		button("%s · %d HP · %d Tempo\n%s" % [d.display_name,d.values.hp,d.values.speed,catalog.get_def(d.values.weapon).display_name],select_hero.bind(id))
+		var locked: bool=not id in save.data.unlocked_characters
+		var requirement: String={"lyra":"sofort","brann":"1.000 Gesamtkills","noctis":"10 Minuten überleben","eira":"einen Boss besiegen"}[id]
+		button("%s · %d HP · %d Tempo\n%s · %s" % [d.display_name,d.values.hp,d.values.speed,catalog.get_def(d.values.weapon).display_name,"Gesperrt: "+requirement if locked else {"lyra":"+10 % XP","brann":"+1 Rüstung / −5 % Abklingzeit","noctis":"+15 % Kritschaden / +10 % Glück","eira":"+15 % Radius / +10 % Projektiltempo"}[id]],select_hero.bind(id)).disabled=locked
+	preview=Control.new()
+	preview.custom_minimum_size=Vector2(700,55)
+	panel.add_child(preview)
+	preview.draw.connect(func():
+		var center: Vector2=preview.size*.5
+		preview.draw_arc(center,22,preview_time,preview_time+TAU*.8,24,Color("64c5c6"),2)
+		preview.draw_colored_polygon(PackedVector2Array([center+Vector2(0,-15),center+Vector2(11,10),center+Vector2(-11,10)]),Color("aaf6e5")))
 	button("Zurück",menu)
 func select_hero(id: String) -> void:
 	selected_hero=id
@@ -276,7 +360,7 @@ func select_hero(id: String) -> void:
 func stage_select() -> void:
 	box("AM RAND DES RISSES","Wähle Arena, Zeitmodus und freiwilligen Fluch.")
 	for id in catalog.catalogs.stage:
-		button(("◆ " if selected_stage==id else "◇ ")+catalog.get_def(id).display_name,func(): selected_stage=id; stage_select())
+		button(("◆ " if selected_stage==id else "◇ ")+catalog.get_def(id).display_name+(" · Gesperrt: erster Sieg" if not id in save.data.unlocked_stages else ""),func(): selected_stage=id; stage_select()).disabled=not id in save.data.unlocked_stages
 	button("Modus: "+("Schnell · 15 Minuten" if selected_fast else "Normal · 30 Minuten"),func(): selected_fast=not selected_fast; stage_select())
 	var row:=HBoxContainer.new()
 	panel.add_child(row)
@@ -294,7 +378,7 @@ func stage_select() -> void:
 	button("In den Riss",start_run)
 	button("Zurück",character_select)
 func collection() -> void:
-	box("SAMMLUNG / BESTIARIUM")
+	box("SAMMLUNG / BESTIARIUM","%d Entdeckungen · %d Erfolge · %d Gesamtkills" % [save.data.seen.size(),save.data.achievements.size(),save.data.stats.kills])
 	var scroll:=ScrollContainer.new()
 	scroll.custom_minimum_size=Vector2(900,450)
 	panel.add_child(scroll)
@@ -304,7 +388,9 @@ func collection() -> void:
 	var lines: String=""
 	for kind in catalog.catalogs:
 		lines+="\n"+{"weapon":"WAFFEN","passive":"PASSIVE","enemy":"BESTIARIUM","character":"HELDEN","wave":"WELLEN","evolution":"REZEPTE","rune":"RUNEN","stage":"ARENEN"}[kind]+"\n"
-		for d in catalog.catalogs[kind].values(): lines+=d.display_name+" · "+d.description+"\n"
+		for d in catalog.catalogs[kind].values():
+			var discovered: bool=d.id in save.data.seen or kind in ["weapon","passive","character","stage"]
+			lines+=(d.display_name+" · "+d.description if discovered else "??? · Noch nicht entdeckt")+"\n"
 	text.text=lines
 	scroll.add_child(text)
 	button("Zurück",menu)
@@ -312,3 +398,110 @@ func confirm_end() -> void:
 	box("RUN BEENDEN?","Der Run endet als Niederlage. Erhaltenes Gold bleibt erhalten.")
 	button("Weiterspielen",resume)
 	button("Run abschließen",func(): model.finish(false))
+
+func record_inventory() -> void:
+	for owned in [model.weapons.keys(),model.passives.keys(),model.runes]:
+		for id in owned: save.mark_seen(id)
+	for recipe in catalog.catalogs.evolution.values():
+		var valid: bool=model.passives.has(recipe.values.passive)
+		for base in recipe.values.bases:
+			if not model.weapons.has(base): valid=false
+		if valid: save.mark_seen(recipe.id)
+	check_unlocks()
+func check_unlocks() -> void:
+	var added: Array=save.unlocks(model.kills,model.bosses,model.time,false,model.evolutions,model.passives)
+	if not added.is_empty(): save.save()
+func shop() -> void:
+	box("STERNENSCHMIEDE · %d Gold" % save.data.total_gold,"Dauerhafte Verstärkungen. Wirken ab dem nächsten Run.")
+	var scroll:=ScrollContainer.new()
+	scroll.custom_minimum_size=Vector2(800,430)
+	panel.add_child(scroll)
+	var rows:=VBoxContainer.new()
+	rows.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	scroll.add_child(rows)
+	for id in save.META:
+		var d: Dictionary=save.META[id]
+		var rank: int=save.data.meta_powerups.get(id,0)
+		var node:=Button.new()
+		node.text="%s · %d/%d · %s · %s" % [d.name,rank,d.max,d.effect,"MAX" if rank>=d.max else str(save.price(id))+" Gold"]
+		node.custom_minimum_size.y=48
+		node.disabled=rank>=d.max or save.data.total_gold<save.price(id)
+		node.pressed.connect(func(): save.buy(id); shop())
+		style_button(node)
+		rows.add_child(node)
+	button("Zurück",menu)
+func apply_settings() -> void:
+	var values: Dictionary=save.data.settings
+	audio.configure(values)
+	if DisplayServer.get_name()!="headless":
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if values.fullscreen else DisplayServer.WINDOW_MODE_WINDOWED)
+		if not values.fullscreen:
+			var resolutions: Array=[Vector2i(1280,720),Vector2i(1600,900),Vector2i(1920,1080)]
+			DisplayServer.window_set_size(resolutions[clampi(int(values.resolution),0,2)])
+	for action in ["move_left","move_right","move_up","move_down"]: InputMap.action_set_deadzone(action,clampf(values.deadzone,.05,.5))
+	get_window().content_scale_factor=clampf(values.ui_scale,.8,1.2)
+	if is_instance_valid(world):
+		world.screen_shake=values.screen_shake
+		world.reduce_flash=values.reduce_flash
+		world.player.reduce_flash=values.reduce_flash
+		world.damage_texts=values.damage_texts
+func set_setting(key: String,value: Variant) -> void:
+	save.data.settings[key]=value
+	apply_settings()
+	save.save()
+func settings() -> void:
+	box("EINSTELLUNGEN")
+	var scroll:=ScrollContainer.new()
+	scroll.custom_minimum_size=Vector2(780,460)
+	panel.add_child(scroll)
+	var rows:=VBoxContainer.new()
+	rows.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+	rows.add_theme_constant_override("separation",12)
+	scroll.add_child(rows)
+	for pair in [["master","Gesamtlautstärke",0,1,.05],["music","Musik",0,1,.05],["sfx","Effekte",0,1,.05],["deadzone","Controller-Totzone",.05,.5,.05],["ui_scale","UI-Skalierung",.8,1.2,.1]]:
+		var row:=HBoxContainer.new()
+		rows.add_child(row)
+		var text:=Label.new()
+		text.text=pair[1]
+		text.custom_minimum_size.x=260
+		row.add_child(text)
+		var slider:=HSlider.new()
+		slider.min_value=pair[2]
+		slider.max_value=pair[3]
+		slider.step=pair[4]
+		slider.value=save.data.settings[pair[0]]
+		slider.custom_minimum_size=Vector2(300,30)
+		slider.value_changed.connect(func(v): set_setting(pair[0],v))
+		row.add_child(slider)
+	for pair in [["fullscreen","Vollbild"],["screen_shake","Kamerawackeln"],["reduce_flash","Blinken reduzieren"],["damage_texts","Schadenstexte"]]:
+		var toggle:=CheckButton.new()
+		toggle.text=pair[1]
+		toggle.button_pressed=save.data.settings[pair[0]]
+		toggle.toggled.connect(func(v): set_setting(pair[0],v))
+		rows.add_child(toggle)
+	var resolution:=OptionButton.new()
+	for option in ["1280 × 720","1600 × 900","1920 × 1080"]: resolution.add_item(option)
+	resolution.selected=clampi(int(save.data.settings.resolution),0,2)
+	resolution.item_selected.connect(func(v): set_setting("resolution",v))
+	rows.add_child(resolution)
+	button("Zurück",func():
+		if return_to_pause: resume()
+		else: menu())
+
+func flat(color: Color,border: Color=Color.TRANSPARENT,width: int=0) -> StyleBoxFlat:
+	var style:=StyleBoxFlat.new()
+	style.bg_color=color
+	style.border_color=border
+	style.set_border_width_all(width)
+	style.set_corner_radius_all(7)
+	style.content_margin_left=18
+	style.content_margin_right=18
+	style.content_margin_top=9
+	style.content_margin_bottom=9
+	return style
+func style_button(node: Button) -> void:
+	node.add_theme_stylebox_override("normal",flat(Color("152735"),Color("31525b"),1))
+	node.add_theme_stylebox_override("hover",flat(Color("21434e"),Color("68d2cc"),1))
+	node.add_theme_stylebox_override("pressed",flat(Color("31555b"),Color("e3c48b"),2))
+	node.add_theme_stylebox_override("focus",flat(Color.TRANSPARENT,Color("f1d59a"),2))
+	node.add_theme_stylebox_override("disabled",flat(Color("171d29"),Color("2b303c"),1))

@@ -4,7 +4,7 @@
 script = ExtResource("1")
 id = "arcane_needle"
 display_name = "Arkannadel"
-description = "Arkannadel: 13 Schaden · 0.85 s · needle"
+description = "Arkannadel: 13 Schaden · 0.85 s · Zielgeschoss"
 weight = 100
 values = {"behavior": "needle", "damage": 13, "cooldown": 0.85, "speed": 450, "count": 1, "radius": 10, "duration": 0, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.0}
 upgrades = Array[Dictionary]([{"delta": {"damage": 1.95}, "text": "Schaden +1.95"}, {"delta": {"damage": 1.95}, "text": "Schaden +1.95"}, {"delta": {"pierce": 1}, "text": "Durchschläge +1"}, {"delta": {"damage": 1.95}, "text": "Schaden +1.95"}, {"delta": {"count": 1}, "text": "Anzahl +1"}, {"delta": {"damage": 1.95}, "text": "Schaden +1.95"}, {"delta": {"pierce": 2}, "text": "Durchschläge +2"}])

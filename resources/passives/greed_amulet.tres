@@ -4,6 +4,6 @@
 script = ExtResource("1")
 id = "greed_amulet"
 display_name = "Goldamulett"
-description = "+12 % greed je Stufe"
+description = "+12 % Goldertrag je Stufe"
 weight = 100
 values = {"stat": "greed", "bonus": 0.12}

@@ -1,4 +1,8 @@
 extends RefCounted
+signal xp_changed
+signal health_changed
+signal level_changed
+signal boss_changed
 signal inventory_changed
 signal kills_changed
 signal rune_changed
@@ -12,6 +16,7 @@ var hp: float = 100
 var max_hp: float = 100
 var speed: float = 220
 var armor: float = 0
+var regeneration: float=0
 var might: float = 1
 var cooldown: float = 1
 var area: float = 1
@@ -31,6 +36,7 @@ var xp: float = 0
 var kills: int = 0
 var gold: int = 0
 var finished: bool = false
+var banked: bool = false
 var weapons: Dictionary = {"arcane_needle":1}
 var passives: Dictionary = {}
 var runes: Array = []
@@ -61,17 +67,21 @@ func required_xp() -> int:
 	return roundi(8+9*(level-1)+0.2*pow(level-1,2))
 func add_xp(value: float, apply_growth: bool = true) -> void:
 	xp += value * (growth if apply_growth else 1.0)
+	xp_changed.emit()
 	while xp >= required_xp():
 		xp -= required_xp()
 		level += 1
+		level_changed.emit()
 		modal_requested.emit("LEVELUP")
 	changed.emit()
 func heal(value: float) -> void:
 	hp = minf(max_hp,hp+value)
+	health_changed.emit()
 	changed.emit()
 func hurt(value: float) -> void:
 	if finished: return
 	hp = maxf(0,hp-maxf(1,round(value-armor)))
+	health_changed.emit()
 	changed.emit()
 	if hp <= 0: finish(false)
 func finish(victory: bool) -> void:
@@ -81,6 +91,7 @@ func finish(victory: bool) -> void:
 func tick(delta: float) -> void:
 	if finished: return
 	time = minf(1800,time+delta*(2 if fast else 1))
+	if regeneration>0: heal(regeneration*delta)
 	resonance=maxf(0,resonance-delta)
 	chain_cooldown=maxf(0,chain_cooldown-delta)
 	if int(time/60)!=blood_minute:

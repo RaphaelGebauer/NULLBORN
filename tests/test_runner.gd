@@ -21,6 +21,7 @@ func run() -> void:
 	check(model.hp==100,"Heilungsdeckel")
 	var scene=load("res://scenes/main_menu.tscn").instantiate()
 	root.add_child(scene)
+	scene.save.persistent=false
 	scene.start_run()
 	var e: Dictionary=scene.world.spawn_enemy("wisp",Vector2(80,0))
 	for i in range(100):
@@ -59,6 +60,7 @@ func run() -> void:
 		combat_world.grid.rebuild(combat_world.enemies)
 		var weapon: String={"needle":"arcane_needle","aura":"thorn_halo","orbit":"spark_orbit","beam":"sun_beam","bomb":"storm_bomb"}[behavior]
 		var values: Dictionary=registry.weapon_values(weapon,1)
+		combat_world.model.weapons={}
 		if behavior=="orbit":
 			combat_world.combat.elapsed=0
 			combat_world.combat.orbit(weapon,values,.016)
@@ -120,9 +122,111 @@ func run() -> void:
 	check(scene.state=="RUNE" and scene.cards.size()==3,"Runensegen nach Truhe serialisiert")
 	scene.choose_rune(0)
 	check(scene.state=="RUNNING" and not paused and scene.events.is_empty(),"Drei Modals ohne Deadlock aufgelöst")
+	var saver=load("res://scripts/save_manager.gd").new()
+	saver.path="user://automated_test_save.json"
+	if FileAccess.file_exists(saver.path): DirAccess.remove_absolute(saver.path)
+	check(saver.load_save() and saver.data.total_gold==0,"Save-Defaults")
+	check(not saver.buy("might") and saver.data.total_gold==0,"Shop blockiert unbezahlbaren Kauf")
+	saver.data.total_gold=1000
+	check(saver.buy("might") and saver.data.meta_powerups.might==1 and saver.data.total_gold==925,"Shop-Kauf und Preis")
+	saver.data.settings.music=.15
+	saver.save()
+	var reloaded=load("res://scripts/save_manager.gd").new()
+	reloaded.path=saver.path
+	check(reloaded.load_save() and reloaded.data.meta_powerups.might==1 and is_equal_approx(reloaded.data.settings.music,.15),"Save/Load inklusive Settings")
+	var corrupt:=FileAccess.open(saver.path,FileAccess.WRITE)
+	corrupt.store_string("{ kaputt")
+	corrupt.close()
+	check(not reloaded.load_save() and reloaded.data.total_gold==0 and FileAccess.file_exists(saver.path+".corrupt.bak"),"Korrupter Save wird gesichert und abgefangen")
+	check(not saver.valid({"version":1,"settings":{"master":"falsch"}}),"Save-Schema lehnt falsche Typen ab")
+	var run_for_save=load("res://scripts/run_model.gd").new()
+	run_for_save.kills=1000
+	run_for_save.bosses=1
+	run_for_save.time=1800
+	run_for_save.gold=100
+	run_for_save.curse=.5
+	saver.persistent=false
+	saver.finish_run(run_for_save,true)
+	var wallet: int=saver.data.total_gold
+	saver.finish_run(run_for_save,true)
+	check(wallet==1075 and saver.data.total_gold==wallet and saver.data.stats.runs==1,"Gold mit Fluchbonus nur einmal verbucht")
+	check(saver.data.unlocked_characters.size()==4 and "ash" in saver.data.unlocked_stages,"Vier Helden und zweite Arena durch echte Erfolge freigeschaltet")
+	for path in [saver.path,saver.path+".corrupt.bak"]:
+		if FileAccess.file_exists(path): DirAccess.remove_absolute(path)
+	var old_health: float=scene.model.hp
+	scene.model.hp=100
+	scene.world.player.invulnerable=0
+	scene.world.hurt_player(10)
+	var injured: float=scene.model.hp
+	scene.world.hurt_player(10)
+	check(injured==90 and scene.model.hp==90,"I-Frames verhindern mehrfachen Kontaktschaden")
+	scene.model.armor=4
+	scene.world.player.invulnerable=0
+	scene.world.hurt_player(10)
+	check(scene.model.hp==84,"Rüstung korrekt abgezogen")
+	scene.model.hp=old_health
+	var regen=load("res://scripts/run_model.gd").new()
+	regen.hp=50
+	regen.regeneration=2
+	regen.tick(3)
+	check(regen.hp==56,"Regeneration nutzt Spielzeit")
+	var hp_ratio: float=regen.hp/regen.max_hp
+	regen.passives={"blood_vial":5}
+	regen.recalculate()
+	check(is_equal_approx(regen.hp/regen.max_hp,hp_ratio),"Max-HP-Änderung erhält HP-Anteil")
+	for id in registry.catalogs.rune:
+		var rune_model=load("res://scripts/run_model.gd").new()
+		rune_model.add_rune(id)
+		check(rune_model.runes==[id],"Rune registriert: "+id)
+	var proc_model=load("res://scripts/run_model.gd").new()
+	proc_model.hp=50
+	proc_model.add_rune("blood_moon")
+	for i in range(600): proc_model.kill()
+	check(proc_model.hp==80,"Blutmond heilt höchstens 30 HP pro Minute")
+	proc_model.add_rune("resonance")
+	for i in range(20): proc_model.kill()
+	check(proc_model.resonance==3,"Kampfresonanz alle 20 Kills")
+	proc_model.tick(3.1)
+	check(proc_model.resonance==0,"Resonanz läuft in Spielzeit aus")
+	proc_model.add_rune("treasure")
+	check(proc_model.rerolls==3 and proc_model.greed==1.25,"Schatzsucher gibt Goldbonus und Reroll")
+	combat_world.enemies.clear()
+	combat_world.model.weapons={}
+	combat_world.model.runes=[]
+	combat_world.model.crit=0
+	var status_enemy: Dictionary=combat_world.spawn_enemy("guardian",Vector2(100,0))
+	status_enemy.hp=1000
+	status_enemy.max_hp=1000
+	status_enemy.speed=0
+	combat_world.hit(status_enemy,1,{"burn":1,"poison":1,"slow":1},"test")
+	var status_health: float=status_enemy.hp
+	combat_world.update_enemy(status_enemy,1.01)
+	check(status_enemy.hp==status_health-7 and status_enemy.statuses.has("slow"),"Brennen/Gift ticken und Slow bleibt aktiv")
+	combat_world.update_enemy(status_enemy,4.1)
+	check(status_enemy.statuses.is_empty(),"Status-Effekte laufen aus")
+	var amount_before: int=combat_world.model.amount
+	combat_world.model.amount=0
+	combat_world.model.runes=["shard_star"]
+	combat_world.shots.clear()
+	combat_world.combat.attack_needle("arcane_needle",registry.weapon_values("arcane_needle",1),status_enemy)
+	check(combat_world.shots.size()==2,"Splitterstern erzeugt zusätzliches echtes Projektil")
+	combat_world.model.amount=amount_before
+	combat_world.model.runes=["time_anchor"]
+	var duration_values: Dictionary=registry.weapon_values("sun_beam",1)
+	check(is_equal_approx(combat_world.combat.params(duration_values).duration,duration_values.duration*combat_world.model.duration*1.25),"Zeitanker verlängert echten Beam")
 	scene.model.hurt(1000)
 	check(scene.state=="DEFEAT","Tod und Ergebnis")
+	# These screens build real Controls; catch stale paths and signal/closure errors.
+	scene.menu()
+	scene.character_select()
+	check(scene.panel.get_child_count()>=6,"Charaktermenü gebaut")
+	scene.stage_select()
+	scene.shop()
+	scene.settings()
+	scene.collection()
+	check(scene.panel.get_child_count()>=3,"Shop, Einstellungen, Sammlung gebaut")
 	scene.queue_free()
+	await process_frame
 	await process_frame
 	print("Ergebnis: ",failures," Fehler")
 	quit(1 if failures else 0)

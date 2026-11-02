@@ -28,6 +28,8 @@ var screen_shake: bool=true
 signal sound_requested(kind: String)
 func _ready() -> void:
 	player=preload("res://scenes/player.tscn").instantiate()
+	player.shape_id=["lyra","brann","noctis","eira"].find(model.hero)
+	player.tint=[Color("8df5eb"),Color("f5b679"),Color("c7a1f6"),Color("8acffa")][player.shape_id]
 	add_child(player)
 	combat.world=self
 func ring_position() -> Vector2:
@@ -80,22 +82,32 @@ func drop(pos: Vector2,value: float,kind: String="xp",eligible: bool=false) -> v
 				if p.pos.distance_squared_to(pos)<closest.pos.distance_squared_to(pos): closest=p
 			closest.value+=value
 			return
-	if pickups.size()>=300 and not kind in ["chest","xp"]:
-		for p in pickups:
-			if p.kind==kind:
-				p.value+=value
+	if pickups.size()>=300:
+		for existing in pickups:
+			if existing.kind==kind and existing.eligible==eligible:
+				existing.value+=value
 				return
+		# Make one slot by merging an equivalent pair; never discard XP, gold or a chest.
+		var representative: Dictionary={}
+		for existing in pickups:
+			var key: String=existing.kind+str(existing.eligible)
+			if representative.has(key):
+				representative[key].value+=existing.value
+				pickups.erase(existing)
+				pickup_pool.append(existing)
+				break
+			representative[key]=existing
 	var p: Dictionary={} if pickup_pool.is_empty() else pickup_pool.pop_back()
 	p.clear()
 	p.merge({"pos":pos,"value":value,"kind":kind,"eligible":eligible,"speed":60.0,"collected":false})
 	pickups.append(p)
-func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc: bool=false) -> void:
+func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc: bool=false,incoming_origin: Vector2=Vector2.INF) -> void:
 	if e.is_empty() or e.hp<=0: return
 	var damage: float=value
 	if not proc:
 		if model.rng.randf()<model.crit: damage*=model.crit_factor
 		if e.statuses.has("mark"): damage*=1.15
-		if e.kind=="shield" and (player.position-e.pos).normalized().dot(e.velocity.normalized())>.4: damage*=.65
+		if e.kind=="shield" and ((player.position if incoming_origin==Vector2.INF else incoming_origin)-e.pos).normalized().dot(e.velocity.normalized())>.4: damage*=.65
 	e.hp-=maxf(1,round(damage))
 	e.flash=.12
 	if damage_texts and texts.size()<70: texts.append({"pos":e.pos,"text":str(roundi(damage)),"life":.6})
@@ -104,7 +116,7 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 	if values.get("slow_chance",0)>model.rng.randf(): e.statuses.slow=1.5
 	if values.get("freeze_chance",0)>model.rng.randf(): e.statuses.freeze=.4 if e.boss else .5
 	if values.get("death_fire",0)>0: e.statuses.death_fire=4.0
-	if values.has("leech_kills"): e.leech_source=source
+	if e.hp<=0: e.leech_source=source if values.has("leech_kills") else ""
 	if not e.boss and e.kind not in ["guardian","shield","elite_hunter"]:
 		e.pos+=player.position.direction_to(e.pos)*3
 	if not proc:
@@ -125,6 +137,8 @@ func hurt_player(value: float) -> void:
 		return
 	model.hurt(value)
 	player.invulnerable=.65
+	var attacker: Dictionary=nearest(player.position)
+	if not attacker.is_empty(): player.position+=attacker.pos.direction_to(player.position)*10
 	shake=.15
 	sound_requested.emit("hurt")
 	if model.weapons.has("blood_thorns"):
@@ -153,10 +167,13 @@ func _physics_process(delta: float) -> void:
 				break
 	freeze_time=maxf(0,freeze_time-delta)
 	grid.rebuild(enemies)
-	for e in enemies.duplicate(): update_enemy(e,delta)
+	for e in enemies.duplicate():
+		update_enemy(e,delta)
+		if model.finished: return
 	grid.rebuild(enemies)
 	combat.update(delta)
 	update_shots(delta)
+	if model.finished: return
 	for e in enemies.duplicate():
 		if e.hp<=0: kill_enemy(e)
 		elif not e.boss and e.pos.distance_to(player.position)>1900:
@@ -281,11 +298,11 @@ func update_shots(delta: float) -> void:
 				if e.pos.distance_to(Geometry2D.get_closest_point_to_segment(e.pos,old,s.pos))>e.radius+6: continue
 				if s.hits.get(e.id,-10.0)>s.age: continue
 				s.hits[e.id]=s.age+.4 if s.values.get("boomerang",false) else 100.0
-				hit(e,s.damage,s.values,s.source)
+				hit(e,s.damage,s.values,s.source,false,old)
 				if s.values.get("split",0)>0:
 					var child: Dictionary=s.values.duplicate()
 					child.split=0
-					child.damage=s.damage*.4
+					child.damage=s.values.damage*.4
 					child.pierce=0
 					for i in range(4): projectile(e.pos,Vector2.RIGHT.rotated(TAU*i/4)*300,child,s.source)
 				s.pierce-=1
@@ -306,6 +323,7 @@ func kill_enemy(e: Dictionary) -> void:
 	drop(e.pos,e.xp)
 	if e.boss:
 		model.bosses+=1
+		model.boss_changed.emit()
 		drop(e.pos,1,"chest",e.spawn_minute>=10)
 		drop(e.pos+Vector2(24,0),model.rng.randi_range(20,50),"gold")
 	elif e.kind=="elite_hunter":
@@ -322,6 +340,7 @@ func kill_enemy(e: Dictionary) -> void:
 		if zone_kills%20==0: model.heal(1)
 	enemy_pool.append(e)
 var zone_kills: int=0
+var loot_table: Resource=preload("res://resources/loot_table.tres")
 func update_pickups(delta: float) -> void:
 	for p in pickups.duplicate():
 		var distance: float=p.pos.distance_to(player.position)
@@ -350,7 +369,8 @@ func collect(p: Dictionary) -> void:
 		"luck":
 			model.temporary_luck+=.1
 			model.recalculate()
-		"chest": model.modal_requested.emit("CHEST_EVOLUTION" if p.eligible else "CHEST")
+		"chest":
+			for i in range(int(p.value)): model.modal_requested.emit("CHEST_EVOLUTION" if p.eligible else "CHEST")
 	pickups.erase(p)
 	pickup_pool.append(p)
 	sound_requested.emit("pickup")
@@ -376,8 +396,16 @@ func update_lanterns(delta: float) -> void:
 			var v: Dictionary=model.registry.weapon_values(id,model.weapons[id])
 			if v.behavior in ["aura","orbit"] and lantern.pos.distance_to(player.position)<v.radius*model.area+20: lantern.hp-=delta*v.damage
 		if lantern.hp<=0:
-			var loot: Array=["heal","gold","magnet","freeze","nova","luck"]
-			drop(lantern.pos,1,loot[model.rng.randi_range(0,5)])
+			var total: float=0
+			for kind in loot_table.values: total+=loot_table.values[kind]*(model.luck if kind in ["magnet","freeze","nova","luck"] else 1)
+			var roll: float=model.rng.randf()*total
+			var chosen: String="gold"
+			for kind in loot_table.values:
+				roll-=loot_table.values[kind]*(model.luck if kind in ["magnet","freeze","nova","luck"] else 1)
+				if roll<=0:
+					chosen=kind
+					break
+			drop(lantern.pos,model.rng.randi_range(1,3) if chosen=="gold" else 1,chosen)
 			lanterns.erase(lantern)
 		elif lantern.pos.distance_to(player.position)>2000: lanterns.erase(lantern)
 func _draw() -> void:
@@ -387,7 +415,7 @@ func _draw() -> void:
 	for x in range(origin.x-10,origin.x+11):
 		for y in range(origin.y-7,origin.y+8):
 			var pos:=Vector2(x,y)*96
-			draw_rect(Rect2(pos,Vector2(95,95)),Color(stage.background))
+			draw_rect(Rect2(pos,Vector2(96,96)),Color(stage.background).lightened(.012 if posmod(x+y,2)==0 else 0))
 			var pattern: int=posmod(x*73+y*37,13)
 			if pattern<3:
 				var c:=Color(stage.accent)
@@ -419,7 +447,7 @@ func _draw() -> void:
 		draw_circle(e.pos+Vector2(-4,-3),2,Color.WHITE)
 		if e.kind=="shield": draw_arc(e.pos,e.radius+3,e.velocity.angle()-.9,e.velocity.angle()+.9,8,Color("d8e8ed"),4)
 		if e.kind=="healer": draw_arc(e.pos,30,0,TAU,16,Color(0.3,1,.5,.4),2)
-		if e.kind=="charger" and e.phase==1: draw_line(e.pos,e.pos+e.charge*150,Color("ff696b"),3)
+		if e.kind in ["charger","astral_guardian"] and e.phase==1: draw_line(e.pos,e.pos+e.charge*150,Color("ff696b"),3)
 		if e.boss:
 			draw_rect(Rect2(e.pos+Vector2(-45,-e.radius-15),Vector2(90,6)),Color("3d273d"))
 			draw_rect(Rect2(e.pos+Vector2(-45,-e.radius-15),Vector2(90*maxf(0,e.hp/e.max_hp),6)),Color("ff777c"))

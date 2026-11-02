@@ -89,9 +89,9 @@ func orbit(id: String,v: Dictionary,delta: float) -> void:
 	for i in range(int(p.count)):
 		var pos: Vector2=world.player.position+Vector2.RIGHT.rotated(elapsed*p.rotation+TAU*i/p.count)*radius
 		for e in world.grid.query(pos,16*world.model.area):
-			var key: String=id+"_"+str(i)
+			var key: String=id
 			if e.hits.get(key,-100.0)<=elapsed:
-				e.hits[key]=elapsed+maxf(.12,p.cooldown)
+				e.hits[key]=elapsed+maxf(.12,p.cooldown*world.model.cooldown*(.85 if world.model.resonance>0 else 1))
 				world.hit(e,p.damage,p,id)
 	if v.get("pulse",0)>0 or v.get("diameter",0)>0:
 		if timers.get(id,0)<=0:

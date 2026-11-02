@@ -1,6 +1,9 @@
 extends CharacterBody2D
 var speed: float = 220.0
 var facing := Vector2.RIGHT
+var tint: Color=Color("8df5eb")
+var shape_id: int=0
+var reduce_flash: bool=false
 var invulnerable: float = 0.0
 func _ready() -> void:
 	motion_mode = MOTION_MODE_FLOATING
@@ -25,7 +28,11 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 func _draw() -> void:
 	draw_circle(Vector2(0,8), 16, Color(0,0,0,0.4))
-	var color := Color("8df5eb")
-	if invulnerable > 0 and int(invulnerable * 18) % 2 == 0: color = Color.WHITE
+	var color: Color=tint
+	if not reduce_flash and invulnerable > 0 and int(invulnerable * 18) % 2 == 0: color = Color.WHITE
 	draw_colored_polygon(PackedVector2Array([Vector2(0,-21),Vector2(14,12),Vector2(0,7),Vector2(-14,12)]),color)
 	draw_circle(facing * 9, 4, Color("fff2b0"))
+	if shape_id==1: draw_rect(Rect2(Vector2(-17,-5),Vector2(34,12)),color.darkened(.15))
+	if shape_id==2: draw_arc(Vector2(0,-5),19,-PI,0,16,color,3)
+	if shape_id==3:
+		for i in range(4): draw_line(Vector2.ZERO,Vector2.RIGHT.rotated(TAU*i/4)*20,Color("ccecff"),2)

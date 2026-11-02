@@ -4,6 +4,6 @@
 script = ExtResource("1")
 id = "growth_crown"
 display_name = "Wachstumskrone"
-description = "+10 % growth je Stufe"
+description = "+10 % XP-Ausbeute je Stufe"
 weight = 100
 values = {"stat": "growth", "bonus": 0.1}

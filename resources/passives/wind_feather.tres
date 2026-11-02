@@ -4,6 +4,6 @@
 script = ExtResource("1")
 id = "wind_feather"
 display_name = "Windfeder"
-description = "+10 % projectile_speed je Stufe"
+description = "+10 % Projektiltempo je Stufe"
 weight = 100
 values = {"stat": "projectile_speed", "bonus": 0.1}

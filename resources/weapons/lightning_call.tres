@@ -4,7 +4,7 @@
 script = ExtResource("1")
 id = "lightning_call"
 display_name = "Blitzruf"
-description = "Blitzruf: 22 Schaden · 2.6 s · lightning"
+description = "Blitzruf: 22 Schaden · 2.6 s · Blitzeinschlag"
 weight = 60
 values = {"behavior": "lightning", "damage": 22, "cooldown": 2.6, "speed": 0, "count": 1, "radius": 45, "duration": 0, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.3333333333333333}
 upgrades = Array[Dictionary]([{"delta": {"damage": 3.3}, "text": "Schaden +3.3"}, {"delta": {"count": 1}, "text": "Anzahl +1"}, {"delta": {"damage": 3.3}, "text": "Schaden +3.3"}, {"delta": {"chain": 1}, "text": "Kettenziele +1"}, {"delta": {"damage": 3.3}, "text": "Schaden +3.3"}, {"delta": {"damage": 3.3}, "text": "Schaden +3.3"}, {"delta": {"count": 2}, "text": "Anzahl +2"}])

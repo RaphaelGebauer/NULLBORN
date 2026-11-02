@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "loot_table"
+display_name = "Laternenbeute"
+description = "Gewichtete Originalbeute; Glück erhöht seltene Spezialfunde."
+values = {"heal": 40, "gold": 35, "magnet": 8, "freeze": 7, "nova": 7, "luck": 3}

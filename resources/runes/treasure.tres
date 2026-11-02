@@ -4,6 +4,6 @@
 script = ExtResource("1")
 id = "treasure"
 display_name = "Schatzsucher"
-description = "+25 % Gold und sofort +1 Reroll"
+description = "+25 % Gold und sofort +1 Neuwürfeln"
 weight = 100
 values = {}

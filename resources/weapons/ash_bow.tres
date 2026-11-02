@@ -4,7 +4,7 @@
 script = ExtResource("1")
 id = "ash_bow"
 display_name = "Aschebogen"
-description = "Aschebogen: 8 Schaden · 1.35 s · fan"
+description = "Aschebogen: 8 Schaden · 1.35 s · Richtungsfächer"
 weight = 100
 values = {"behavior": "fan", "damage": 8, "cooldown": 1.35, "speed": 330, "count": 3, "radius": 10, "duration": 0, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.08333333333333333}
 upgrades = Array[Dictionary]([{"delta": {"damage": 1.2}, "text": "Schaden +1.2"}, {"delta": {"count": 2}, "text": "Anzahl +2"}, {"delta": {"burn": 1}, "text": "Brennen +1"}, {"delta": {"damage": 1.2}, "text": "Schaden +1.2"}, {"delta": {"spread": 0.4}, "text": "Fächerwinkel +0.4"}, {"delta": {"damage": 1.2}, "text": "Schaden +1.2"}, {"delta": {"count": 2}, "text": "Anzahl +2"}])

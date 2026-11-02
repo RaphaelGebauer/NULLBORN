@@ -68,3 +68,21 @@ E1 provides tested save/runtime/statistics foundations; E2 implements all 45 wea
 Mutation inheritance retains a runtime array of `{id, strength}` per owned weapon. Regular evolution transfers full strength. Fusion follows recipe base order: 1.0 then 0.5. Continuous modifiers scale their magnitude; integer/counter procs double their interval for echoes; chance procs halve chance; cooldown procs double cooldown. Shared secondary budget is 24 per simulation step, bounded by the existing 650 projectile / 180 FX limits. Secondary hits neither reroll crits nor re-enter mutation hooks, lifesteal or on-death cascades.
 
 AoE impacts and zone ticks carry bounded event tokens so many targets do not falsely count as many casts/ticks. Afterglow/residual zones deliver four nonrecursive ticks totaling at most the configured damage fraction. Whiteout extends the refreshed base slow duration once, without repeated compounding or boss-freeze extension. Star Mark uses the strongest existing mark bonus, not an additional multiplier on the existing 15% mark.
+
+## E3 runtime pressure
+
+Instability gains 0.03 per run second, 4 per boss and 0.5 per affixed elite; ordinary kills add nothing. `rift_instability.gd` owns five current factors (never accumulated):
+
+| Threshold | Band | Spawn | Speed | Contact | Boss/elite gold |
+|---:|---|---:|---:|---:|---:|
+| 0 | Dormant | 1 | 1 | 1 | +0% |
+| 25 | Stirring | 1.05 | 1.03 | 1 | +10% |
+| 50 | Fractured | 1.12 | 1.06 | 1.08 | +20% |
+| 75 | Unstable | 1.20 | 1.10 | 1.12 | +30% |
+| 90 | Critical | 1.25 | 1.12 | 1.20 | +40% |
+
+`elite_affixes.gd`: first spawn at 05:00, then 70–90 / 55–75 / 45–65 run seconds at minutes 5/15/25. Fractured+ reduces intervals by 8%; alive caps 2/3 at instability 75. Only current-wave normal types; no splitters/children/bosses. Elite multipliers: HP 2.5 (+0.25 per extra affix, capped 3.5), damage 1.15 (+0.05, capped 1.35), speed 1.06, XP 2; Swift ×1.18, base speed capped 300 and final elite movement capped 320. Two affixes have 55% chance after 15:00 at 75+; three have 40% chance after 25:00 at 90+. Vampiric/Regenerating are mutually exclusive.
+
+Elite rewards: 45 gold plus band bonus, 15% chance of a 10-HP heal pickup. Gold still passes through existing Greed on collection. Rift gold is direct round(120 × (1 + run_time / 1800)); XP is 0.35 × current required XP with no Growth multiplier. Rifts retry safe placement within their own 90-second slot only.
+
+`boss_patterns.gd` owns separate HP phase/pattern state, 0.6-second transition, fixed dash warning/duration, safe-gap salvos, six children per Queen and four null zones globally. Hazards cap at 100 and projectiles at 650. Null zones warn for 1 second, last 2.5 active seconds, tick no faster than 0.8 seconds and refresh a nonstacking one-second 20% slow. Volatile explosions snapshot their values before pool reuse. No new factors modify immutable enemy definitions or the opening pacing resource.

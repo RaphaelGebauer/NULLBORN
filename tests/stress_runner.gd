@@ -28,6 +28,13 @@ func run() -> void:
 	world.player.set_physics_process(false)
 	world.minute=20
 	for i in range(380): world.spawn_enemy("guardian",Vector2.RIGHT.rotated(i*2.39996)*(180+i*.9))
+	model.instability=90
+	for kind in ["astral_guardian","void_queen","storm_core"]:
+		var boss: Dictionary=world.spawn_enemy(kind,Vector2(450,0))
+		boss.hp=boss.max_hp*.45
+	for affixes in [["armored","blinking"],["swift","hexbound"],["volatile","regenerating"]]:
+		var kind: String=model.registry.get_def("wave_20").values.weights.keys().filter(func(id):return id!="splitter")[0]
+		world.elite_director.promote(world.spawn_enemy(kind,Vector2(320,120)),affixes)
 	var start: int=Time.get_ticks_msec()
 	var peak_enemies: int=0
 	var peak_shots: int=0
@@ -44,7 +51,7 @@ func run() -> void:
 		peak_shots=maxi(peak_shots,world.shots.size())
 		peak_pickups=maxi(peak_pickups,world.pickups.size())
 		if frame%900==0: print("STRESS ",frame/30," s · Gegner ",world.enemies.size()," · Projektile ",world.shots.size())
-		if world.enemies.size()>440 or world.shots.size()>650 or world.pickups.size()>300:
+		if world.enemies.size()>440 or world.shots.size()>650 or world.pickups.size()>300 or world.hazards.size()>100:
 			push_error("FAIL Entitätscap")
 			quit(1)
 			return

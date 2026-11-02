@@ -22,6 +22,7 @@ var hp_bar: ProgressBar
 var xp_bar: ProgressBar
 var build_label: Label
 var boss_label: Label
+var instability_label: Label
 var save=preload("res://scripts/save_manager.gd").new()
 var audio: Node
 var preview: Control
@@ -53,6 +54,13 @@ func setup_input() -> void:
 	var start:=InputEventJoypadButton.new()
 	start.button_index=JOY_BUTTON_START
 	InputMap.action_add_event("ui_cancel",start)
+	if not InputMap.has_action("interact"): InputMap.add_action("interact")
+	var interact_key:=InputEventKey.new()
+	interact_key.physical_keycode=KEY_F
+	InputMap.action_add_event("interact",interact_key)
+	var interact_button:=InputEventJoypadButton.new()
+	interact_button.button_index=JOY_BUTTON_Y
+	InputMap.action_add_event("interact",interact_button)
 func clear_ui() -> void:
 	for child in ui.get_children():
 		ui.remove_child(child)
@@ -137,7 +145,8 @@ func start_run() -> void:
 	model.kills_changed.connect(check_unlocks)
 	model.rune_changed.connect(record_inventory)
 	events.clear()
-	model.modal_requested.connect(func(kind): events.append(kind))
+	model.modal_requested.connect(queue_run_event)
+	model.instability_warning.connect(show_instability_warning)
 	model.ended.connect(result)
 	world=preload("res://scenes/game.tscn").instantiate()
 	world.model=model
@@ -182,6 +191,10 @@ func resume() -> void:
 	boss_label.position=Vector2(20,155)
 	boss_label.modulate=Color("ffb1a5")
 	ui.add_child(boss_label)
+	instability_label=Label.new()
+	instability_label.position=Vector2(970,42)
+	instability_label.add_theme_font_size_override("font_size",16)
+	ui.add_child(instability_label)
 	get_tree().paused=false
 func build_text(include_imprints: bool=true) -> String:
 	var rows: Array=[]
@@ -206,11 +219,14 @@ func _process(_delta: float) -> void:
 		hp_bar.value=model.hp
 		xp_bar.max_value=model.required_xp()
 		xp_bar.value=model.xp
+		instability_label.text="Rift Instability %.1f\n%s" % [model.instability,model.rift_state.NAMES[model.rift_state.band()]]
+		instability_label.modulate=Color("8ce0cf").lerp(Color("f4a07b"),model.instability/100)
+		if not world.rifts.node.is_empty() and world.rifts.node.pos.distance_to(world.player.position)<=90: instability_label.text+="\n[F / Y] Interact with Rift"
 		build_label.text=build_text(false)
 		boss_label.text=""
 		for e in world.enemies:
 			save.mark_seen(e.kind)
-			if e.boss: boss_label.text+="%s   %d / %d HP\n" % [model.title(e.kind),maxi(0,int(e.hp)),int(e.max_hp)]
+			if e.boss: boss_label.text+="%s · Phase %s   %d / %d HP\n" % [model.title(e.kind),"II" if e.boss_hp_phase==2 else "I",maxi(0,int(e.hp)),int(e.max_hp)]
 		if model.time<mutation_notice_until: boss_label.text+="\n"+mutation_notice
 		var seconds: int=int(model.time)%60
 		if seconds>=50 and int(model.time)/60 in [4,9,14,19,24,28]: boss_label.text+="⚠ Boss arrives in %d seconds" % (60-seconds)
@@ -235,6 +251,14 @@ func show_event() -> void:
 			button("%d · %s\n%s" % [i+1,d.display_name,d.description],choose_mutation.bind(i))
 		return
 	match state:
+		"RIFT":
+			if world.rifts.node.is_empty() or not world.rifts.node.pending:
+				if not events.is_empty(): show_event()
+				else: resume()
+				return
+			box("RIFT NODE","Choose stability or claim a dangerous reward. This node can be used once.")
+			button("Stabilize Rift\n-20 Instability · Heal 10% maximum HP",choose_rift.bind(false))
+			button("Overcharge Rift\n+20 Instability · +%d Gold · +35%% next-level XP" % roundi(120*(1+model.time/1800)),choose_rift.bind(true))
 		"LEVELUP":
 			cards=model.offers()
 			redraw_cards()
@@ -297,9 +321,12 @@ func result(victory: bool) -> void:
 	get_tree().paused=true
 	box("THE RIFT IS SEALED" if victory else "YOUR STAR FADES","Level %d · %d Kills · %02d:%02d" % [model.level,model.kills,int(model.time)/60,int(model.time)%60])
 	label("%d Gold earned (curse bonus included) · %d Bosses\n%s\nUnlocked: %s" % [roundi(model.gold*(1+model.curse)),model.bosses,build_text(),", ".join(added) if not added.is_empty() else "—"],16)
+	label("Peak Instability %.1f · Final %.1f\nRifts Stabilized %d · Overcharged %d · Elites Defeated %d\nAffixes encountered: %s" % [model.rift_state.peak,model.instability,model.rifts_stabilized,model.rifts_overcharged,model.elite_kills,affix_summary()],15)
 	button("Try Again",func(): menu(); start_run())
 	button("Main Menu",menu)
 func _unhandled_input(event: InputEvent) -> void:
+	if state=="RUNNING" and event.is_action_pressed("interact") and is_instance_valid(world):
+		if world.rifts.interact(): show_event()
 	if OS.is_debug_build() and event is InputEventKey and event.pressed and not event.echo and is_instance_valid(world) and state=="RUNNING":
 		if event.keycode in [KEY_F6,KEY_F7,KEY_F8,KEY_F9]:
 			var times: Dictionary={KEY_F6:590,KEY_F7:600,KEY_F8:1200,KEY_F9:1740}
@@ -321,6 +348,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_tree().paused=true
 			box("PAUSE",build_text())
 			label(pause_recipe_text(),14)
+			label(instability_details(),15)
 			button("Resume",resume)
 			button("Settings",func(): return_to_pause=true; settings())
 			button("End Run",confirm_end)
@@ -599,3 +627,28 @@ func choose_mutation(index: int) -> void:
 	world.combat.add_effect({"behavior":"visual","pos":world.player.position,"radius":25.0,"life":.25})
 	if not events.is_empty(): show_event()
 	else: resume()
+
+func queue_run_event(kind: String) -> void:
+	if kind=="RIFT":
+		var index: int=0
+		while index<events.size() and str(events[index]).begins_with("MUTATION:"): index+=1
+		events.insert(index,kind)
+	else: events.append(kind)
+func show_instability_warning() -> void:
+	mutation_notice="Rift Instability is Unstable — enemy pressure is rising."
+	mutation_notice_until=model.time+5
+	audio.play("hurt")
+func instability_details() -> String:
+	var values: Dictionary=model.rift_state.modifiers()
+	return "Rift Instability: %.1f / 100 · %s\nEnemy density ×%.2f · Speed ×%.2f · Contact ×%.2f · Boss/Elite gold +%d%%\nRift nodes appear at 06:00 / 12:00 / 18:00 / 24:00 and last 90 run seconds.\nPress F or controller Y within 90 px to stabilize or overcharge.\nAffixes encountered: %s" % [model.instability,model.rift_state.NAMES[model.rift_state.band()],values.spawn,values.speed,values.contact,roundi(values.reward_gold*100),affix_summary()]
+func choose_rift(overcharge: bool) -> void:
+	if state!="RIFT": return
+	state="TRANSITION"
+	world.rifts.choose(overcharge)
+	if not events.is_empty(): show_event()
+	else: resume()
+
+func affix_summary() -> String:
+	var ids: Array=model.affixes_seen.keys()
+	ids.sort_custom(func(a,b):return model.affixes_seen[a]>model.affixes_seen[b])
+	return "None" if ids.is_empty() else ", ".join(ids.map(func(id):return "%s ×%d" % [catalog.affix_definitions[id].name,model.affixes_seen[id]]))

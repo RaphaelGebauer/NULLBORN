@@ -1,8 +1,12 @@
 extends RefCounted
 var catalogs: Dictionary = {}
 var errors: Array[String] = []
+var affix_definitions: Dictionary=preload("res://scripts/elite_affixes.gd").DEFINITIONS
 func _init() -> void:
 	var ids: Dictionary={}
+	if affix_definitions.size()!=7: errors.append("Expected seven elite affixes")
+	for id in affix_definitions:
+		if affix_definitions[id].get("name", "").is_empty() or affix_definitions[id].size()<2: errors.append("Invalid elite affix "+id)
 	for kind in ["weapon","passive","enemy","character","wave","evolution","rune","stage","mutation"]:
 		var catalog: Dictionary = {}
 		var path: String = "res://resources/"+("enemies" if kind=="enemy" else kind+"s")+"/"

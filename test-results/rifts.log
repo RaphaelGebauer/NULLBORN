@@ -1,0 +1,102 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Seven validated affix definitions
+PASS Quick Mode shares run clock and instability
+PASS Exact factors band 0
+PASS Exact factors band 1
+PASS Exact factors band 2
+PASS Exact factors band 3
+PASS Exact factors band 4
+PASS Backwards band and lower clamp
+PASS Upper clamp and persistent peak
+PASS Unstable warning cannot repeat with threshold flutter
+PASS No early rift
+PASS Rift schedule 1
+PASS Rift requires proximity
+PASS Rift interaction queues once
+PASS Rift choice is single-use
+PASS Stabilize reduces and heals actual HP
+PASS Rift schedule 2
+PASS Rift requires proximity
+PASS Rift interaction queues once
+PASS Rift choice is single-use
+PASS Overcharge gold and unscaled XP
+PASS Rift schedule 3
+PASS Rift requires proximity
+PASS Rift interaction queues once
+PASS Rift choice is single-use
+PASS Stabilize reduces and heals actual HP
+PASS Rift schedule 4
+PASS Rift requires proximity
+PASS Rift interaction queues once
+PASS Rift choice is single-use
+PASS Overcharge gold and unscaled XP
+PASS Four choices and truthful counters
+PASS Rift expires at 90 run seconds
+PASS No elite before minute five
+PASS No elite bosses or children
+PASS Splitters cannot become elites
+PASS Unique affixes and no endless healing combination
+PASS Two-elite capacity 0
+PASS Two-elite capacity 1
+PASS Dormant cap two
+PASS Unstable cap three
+PASS Promote armored
+PASS Armored reduces actual damage once
+PASS Promote swift
+PASS Swift and base elite scaling
+PASS Promote regenerating
+PASS Regenerating actual healing
+PASS Fire suppresses regeneration for three seconds
+PASS Regeneration resumes after fire lock
+PASS Promote vampiric
+PASS Vampiric ignores i-frame/non-hits
+PASS Vampiric heals once during cooldown
+PASS Vampiric three-second cooldown
+PASS Promote blinking
+PASS Blink announces destination for 0.3 seconds
+PASS Blink cannot teleport early
+PASS Blink safe side displacement
+PASS Promote hexbound
+PASS Hexbound waits six seconds
+PASS Hexbound real slow hostile shot
+PASS Hexbound honors projectile cap
+PASS Promote volatile
+PASS Elite death and volatility booked once
+PASS Elite gold and no evolution chest
+PASS Pooled enemy resets all E3 state
+PASS Pool reuse cannot repeat volatile explosion
+PASS Volatile warning causes no early damage
+PASS Volatile explodes after warning
+PASS Boss half-HP transition immobilizes astral_guardian
+PASS No attack during transition astral_guardian
+PASS HP phase separate from attack step astral_guardian
+PASS Boss spawn-time chest preserved astral_guardian
+PASS Boss half-HP transition immobilizes void_queen
+PASS No attack during transition void_queen
+PASS HP phase separate from attack step void_queen
+PASS Boss spawn-time chest preserved void_queen
+PASS Boss half-HP transition immobilizes storm_core
+PASS No attack during transition storm_core
+PASS HP phase separate from attack step storm_core
+PASS Boss spawn-time chest preserved storm_core
+PASS Guardian telegraphed dash
+PASS Guardian waits whole dash warning
+PASS Guardian fixed direction and 240 speed
+PASS Guardian dash bounded to 0.7 seconds
+PASS Guardian three starfalls leave center corridor
+PASS Queen cap six safe children
+PASS Queen two curved warned bolts
+PASS Queen maximum four 1+2.5-second zones
+PASS Null zone telegraph harmless
+PASS Null zone real nonstacking slow
+PASS Null zone damage interval at least 0.8 seconds
+PASS Storm radial safe gap phase 1
+PASS Storm radial safe gap phase 2
+PASS Storm alternates three warned beams
+PASS Boss hazards obey global cap
+PASS Rift follows mutation and preserves pending FIFO
+PASS Rift choice genuinely pauses simulation
+PASS No clock advance during choice
+PASS Choice resumes exactly once
+Rift checks: 99 PASS / 0 FAIL

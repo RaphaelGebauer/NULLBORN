@@ -13,6 +13,7 @@ Choose a hero and arena, select a rune and survive for 30 minutes. Quick mode ad
 - 1/2/3: choose a level-up or rune card.
 - R/T/B: reroll/skip/banish **after buying their meta upgrades**. They start locked, with no free charges.
 - Esc / controller Start: pause. Enter/A confirms; arrow keys/D-pad navigate menus.
+- F / controller Y: interact with a nearby rift node; choose stability or a risk/reward boost.
 - Break lanterns for healing, gold and rare specials; collect chests by touching them.
 - Six weapon slots and six passive slots. Weapons have eight levels; passives have five.
 
@@ -93,3 +94,11 @@ Mutations carry into normal evolutions at full strength. Fusions inherit both ba
 All 45 definitions live in `resources/mutations/`; `tools/generate_mutations.py` regenerates only this separate catalog. Runtime effects use the existing Combat/World pipeline through `scripts/mutation_effects.gd`, including a shared secondary budget and proc protection. Debug F11 requests missing mutations for its high-level setup.
 
 E3–E6 (active instability/rifts/elites/new boss phases, elemental reactions, Star Map and detailed result/build overlays) are still pending. Charged Air currently applies a visible electric state; its elemental reaction integration belongs to E4.
+
+## Rift pressure and bosses (E3)
+
+Rift Instability rises with run time, boss/elite kills and overcharging. Five reversible bands increase enemy density, movement, contact damage and boss/elite gold only. The first five minutes have no affixed elites. The existing eight-minute opening ramp remains unchanged.
+
+Four proximity-only nodes appear at 06:00, 12:00, 18:00 and 24:00 and expire after 90 run seconds. Stabilize removes 20 instability and restores 10% maximum HP; Overcharge adds 20, grants scaled gold and 35% next-level XP. Decisions pause the game.
+
+Elites use seven real affixes, distinct gold rings and bounded spawn intervals. Bosses switch once at half HP: Guardian gains starfalls/faster warned dashes, Queen gains null zones with capped summons, and Storm alternates safe-gap rings and warned beams. Orange indicates a warning. No new evolution chest bypasses are added.

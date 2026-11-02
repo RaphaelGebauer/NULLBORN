@@ -5,6 +5,7 @@ var tint: Color=Color("8df5eb")
 var shape_id: int=0
 var reduce_flash: bool=false
 var invulnerable: float = 0.0
+var slow_left: float=0
 func _ready() -> void:
 	motion_mode = MOTION_MODE_FLOATING
 	collision_layer = 1
@@ -20,6 +21,7 @@ func _ready() -> void:
 	camera.position_smoothing_speed = 10
 	add_child(camera)
 func _physics_process(delta: float) -> void:
+	slow_left=maxf(0,slow_left-delta)
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	if direction.length() > 0.1: facing = direction.normalized()
 	velocity = direction * speed

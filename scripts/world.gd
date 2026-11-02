@@ -15,6 +15,9 @@ var lanterns: Array=[]
 var texts: Array=[]
 var grid := Hash.new()
 var combat := Combat.new()
+var elite_director=preload("res://scripts/elite_affixes.gd").new()
+var rifts=preload("res://scripts/rift_nodes.gd").new()
+var bosses=preload("res://scripts/boss_patterns.gd").new()
 var budget: float=0
 var lantern_timer: float=20
 var serial: int=0
@@ -31,6 +34,9 @@ func _ready() -> void:
 	player.shape_id=["lyra","brann","noctis","eira"].find(model.hero)
 	player.tint=[Color("8df5eb"),Color("f5b679"),Color("c7a1f6"),Color("8acffa")][player.shape_id]
 	add_child(player)
+	elite_director.world=self
+	rifts.world=self
+	bosses.world=self
 	combat.world=self
 	combat.modifiers.world=self
 func ring_position() -> Vector2:
@@ -53,6 +59,8 @@ func spawn_enemy(id: String="wisp",pos: Vector2=Vector2.INF,child: bool=false) -
 	var e: Dictionary={} if enemy_pool.is_empty() else enemy_pool.pop_back()
 	e.clear()
 	e.merge({"id":serial,"kind":id,"pos":pos,"hp":v.hp*hp_scale,"max_hp":v.hp*hp_scale,"speed":v.speed*minf(1.35,1+.012*m)*(1+.35*model.curse),"damage":v.damage*(1+.035*m),"xp":v.xp,"radius":float(v.radius),"velocity":Vector2.ZERO,"boss":boss,"timer":2.0,"phase":0,"charge":Vector2.ZERO,"age":0.0,"hits":{},"statuses":{},"dot":0.0,"child":child,"spawn_minute":m,"flash":0.0,"leech_source":""})
+	elite_director.prepare(e)
+	bosses.prepare(e)
 	enemies.append(e)
 	return e
 func nearest(pos: Vector2) -> Dictionary:
@@ -116,6 +124,7 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 		if e.statuses.has("mark"): damage*=1.15
 		elif e.statuses.has("imprint_mark"): damage*=1+e.get("imprint_mark_bonus",.08)
 		if e.kind=="shield" and ((player.position if incoming_origin==Vector2.INF else incoming_origin)-e.pos).normalized().dot(e.velocity.normalized())>.4: damage*=.65
+	if e.elite and e.affixes.has("armored"): damage*=.8
 	var final_damage: float=maxf(1,round(damage))
 	model.statistics.record_damage(source,final_damage,e.hp,critical,model.time)
 	e.hp-=final_damage
@@ -132,6 +141,7 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 	if values.get("death_fire",0)>0: e.statuses.death_fire=4.0
 	if e.hp<=0: e.leech_source=source if values.has("leech_kills") and not proc else ""
 	if not proc: combat.modifiers.on_hit(source,e,final_damage,values,e.hp<=0,mutation_slow_base)
+	elite_director.hit(e,source,values)
 	if not e.boss and e.kind not in ["guardian","shield","elite_hunter"]:
 		e.pos+=player.position.direction_to(e.pos)*3
 	if not proc:
@@ -144,12 +154,13 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 					break
 	for lantern in lanterns:
 		if lantern.hp>0 and lantern.pos.distance_to(e.pos)<35: lantern.hp-=value
-func hurt_player(value: float) -> void:
-	if player.invulnerable>0 or model.finished: return
+func hurt_player(value: float) -> bool:
+	if player.invulnerable>0 or model.finished: return false
 	if "shield_sign" in model.runes and model.rng.randf()<.1:
 		combat.add_effect({"behavior":"visual","pos":player.position,"radius":35.0,"life":.4})
 		player.invulnerable=.2
-		return
+		return false
+	var previous_hp: float=model.hp
 	model.hurt(value)
 	combat.modifiers.contact()
 	player.invulnerable=.65
@@ -161,10 +172,13 @@ func hurt_player(value: float) -> void:
 		combat.area_hit(player.position,100,5*model.passives.frost_thorns,{"slow":1},"frost_thorns")
 	if model.weapons.has("blood_thorns"):
 		combat.area_hit(player.position,70,20,{},"reflect")
+	return model.hp<previous_hp
 func _physics_process(delta: float) -> void:
 	model.tick(delta)
 	if model.finished: return
-	player.speed=model.speed
+	player.speed=model.speed*(.8 if player.slow_left>0 else 1)
+	rifts.update()
+	elite_director.director()
 	var m: int=mini(29,int(model.time/60))
 	if minute!=m:
 		minute=m
@@ -172,7 +186,7 @@ func _physics_process(delta: float) -> void:
 		if not wave.boss.is_empty(): spawn_enemy(wave.boss)
 		if wave.rune and model.runes.size()<3: model.modal_requested.emit("RUNE")
 	var spawn_rate: float=(1.6+.38*m+.008*m*m)*(1+.09*floori(m/5.0))*(1+model.curse)*model.registry.get_def(model.stage).values.density
-	budget=minf(3,budget+delta*spawn_rate*model.opening_factor("spawn_rate"))
+	budget=minf(3,budget+delta*spawn_rate*model.opening_factor("spawn_rate")*model.rift_state.MODIFIERS[model.rift_state.band()].spawn)
 	var cap: int=mini(420,55+12*m)
 	while budget>=1 and enemies.size()<cap:
 		budget-=1
@@ -211,6 +225,7 @@ func _physics_process(delta: float) -> void:
 func update_enemy(e: Dictionary,delta: float) -> void:
 	if e.hp<=0: return
 	e.age+=delta
+	elite_director.update(e,delta)
 	e.flash=maxf(0,e.flash-delta)
 	for status in e.statuses.keys():
 		e.statuses[status]-=delta
@@ -220,6 +235,7 @@ func update_enemy(e: Dictionary,delta: float) -> void:
 		e.dot-=1
 		if e.statuses.has("burn"): hit(e,4,{},"burn",true)
 		if e.statuses.has("poison"): hit(e,3,{},"poison",true)
+	if e.hp<=0: return
 	var direction: Vector2=e.pos.direction_to(player.position)
 	var factor: float=1
 	if e.statuses.has("slow"): factor=.825 if e.boss else .65
@@ -234,7 +250,7 @@ func update_enemy(e: Dictionary,delta: float) -> void:
 				e.timer=[2.3,.7,.6][e.phase]
 				if e.phase==1: e.charge=direction
 			if e.phase==1: velocity=Vector2.ZERO
-			if e.phase==2: velocity=e.charge*280
+			if e.phase==2: velocity=e.charge*280*(1.18 if e.affixes.has("swift") else 1)
 		"sniper":
 			velocity=direction*e.speed*(1 if distance>330 else -1 if distance<240 else 0)
 			if e.timer<=0:
@@ -259,39 +275,14 @@ func update_enemy(e: Dictionary,delta: float) -> void:
 		if diff.length_squared()>1: separation+=diff.normalized()*25
 		count+=1
 		if count>=5: break
-	e.velocity=(velocity+separation)*factor*model.opening_factor("enemy_speed")
+	e.velocity=(velocity+separation)*factor*model.opening_factor("enemy_speed")*model.rift_state.MODIFIERS[model.rift_state.band()].speed
+	if e.elite: e.velocity=e.velocity.limit_length(320)
 	e.pos+=e.velocity*delta
-	if e.boss and distance>1500: e.pos=player.position-direction*650
-	if e.pos.distance_to(player.position)<e.radius+13: hurt_player(e.damage)
-func boss_behavior(e: Dictionary,direction: Vector2,_delta: float) -> Vector2:
-	var velocity: Vector2=direction*e.speed
-	if e.timer>0:
-		if e.phase==1:
-			if e.timer>.65: return Vector2.ZERO
-			return e.charge*240
-		return velocity
-	e.phase=(e.phase+1)%2
-	e.timer=4
-	if e.kind=="astral_guardian":
-		if e.phase==0:
-			for i in range(14): projectile(e.pos,Vector2.RIGHT.rotated(TAU*i/14)*130,{"damage":12},"boss",.6,true)
-		else:
-			e.charge=direction
-			e.timer=1.4
-	elif e.kind=="void_queen":
-		if e.phase==0:
-			for i in range(5): spawn_enemy("mite",e.pos+Vector2.RIGHT.rotated(TAU*i/5)*60,true)
-		else:
-			for i in range(4): hazard(player.position+Vector2.RIGHT.rotated(TAU*i/4)*100,65,1.0,18)
-	else:
-		var phase: int=0 if e.hp/e.max_hp>.65 else 1 if e.hp/e.max_hp>.3 else 2
-		if e.phase==0:
-			for i in range(16+phase*6): projectile(e.pos,Vector2.RIGHT.rotated(TAU*i/(16+phase*6))*160,{"damage":14},"boss",.7,true)
-		else:
-			for i in range(3+phase):
-				var end: Vector2=e.pos+Vector2.RIGHT.rotated(direction.angle()+i*TAU/(3+phase))*650
-				hazards.append({"pos":e.pos,"end":end,"radius":16.0,"delay":1.1,"life":1.5,"damage":18.0,"fired":false})
-	return velocity
+	if e.boss and distance>1500 and e.transition_left<=0 and e.dash_state==0: e.pos=player.position-direction*650
+	if e.pos.distance_to(player.position)<e.radius+13 and not (e.boss and e.transition_left>0):
+		elite_director.contact(e,hurt_player(e.damage*model.rift_state.MODIFIERS[model.rift_state.band()].contact))
+func boss_behavior(e: Dictionary,direction: Vector2,delta: float) -> Vector2:
+	return bosses.update(e,direction,delta)
 func update_shots(delta: float) -> void:
 	for s in shots.duplicate():
 		if s.delay>0:
@@ -305,6 +296,7 @@ func update_shots(delta: float) -> void:
 				s.velocity=s.velocity.lerp(s.pos.direction_to(player.position)*s.values.speed,minf(1,delta*6))
 				if s.pos.distance_to(player.position)<18: s.life=0
 			if s.values.get("spiral",0)>0: s.velocity=s.velocity.rotated(delta*1.2)
+		if s.hostile and s.values.has("curve"): s.velocity=s.velocity.rotated(s.values.curve*delta)
 		s.pos+=s.velocity*delta
 		if s.hostile:
 			if player.position.distance_to(Geometry2D.get_closest_point_to_segment(player.position,old,s.pos))<18:
@@ -353,15 +345,17 @@ func kill_enemy(e: Dictionary) -> void:
 	enemies.erase(e)
 	model.kill()
 	drop(e.pos,e.xp)
+	if e.elite: elite_director.death(e)
 	if e.boss:
+		model.rift_state.change(4)
 		model.bosses+=1
 		model.boss_changed.emit()
 		drop(e.pos,1,"chest",e.spawn_minute>=10)
-		drop(e.pos+Vector2(24,0),model.rng.randi_range(20,50),"gold")
-	elif e.kind=="elite_hunter":
+		drop(e.pos+Vector2(24,0),roundi(model.rng.randi_range(20,50)*(1+model.rift_state.modifiers().reward_gold)),"gold")
+	elif e.kind=="elite_hunter" and not e.elite:
 		if model.rng.randf()<.08: drop(e.pos,1,"chest",false)
 		if model.rng.randf()<.2: drop(e.pos,model.rng.randi_range(5,10),"gold")
-	elif model.rng.randf()<.03: drop(e.pos,model.rng.randi_range(1,3),"gold")
+	elif not e.elite and model.rng.randf()<.03: drop(e.pos,model.rng.randi_range(1,3),"gold")
 	if e.kind=="splitter" and not e.child:
 		for i in range(2): spawn_enemy("mite",e.pos+Vector2(i*20-10,0),true)
 	if e.kind=="bomber": hazard(e.pos,65,.8,12)
@@ -392,6 +386,7 @@ func collect(p: Dictionary) -> void:
 			gold_collected+=value
 			model.gold_changed.emit()
 		"heal": model.heal(30*p.value)
+		"small_heal": model.heal(10*p.value)
 		"magnet":
 			for gem in pickups.duplicate():
 				if gem.kind=="xp": collect(gem)
@@ -412,10 +407,17 @@ func update_hazards(delta: float) -> void:
 	for h in hazards:
 		h.delay-=delta
 		h.life-=delta
-		if h.delay<=0 and not h.fired:
-			h.fired=true
-			var distance: float=player.position.distance_to(Geometry2D.get_closest_point_to_segment(player.position,h.pos,h.end)) if h.has("end") else player.position.distance_to(h.pos)
-			if distance<h.radius+13: hurt_player(h.damage)
+		if h.life<=0 or h.delay>0 or h.get("preview_only",false): continue
+		if h.has("repeat"):
+			h.tick-=delta
+			if h.tick>0: continue
+			h.tick=h.repeat
+		elif h.fired: continue
+		h.fired=true
+		var distance: float=player.position.distance_to(Geometry2D.get_closest_point_to_segment(player.position,h.pos,h.end)) if h.has("end") else player.position.distance_to(h.pos)
+		if distance<h.radius+13:
+			if h.get("slow",false): player.slow_left=maxf(player.slow_left,1.0)
+			hurt_player(h.damage)
 	hazards=hazards.filter(func(h): return h.life>0)
 func update_lanterns(delta: float) -> void:
 	lantern_timer-=delta
@@ -457,6 +459,11 @@ func _draw() -> void:
 					draw_line(pos+Vector2(32,55),pos+Vector2(32,30),c.darkened(.3),4)
 					draw_circle(pos+Vector2(32,29),8,c)
 			elif pattern==4: draw_rect(Rect2(pos+Vector2(15,30),Vector2(22,9)),Color(stage.accent).darkened(.3))
+	if not rifts.node.is_empty():
+		var pos: Vector2=rifts.node.pos
+		draw_arc(pos,25,0,TAU,6,Color("aab9f6"),3)
+		draw_line(pos+Vector2(-10,-15),pos+Vector2(8,15),Color("d2f4ed"),3)
+		draw_string(ThemeDB.fallback_font,pos+Vector2(-48,-35),"F / Y · Rift",HORIZONTAL_ALIGNMENT_LEFT,-1,16,Color("d2f4ed"))
 	for lantern in lanterns:
 		draw_rect(Rect2(lantern.pos-Vector2(8,13),Vector2(16,26)),Color("bd8650"))
 		draw_circle(lantern.pos,6,Color("ffee96"))
@@ -483,7 +490,15 @@ func _draw() -> void:
 		if e.kind=="shield": draw_arc(e.pos,e.radius+3,e.velocity.angle()-.9,e.velocity.angle()+.9,8,Color("d8e8ed"),4)
 		if e.kind=="healer": draw_arc(e.pos,30,0,TAU,16,Color(0.3,1,.5,.4),2)
 		if e.kind in ["charger","astral_guardian"] and e.phase==1: draw_line(e.pos,e.pos+e.charge*150,Color("ff696b"),3)
+		if e.elite:
+			draw_arc(e.pos,e.radius+7,0,TAU,20,Color("e3b475"),2)
+			for i in range(e.affixes.size()):
+				draw_string(ThemeDB.fallback_font,e.pos+Vector2(-e.radius+i*14,-e.radius-12),e.affixes[i].left(1).to_upper(),HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("ffd996"))
+			if e.elite_state.warning>0:
+				draw_arc(e.elite_state.blink_target,e.radius+6,0,TAU,12,Color("c3b4f5"),2)
 		if e.boss:
+			if e.transition_left>0: draw_arc(e.pos,e.radius+12,0,TAU,20,Color("f6c978"),3)
+			if e.dash_state==1: draw_line(e.pos,e.pos+e.dash_direction*220,Color("f6c978"),3)
 			draw_rect(Rect2(e.pos+Vector2(-45,-e.radius-15),Vector2(90,6)),Color("3d273d"))
 			draw_rect(Rect2(e.pos+Vector2(-45,-e.radius-15),Vector2(90*maxf(0,e.hp/e.max_hp),6)),Color("ff777c"))
 	for s in shots:
@@ -513,8 +528,10 @@ func _draw() -> void:
 			draw_circle(e.pos,e.radius,Color(c,.12))
 			draw_arc(e.pos,e.radius,0,TAU,24,c,3)
 	for h in hazards:
-		var c:=Color(1,.25,.3,.5 if h.delay>0 else .9)
-		if h.has("end"): draw_line(h.pos,h.end,c,3 if h.delay>0 else h.radius*2)
+		var c:=Color(1,.7,.3,.7) if h.delay>0 else Color(1,.3,.3,.6 if reduce_flash else .9)
+		if h.has("gap"):
+			draw_arc(h.pos,h.radius,h.gap_angle+h.gap*.5,h.gap_angle+TAU-h.gap*.5,30,c,2)
+		elif h.has("end"): draw_line(h.pos,h.end,c,3 if h.delay>0 else h.radius*2)
 		else: draw_arc(h.pos,h.radius,0,TAU,24,c,2 if h.delay>0 else 8)
 	if damage_texts:
 		for t in texts: draw_string(ThemeDB.fallback_font,t.pos,t.text,HORIZONTAL_ALIGNMENT_LEFT,-1,15,Color(1,1,.8,t.life/.6))

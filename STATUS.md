@@ -2,6 +2,26 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## Phase E3 — implemented and verified; E4–E6 remain open
+
+Implementation commit: recorded below after committing this phase.
+
+- Active 0–100 instability uses run_delta; five reversible factors apply once to existing wave/curse/pacing. Boss/elite gold only; once-per-run Unstable warning and English HUD/pause/result values.
+- Four safe proximity-only rifts at 06/12/18/24 minutes, 90-run-second expiry, F/controller Y, exactly-once healing/gold/XP choices through the paused modal FIFO after mutations. Crowded placements retry within the original slot only.
+- Seven affixes implemented in scripts/elite_affixes.gd, validated in Registry: actual armor, Swift cap, delayed Volatile blast, successful-contact-only Vampiric cooldown, warned safe Blinking, bounded Hexbound shots, fire-suppressed Regenerating. Director starts at minute five, respects current waves/caps and excludes splitters/children/bosses. Pooled state/reward duplication protected; encountered affixes ranked by actual counts.
+- scripts/boss_patterns.gd separates HP phase, pattern step and timers. One half-HP transition, fixed warned Guardian dashes/starfalls; Queen curved bolts/six children/four null zones; Storm alternating safe-gap rings/three beams. Existing thirty waves, boss counts, chest spawn-time eligibility and all mutations/evolutions/fusions preserved.
+- English instability/interaction HUD, orange warning markers, elite rings/affix symbols, blink destination and Phase II boss label. Pacing and save schema unchanged.
+
+Validation: pinned Godot 4.7.2 Stable, tools/check.sh --long: **179 existing/E1 + 404 mutations + 99 E3 = 682 PASS, zero FAIL**, clean import, no script errors/leaks. Logs in test-results/.
+
+Final 30-minute fixture: 30:00, one victory, three runes, 26,550 kills, 23 affixed elites, six boss phase transitions across all three kinds, two stabilizations/two overcharges, peak/final instability 94.2, 92.759 s CPU wall time. Real damage/evolution/choice APIs; immunity/automatic movement/choices are harness aids. No human balance claim.
+
+Extended stress: 180 simulated seconds / 5,400 steps, Critical instability, three Phase II bosses and multiple affixed elites; peaks 382 enemies / 261 shots / 300 pickups; 12,396 kills, 46.838 s wall time. No cap/error failures. These timings do not establish rendered FPS.
+
+Graphical smoke: actual rift marker at 1280×720, choice/focus at 1600×900, Phase II transition/HUD at 1920×1080; screenshots inspected in docs/screenshots/. Only known software-driver VSync warning. Physical controller, target GPU/frame pacing and human fresh-save difficulty remain manual checks.
+
+Next: E4, exact four bidirectional element reactions from specification section 6. Use actual final triggering-hit damage, enemy timestamp/cooldown reset, shared 40-events/second cap, priority order and reaction-only proc source. Preserve all E1/E2/E3 checks and publish E4 separately after verification. E5 Star Map and E6 full statistics/build/feedback remain unfinished.
+
 ## Phase E2 — implemented; E3–E6 remain open
 
 E2 implementation commit: `5ab1f7e`.

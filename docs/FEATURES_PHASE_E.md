@@ -17,7 +17,7 @@ All 45 definitions and processors; mandatory paused Lv4 choice; normal/evolved e
 
 ## Remaining delivery
 
-E3: activate instability with HUD/director/gold integration, four proximity-only interactive rift nodes, seven elite affixes with bounded director and rewards, distinct HP boss phases and specified telegraphs.
+E3 implemented: active five-band instability/HUD/director/gold, four proximity-only paused risk/reward nodes, all seven bounded elite affixes, separate half-HP boss phases with real dashes, starfalls, curved bolts, capped summons/null zones and safe-gap rings/beams. See BALANCE.md and tests/rift_runner.gd.
 
 E4: four bidirectional reactions, per-target timestamps/cooldown, proc protection, global event budget, boss dampening and attribution tests.
 
@@ -25,4 +25,4 @@ E5: 18 constellation nodes, persistent Starlight awards capped at eight, rollbac
 
 E6: subtle feedback, detailed statistics/result UI, spoiler-safe Build Details, graphical smoke captures, stress/full-run validation, documentation synchronization.
 
-Do not describe E3–E6 as delivered. Do not change `resources/pacing.tres`, weapon IDs, 6+6 slots, Lv5/Lv5 evolution gates, historical chest eligibility or completed-recipe privacy.
+E3 is delivered; E4–E6 remain pending. Do not change `resources/pacing.tres`, weapon IDs, 6+6 slots, Lv5/Lv5 evolution gates, historical chest eligibility or completed-recipe privacy.

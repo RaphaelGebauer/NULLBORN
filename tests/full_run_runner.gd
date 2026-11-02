@@ -31,13 +31,19 @@ func run() -> void:
 	model.ended.connect(func(won):outcomes.append(won))
 	var start: int=Time.get_ticks_msec()
 	var counts: Array=[]
+	var phase_changes: Array=[]
+	model.boss_phase_changed.connect(func(kind,phase):phase_changes.append([kind,phase]))
 	for frame in range(54002):
 		world.player.invulnerable=1
 		world.player.position=Vector2(sin(frame*.003),cos(frame*.003))*350
 		world._physics_process(1.0/30)
+		if not world.rifts.node.is_empty() and not world.rifts.node.pending:
+			world.player.position=world.rifts.node.pos
+			world.rifts.interact()
 		# Harness resolves choices through real inventory logic; modal UI has a separate pause test.
 		while not events.is_empty():
 			var kind: String=events.pop_front()
+			if kind=="RIFT": world.rifts.choose(world.rifts.slots_used%2==0)
 			if kind=="LEVELUP": model.upgrade(model.offers()[0])
 			if kind=="RUNE":
 				for id in ["treasure","time_anchor","ice_crown"]:
@@ -49,8 +55,9 @@ func run() -> void:
 			counts.append([world.enemies.size(),world.shots.size(),world.pickups.size()])
 			print("RUN ",int(model.time)," s · ",counts[-1]," · Kills ",model.kills)
 		if model.finished: break
-	var valid: bool=model.finished and outcomes==[true] and world.minute==29 and model.runes.size()==3 and model.weapon_mutations.size()==6
+	var valid: bool=model.finished and outcomes==[true] and world.minute==29 and model.runes.size()==3 and model.weapon_mutations.size()==6 and model.rifts_stabilized==2 and model.rifts_overcharged==2 and model.elite_kills>0 and not phase_changes.is_empty()
 	print("PASS" if valid else "FAIL"," voller 30-Minuten-Run; Zeit ",model.time,"; Ergebnis ",outcomes,"; Runen ",model.runes.size(),"; Laufzeit ",(Time.get_ticks_msec()-start)/1000.0," s; Kills ",model.kills)
+	print("E3: boss phase transitions ",phase_changes,"; elites ",model.elite_kills,"; affixes ",model.affixes_seen,"; rifts ",model.rifts_stabilized,"/",model.rifts_overcharged,"; peak/final instability ",model.rift_state.peak,"/",model.instability)
 	world.queue_free()
 	await process_frame
 	await process_frame

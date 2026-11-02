@@ -25,3 +25,7 @@ E1 provides tested save/runtime/statistics foundations; E2 implements all 45 wea
 `mutation_effects.gd` is a helper owned by the existing Combat object, not a second combat engine. Shared parameter, attack, hit, contact, periodic and expiry hooks cover normal/evolved/fused behaviors. For altered attack types, additional projectiles map to bounded pulses. Runtime owners change at evolution; immutable Resources and inventory slot counts do not change.
 
 Model mutation requests are independent of normal level offers. App inserts pending mutation modals before already queued level/chest/rune events, preserves FIFO among mutation requests and never exposes a cancel/skip path. High-level debug setup explicitly calls `ensure_mutations`. Unrevealed recipe privacy remains based solely on successful evolutions saved in `evolved_recipes`.
+
+### E3 implementation
+
+`rift_nodes.gd`, `elite_affixes.gd` and `boss_patterns.gd` are bounded helpers owned by the existing World. They use its pools, damage pipeline, projectiles, hazards and seeded model RNG. Rift decisions enter the existing paused queue after mutations and before other pending events. Boss HP phase is separate from the original charger `phase`. Instability is current derived pressure, not repeated mutation of enemy resources. All new pooled fields are initialized in `spawn_enemy`; death is protected by World membership. Saves and existing inventory/evolution rules are unchanged.

@@ -1,4 +1,7 @@
 extends RefCounted
+signal instability_changed(value: float, band: int)
+signal instability_warning
+signal boss_phase_changed(kind: String, phase: int)
 signal mutation_requested(weapon: String)
 signal xp_changed
 signal health_changed
@@ -19,6 +22,19 @@ var pending_mutations: Array[String]=[]
 var constellation_nodes: Array=[]
 var run_delta: float=0
 var rift_state: RefCounted=preload("res://scripts/rift_instability.gd").new()
+var rifts_stabilized: int=0
+var rifts_overcharged: int=0
+var elite_kills: int=0
+var affixes_seen: Dictionary={}
+var instability_warning_shown: bool=false
+var instability: float:
+	get: return rift_state.value
+	set(value): rift_state.change(value-rift_state.value)
+func on_instability_changed(value: float, band: int) -> void:
+	instability_changed.emit(value,band)
+	if value>=75 and not instability_warning_shown:
+		instability_warning_shown=true
+		instability_warning.emit()
 var hp: float = 100
 var max_hp: float = 100
 var speed: float = 165
@@ -80,6 +96,7 @@ func update_movement_speed() -> void:
 
 func _init() -> void:
 	rng.seed = 72047
+	rift_state.changed.connect(on_instability_changed)
 	registry=preload("res://scripts/data/registry.gd").new()
 	unlocked_weapons=registry.catalogs.weapon.keys()
 func initialize_meta() -> void:
@@ -120,6 +137,7 @@ func tick(delta: float) -> void:
 	if finished: return
 	run_delta=minf(1800-time,maxf(0,delta)*(2 if fast else 1))
 	time+=run_delta
+	rift_state.advance(run_delta)
 	if regeneration>0: heal(regeneration*delta)
 	resonance=maxf(0,resonance-delta)
 	chain_cooldown=maxf(0,chain_cooldown-delta)

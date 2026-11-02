@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "blood_moon"
-display_name = "Blutmond"
-description = "Alle 30 Kills +3 HP (max. 30 HP/min)"
+display_name = "Blood Moon"
+description = "Every 30 kills +3 HP (max. 30 HP/min)"
 weight = 100
 values = {}

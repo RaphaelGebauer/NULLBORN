@@ -3,6 +3,6 @@
 [resource]
 script = ExtResource("1")
 id = "loot_table"
-display_name = "Laternenbeute"
-description = "Gewichtete Originalbeute; Glück erhöht seltene Spezialfunde."
+display_name = "Lantern loot"
+description = "Weighted original loot; luck improves rare special drops."
 values = {"heal": 40, "gold": 35, "magnet": 8, "freeze": 7, "nova": 7, "luck": 3}

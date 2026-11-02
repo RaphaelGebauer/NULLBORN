@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "runner_boots"
-display_name = "Laufstiefel"
-description = "+8 % Lauftempo je Stufe"
+display_name = "Runner Boots"
+description = "+8 % movement speed per level"
 weight = 100
 values = {"stat": "speed", "bonus": 0.08}

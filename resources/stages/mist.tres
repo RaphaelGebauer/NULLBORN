@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "mist"
-display_name = "Nebelheide"
-description = "Dunkle Heide unter gebrochenen Sternen"
+display_name = "Mist Heath"
+description = "Dark heath beneath broken stars"
 weight = 100
 values = {"density": 1.0, "background": "101e29", "accent": "416d69"}

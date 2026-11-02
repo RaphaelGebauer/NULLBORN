@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "bomber"
-display_name = "Leerenbombe"
-description = "Leerenbombe · 36 HP"
+display_name = "Void Bomber"
+description = "Void Bomber · 36 HP"
 weight = 100
 values = {"hp": 36, "speed": 110, "damage": 12, "xp": 4, "radius": 17, "boss": false, "color": 0.6666666666666666}

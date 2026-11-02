@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "blood_thorns"
-display_name = "Blutstachelkreis"
-description = "Dornenring Lv8 + Eisenhaut"
+display_name = "Blood Thorns"
+description = "Thorn Halo Lv5+ + Iron Skin Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["thorn_halo"], "passive": "iron_skin", "changes": {"radius": 125, "reflect": 1, "leech_hits": 15}}
+values = {"bases": ["thorn_halo"], "passive": "iron_skin", "weapon_level": 5, "passive_level": 5, "changes": {"radius": 125, "reflect": 1, "leech_hits": 15}}

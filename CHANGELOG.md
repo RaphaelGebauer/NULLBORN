@@ -1,9 +1,19 @@
-# Änderungen
+# Changelog
 
-## 2026-11-02
+## Window, progression and English-content update
 
-- A: spielbarer Kern von Menü bis Tod/Neustart, erste sieben Tests, eigener Commit.
-- B: kompletter Waffen-/Passivkatalog, Leveldaten, KI, Status, Spatial Hash, Pools, gewichtete Auswahl und Gegenstandsgrenzen.
-- C: vollständiger Run, Wellen/Bosse, Truhen, Evolutionen/Fusionen, Runen, Arenen, Sammlung und pausierende Modal-Queue.
-- D: Save/Meta/Unlocks, Einstellungen, Originalaudio, Controller, UI-Thema, geometrische Heldenvarianten, dokumentierte Debugpfade und Abnahme.
-- Bei Tests behoben: untypisierte dynamische Inferenz, Fokus auf entfernte Controls, Referenz auf wiederverwendete Gegner im Test, Pickup-Cap, Audio-Teardown im Harness, deutsche Datenbeschreibungen, Orbit-Cooldown-Synergie, Fronttreffer von Schilden und Reduktionsoption für Spielerblinken.
+- Separated audio settings from display mutations; added Godot 4.7's explicit native embedding detection.
+- 1920×1080 default standalone window, verified native resolution choices, disabled display controls with an explanation while embedded.
+- Slower opening movement and five-minute enemy/spawn ramp.
+- 16 meta upgrades including timed speed growth, regeneration, crit, area, duration and cooldown; selection tools require purchases.
+- English game content, UI and current documentation; collection reveals equipment/heroes only after selection/acquisition.
+- Three new weapons, four new passives and three matching evolutions, with functional combat tests.
+- Evolutions/fusions require base weapons Lv5+ and matching passive Lv5 in a qualifying boss chest.
+- Player arrow rotates with facing; removed its direction dot.
+
+## Original four implementation phases
+
+- A (`300e13c`): playable menu-to-result loop, automatic projectile, HP/XP, three-card upgrades and core tests.
+- B (`fe564b7`): full original combat catalog, passive stats, enemy AI, statuses, spatial hash and pools.
+- C (`de4196b`): thirty waves, bosses, chests, evolution/fusion, runes, arenas and serial modal flow.
+- D (`6e9cfc1`): persistence, unlocks, meta shop, settings, procedural audio, controller support and validation.

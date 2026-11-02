@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "wisp"
-display_name = "Flackergeist"
-description = "Flackergeist · 14 HP"
+display_name = "Flicker Wisp"
+description = "Flicker Wisp · 14 HP"
 weight = 100
 values = {"hp": 14, "speed": 85, "damage": 6, "xp": 1, "radius": 12, "boss": false, "color": 0.0}

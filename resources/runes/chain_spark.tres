@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "chain_spark"
-display_name = "Kettenfunke"
-description = "5 % Kettenblitz (0,25 s interne Abklingzeit)"
+display_name = "Chain Spark"
+description = "5% chain lightning (0.25 s internal cooldown)"
 weight = 100
 values = {}

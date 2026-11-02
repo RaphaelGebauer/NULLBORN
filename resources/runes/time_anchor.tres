@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "time_anchor"
-display_name = "Zeitanker"
-description = "+25 % Orbit-/Zonen-/Laserdauer"
+display_name = "Time Anchor"
+description = "+25% orbit, zone and beam duration"
 weight = 100
 values = {}

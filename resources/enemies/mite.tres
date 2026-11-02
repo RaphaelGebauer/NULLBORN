@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "mite"
-display_name = "Sternenmilbe"
-description = "Sternenmilbe · 8 HP"
+display_name = "Star Mite"
+description = "Star Mite · 8 HP"
 weight = 100
 values = {"hp": 8, "speed": 150, "damage": 4, "xp": 1, "radius": 8, "boss": false, "color": 0.06666666666666667}

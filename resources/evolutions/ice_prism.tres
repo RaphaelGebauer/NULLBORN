@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "ice_prism"
-display_name = "Eisprisma"
-description = "Frostsplitter Lv8 + Windfeder"
+display_name = "Ice Prism"
+description = "Frost Shard Lv5+ + Wind Feather Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["frost_shard"], "passive": "wind_feather", "changes": {"split": 1, "slow": 1, "freeze_chance": 0.08}}
+values = {"bases": ["frost_shard"], "passive": "wind_feather", "weapon_level": 5, "passive_level": 5, "changes": {"split": 1, "slow": 1, "freeze_chance": 0.08}}

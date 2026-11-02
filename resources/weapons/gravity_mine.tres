@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "gravity_mine"
+display_name = "Gravity Mine"
+description = "Arms after 0.4 s; nearby enemies trigger an implosion that pulls and slows."
+weight = 60
+values = {"behavior": "mine", "damage": 24, "cooldown": 3.4, "speed": 0, "count": 1, "radius": 95, "duration": 4, "tick": 0.5, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.8, "bounces": 0}
+upgrades = Array[Dictionary]([{"delta": {"damage": 3.6}, "text": "Damage +3.6"}, {"delta": {"radius": 15}, "text": "Radius +15"}, {"delta": {"damage": 3.6}, "text": "Damage +3.6"}, {"delta": {"damage": 3.6}, "text": "Damage +3.6"}, {"delta": {"radius": 15}, "text": "Radius +15"}, {"delta": {"damage": 3.6}, "text": "Damage +3.6"}, {"delta": {"damage": 3.6}, "text": "Damage +3.6"}])

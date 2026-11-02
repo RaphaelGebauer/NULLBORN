@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "star_piercer"
-display_name = "Sternenstich"
-description = "Arkannadel Lv8 + Kraftstein"
+display_name = "Star Piercer"
+description = "Arcane Needle Lv5+ + Power Core Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["arcane_needle"], "passive": "power_core", "changes": {"count": 3, "speed": 800, "pierce": 5, "mark": 1}}
+values = {"bases": ["arcane_needle"], "passive": "power_core", "weapon_level": 5, "passive_level": 5, "changes": {"count": 3, "speed": 800, "pierce": 5, "mark": 1}}

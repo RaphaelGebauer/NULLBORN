@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "night_storm"
-display_name = "Nachtgewitter"
-description = "Schattenfächer Lv8 + Mehrfachkern"
+display_name = "Night Storm"
+description = "Shadow Fan Lv5+ + Multiplicity Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["shadow_fan"], "passive": "multiplicity", "changes": {"count": 16, "echo": 1, "poison": 1}}
+values = {"bases": ["shadow_fan"], "passive": "multiplicity", "weapon_level": 5, "passive_level": 5, "changes": {"count": 16, "echo": 1, "poison": 1}}

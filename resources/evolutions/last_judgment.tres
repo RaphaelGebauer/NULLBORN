@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/evolution_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "last_judgment"
+display_name = "Last Judgment"
+description = "Reaper Gaze Lv5+ + Recovery Moss Lv5; boss chest spawned at 10:00+."
+weight = 100
+values = {"bases": ["reaper_gaze"], "passive": "recovery_moss", "weapon_level": 5, "passive_level": 5, "changes": {"damage": 60, "cooldown": 1.4, "radius": 65}}

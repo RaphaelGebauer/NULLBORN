@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "lyra"
-display_name = "Lyra · Sternenläuferin"
-description = "Lyra · Sternenläuferin"
+display_name = "Lyra · Star Runner"
+description = "Lyra · Star Runner"
 weight = 100
 values = {"weapon": "arcane_needle", "hp": 100, "speed": 220, "bonuses": {"growth": 0.1}}

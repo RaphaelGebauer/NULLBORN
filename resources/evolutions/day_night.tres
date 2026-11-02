@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "day_night"
-display_name = "Tag und Nacht"
-description = "Mondklinge Lv8 + Sonnenlaser Lv8 + Linsenfokus"
+display_name = "Day and Night"
+description = "Moon Blade Lv5+ + Sun Beam Lv5+ + Focus Lens Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["moon_blade", "sun_beam"], "passive": "focus_lens", "changes": {"behavior": "orbit", "count": 2, "radius": 120, "diameter": 1, "pierce": 8}}
+values = {"bases": ["moon_blade", "sun_beam"], "passive": "focus_lens", "weapon_level": 5, "passive_level": 5, "changes": {"behavior": "orbit", "count": 2, "radius": 120, "diameter": 1, "pierce": 8}}

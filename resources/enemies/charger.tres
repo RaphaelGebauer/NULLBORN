@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "charger"
-display_name = "Splitterläufer"
-description = "Splitterläufer · 35 HP"
+display_name = "Shard Charger"
+description = "Shard Charger · 35 HP"
 weight = 100
 values = {"hp": 35, "speed": 95, "damage": 10, "xp": 3, "radius": 13, "boss": false, "color": 0.26666666666666666}

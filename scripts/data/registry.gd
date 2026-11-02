@@ -8,7 +8,7 @@ func _init() -> void:
 		var path: String = "res://resources/"+("enemies" if kind=="enemy" else kind+"s")+"/"
 		var directory := DirAccess.open(path)
 		if directory == null:
-			errors.append("Fehlender Katalog: "+path)
+			errors.append("Missing catalog: "+path)
 			continue
 		var files := directory.get_files()
 		files.sort()
@@ -16,30 +16,30 @@ func _init() -> void:
 			if not file.ends_with(".tres"): continue
 			var definition: Resource = load(path+file)
 			if definition == null or definition.id.is_empty():
-				errors.append("Ungültige Definition "+file)
+				errors.append("Invalid definition "+file)
 				continue
-			if ids.has(definition.id): errors.append("Doppelte ID "+definition.id)
+			if ids.has(definition.id): errors.append("Duplicate ID "+definition.id)
 			ids[definition.id]=true
-			if definition.weight <= 0 or definition.description.is_empty(): errors.append("Ungültige Werte "+file)
+			if definition.weight <= 0 or definition.description.is_empty(): errors.append("Invalid values "+file)
 			catalog[definition.id]=definition
 		catalogs[kind]=catalog
 	for recipe in catalogs.get("evolution",{}).values():
 		for base in recipe.values.bases:
-			if not catalogs.weapon.has(base): errors.append("Ungültige Evolutionsbasis "+base)
-		if not catalogs.passive.has(recipe.values.passive): errors.append("Ungültiger Katalysator")
+			if not catalogs.weapon.has(base): errors.append("Invalid evolution base "+base)
+		if not catalogs.passive.has(recipe.values.passive): errors.append("Invalid catalyst")
 	for weapon in catalogs.get("weapon",{}).values():
-		if weapon.upgrades.size()!=7 or weapon.values.damage<=0 or weapon.values.cooldown<=0: errors.append("Ungültige Waffe "+weapon.id)
+		if weapon.upgrades.size()!=7 or weapon.values.damage<=0 or weapon.values.cooldown<=0: errors.append("Invalid weapon "+weapon.id)
 	for hero in catalogs.get("character",{}).values():
-		if not catalogs.weapon.has(hero.values.weapon) or hero.values.hp<=0 or hero.values.speed<=0: errors.append("Ungültiger Held "+hero.id)
+		if not catalogs.weapon.has(hero.values.weapon) or hero.values.hp<=0 or hero.values.speed<=0: errors.append("Invalid hero "+hero.id)
 	for enemy in catalogs.get("enemy",{}).values():
-		if enemy.values.hp<=0 or enemy.values.speed<=0 or enemy.values.xp<=0 or enemy.values.damage<=0: errors.append("Ungültiger Gegner "+enemy.id)
+		if enemy.values.hp<=0 or enemy.values.speed<=0 or enemy.values.xp<=0 or enemy.values.damage<=0: errors.append("Invalid enemy "+enemy.id)
 	for wave in catalogs.get("wave",{}).values():
 		var total: float=0
 		for id in wave.values.weights:
-			if not catalogs.enemy.has(id) or wave.values.weights[id]<=0: errors.append("Ungültige Welle "+wave.id)
+			if not catalogs.enemy.has(id) or wave.values.weights[id]<=0: errors.append("Invalid wave "+wave.id)
 			total+=wave.values.weights[id]
-		if not is_equal_approx(total,100) or wave.values.minute<0 or wave.values.minute>29: errors.append("Ungültige Wellengewichte "+wave.id)
-		if wave.values.boss!="" and (not catalogs.enemy.has(wave.values.boss) or not catalogs.enemy[wave.values.boss].values.boss): errors.append("Ungültiger Wellenboss "+wave.id)
+		if not is_equal_approx(total,100) or wave.values.minute<0 or wave.values.minute>29: errors.append("Invalid wave weights "+wave.id)
+		if wave.values.boss!="" and (not catalogs.enemy.has(wave.values.boss) or not catalogs.enemy[wave.values.boss].values.boss): errors.append("Invalid wave boss "+wave.id)
 func get_def(id: String) -> Resource:
 	for catalog in catalogs.values():
 		if catalog.has(id): return catalog[id]

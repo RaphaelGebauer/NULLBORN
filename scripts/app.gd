@@ -24,6 +24,7 @@ var audio: Node
 var preview: Control
 var preview_time: float=0
 var return_to_pause: bool=false
+var window_settings=preload("res://scripts/window_settings.gd").new()
 func _ready() -> void:
 	process_mode=Node.PROCESS_MODE_ALWAYS
 	save.load_save()
@@ -104,14 +105,14 @@ func menu() -> void:
 	if is_instance_valid(world):
 		remove_child(world)
 		world.queue_free()
-	box("S T E R N E N B R U C H","Überlebe den Riss. Schmiede deinen Stern.")
-	button("Neues Spiel",character_select)
-	button("Charaktere",character_select)
-	button("Sammlung / Bestiarium",collection)
+	box("S T E R N E N B R U C H","Survive the rift. Forge your star.")
+	button("New Run",character_select)
+	button("Characters",character_select)
+	button("Collection / Bestiary",collection)
 	button("Meta-Upgrades · %d Gold" % save.data.total_gold,shop)
-	button("Einstellungen",func(): return_to_pause=false; settings())
+	button("Settings",func(): return_to_pause=false; settings())
 	if save.warning!="": label(save.warning,14)
-	button("Beenden",func(): get_tree().quit())
+	button("Quit",func(): get_tree().quit())
 func start_run() -> void:
 	model=Model.new()
 	model.rng.randomize()
@@ -122,9 +123,8 @@ func start_run() -> void:
 	model.weapons={catalog.get_def(selected_hero).values.weapon:1}
 	model.meta=save.data.meta_powerups.duplicate()
 	model.unlocked_weapons=save.data.unlocked_weapons.duplicate()
-	model.rerolls+=int(model.meta.get("rerolls",0))
-	model.skips+=int(model.meta.get("skips",0))
-	model.banishes+=int(model.meta.get("banishes",0))
+	model.initialize_meta()
+	save.mark_seen(selected_hero)
 	model.recalculate()
 	model.inventory_changed.connect(record_inventory)
 	model.kills_changed.connect(check_unlocks)
@@ -178,21 +178,21 @@ func resume() -> void:
 	get_tree().paused=false
 func build_text() -> String:
 	var rows: Array=[]
-	for pair in [["Waffen",model.weapons],["Passive",model.passives]]:
+	for pair in [["Weapons",model.weapons],["Passives",model.passives]]:
 		var names: Array=[]
 		for id in pair[1]: names.append("◆ %s %d" % [model.title(id),pair[1][id]])
 		for i in range(6-pair[1].size()): names.append("◇")
 		rows.append(pair[0]+": "+"  ·  ".join(names))
 	var names: Array=[]
 	for id in model.runes: names.append(model.title(id))
-	rows.append("Runen: "+" · ".join(names))
+	rows.append("Runes: "+" · ".join(names))
 	return "\n".join(rows)
 func _process(_delta: float) -> void:
 	if is_instance_valid(preview) and preview.is_inside_tree():
 		preview_time+=_delta
 		preview.queue_redraw()
 	if state=="RUNNING":
-		hud.text="HP %d/%d   |   LV %d   XP %d/%d   |   %02d:%02d   |   %d Kills   |   %d Gold   |   Welle %d" % [model.hp,model.max_hp,model.level,model.xp,model.required_xp(),int(model.time)/60,int(model.time)%60,model.kills,model.gold,mini(30,int(model.time)/60+1)]
+		hud.text="HP %d/%d   |   LV %d   XP %d/%d   |   %02d:%02d   |   %d Kills   |   %d Gold   |   Wave %d" % [model.hp,model.max_hp,model.level,model.xp,model.required_xp(),int(model.time)/60,int(model.time)%60,model.kills,model.gold,mini(30,int(model.time)/60+1)]
 		hp_bar.max_value=model.max_hp
 		hp_bar.value=model.hp
 		xp_bar.max_value=model.required_xp()
@@ -203,7 +203,7 @@ func _process(_delta: float) -> void:
 			save.mark_seen(e.kind)
 			if e.boss: boss_label.text+="%s   %d / %d HP\n" % [model.title(e.kind),maxi(0,int(e.hp)),int(e.max_hp)]
 		var seconds: int=int(model.time)%60
-		if seconds>=50 and int(model.time)/60 in [4,9,14,19,24,28]: boss_label.text+="⚠ Boss-Ankunft in %d Sekunden" % (60-seconds)
+		if seconds>=50 and int(model.time)/60 in [4,9,14,19,24,28]: boss_label.text+="⚠ Boss arrives in %d seconds" % (60-seconds)
 		if seconds<3: boss_label.text+="\n"+catalog.get_def("wave_%02d" % mini(29,int(model.time)/60)).display_name
 		if not events.is_empty(): show_event()
 func show_event() -> void:
@@ -219,7 +219,7 @@ func show_event() -> void:
 			var pool: Array=catalog.catalogs.rune.keys().filter(func(id):return not id in model.runes)
 			cards=[]
 			while cards.size()<3 and not pool.is_empty(): cards.append(pool.pop_at(model.rng.randi_range(0,pool.size()-1)))
-			box("RUNENSEGEN","Wähle einen dauerhaften Segen für diesen Run. Kein Ausrüstungsslot nötig.")
+			box("RUNE BLESSING","Choose a blessing for this run. No equipment slot required.")
 			for i in range(cards.size()): button("%d · %s\n%s" % [i+1,model.title(cards[i]),catalog.get_def(cards[i]).description],choose_rune.bind(i))
 		"CHEST","CHEST_EVOLUTION": open_chest(state=="CHEST_EVOLUTION")
 func choose_rune(index: int) -> void:
@@ -231,7 +231,7 @@ func open_chest(eligible: bool) -> void:
 	var evolution: String=model.evolution(eligible)
 	var reward: int=model.rng.randi_range(60,140)
 	var lines: String=""
-	if evolution!="": lines="Neue Evolution!\n"+model.title(evolution)+"\n"+catalog.get_def(evolution).description
+	if evolution!="": lines="New Evolution!\n"+model.title(evolution)+"\n"+catalog.get_def(evolution).description
 	else:
 		var owned: Array=[]
 		for id in model.legal():
@@ -245,15 +245,15 @@ func open_chest(eligible: bool) -> void:
 				if owned.is_empty(): break
 				var id: String=owned.pop_at(model.rng.randi_range(0,owned.size()-1))
 				model.upgrade(id)
-				lines+="Verstärkt: "+model.title(id)+"\n"
+				lines+="Upgraded: "+model.title(id)+"\n"
 	model.gold+=roundi(reward*model.greed)
 	state="CHEST"
-	box("STERNENTRUHE",lines+"\n+%d Gold" % roundi(reward*model.greed))
+	box("STAR CHEST",lines+"\n+%d Gold" % roundi(reward*model.greed))
 	panel.modulate.a=0
 	var tween:=panel.create_tween()
 	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	tween.tween_property(panel,"modulate:a",1.0,.25)
-	button("Belohnung annehmen",resume)
+	button("Claim rewards",resume)
 func choose(index: int) -> void:
 	if state!="LEVELUP": return
 	if banishing:
@@ -271,10 +271,10 @@ func result(victory: bool) -> void:
 	var added: Array=save.finish_run(model,victory)
 	state="VICTORY" if victory else "DEFEAT"
 	get_tree().paused=true
-	box("DER RISS IST GESCHLOSSEN" if victory else "DEIN STERN VERGLÜHT","Level %d · %d Kills · %02d:%02d" % [model.level,model.kills,int(model.time)/60,int(model.time)%60])
-	label("%d Gold erhalten (Fluchbonus inklusive) · %d Bosse\n%s\nFreigeschaltet: %s" % [roundi(model.gold*(1+model.curse)),model.bosses,build_text(),", ".join(added) if not added.is_empty() else "—"],16)
-	button("Erneut versuchen",func(): menu(); start_run())
-	button("Zum Menü",menu)
+	box("THE RIFT IS SEALED" if victory else "YOUR STAR FADES","Level %d · %d Kills · %02d:%02d" % [model.level,model.kills,int(model.time)/60,int(model.time)%60])
+	label("%d Gold earned (curse bonus included) · %d Bosses\n%s\nUnlocked: %s" % [roundi(model.gold*(1+model.curse)),model.bosses,build_text(),", ".join(added) if not added.is_empty() else "—"],16)
+	button("Try Again",func(): menu(); start_run())
+	button("Main Menu",menu)
 func _unhandled_input(event: InputEvent) -> void:
 	if OS.is_debug_build() and event is InputEventKey and event.pressed and not event.echo and is_instance_valid(world) and state=="RUNNING":
 		if event.keycode in [KEY_F6,KEY_F7,KEY_F8,KEY_F9]:
@@ -284,7 +284,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode==KEY_F10: model.add_xp(500)
 		if event.keycode==KEY_F11:
 			model.weapons={"arcane_needle":8,"ash_bow":8,"frost_shard":8}
-			model.passives={"power_core":1,"runner_boots":1}
+			model.passives={"power_core":5,"runner_boots":5}
 			model.recalculate()
 		if event.keycode==KEY_F12:
 			world.drop(world.player.position,1,"chest",true)
@@ -302,9 +302,9 @@ func _unhandled_input(event: InputEvent) -> void:
 					if model.weapons.has(base): owned=true
 				if owned: recipes+=recipe.display_name+": "+recipe.description+"\n"
 			label(recipes,14)
-			button("Weiter",resume)
-			button("Einstellungen",func(): return_to_pause=true; settings())
-			button("Run beenden",confirm_end)
+			button("Resume",resume)
+			button("Settings",func(): return_to_pause=true; settings())
+			button("End Run",confirm_end)
 	if event is InputEventKey and event.pressed and not event.echo and state=="RUNE":
 		if event.keycode in [KEY_1,KEY_2,KEY_3]: choose_rune(event.keycode-KEY_1)
 	if event is InputEventKey and event.pressed and not event.echo and state=="LEVELUP":
@@ -317,11 +317,14 @@ func focus_button(node: Button) -> void:
 	if is_instance_valid(node) and node.is_inside_tree(): node.grab_focus()
 
 func redraw_cards() -> void:
-	box("VERBANNEN: Wähle eine Karte" if banishing else "STERNENAUFSTIEG · Level %d" % model.level,"Wähle eine Verstärkung. Die Welt wartet.")
+	box("BANISH: Select a card" if banishing else "STAR ASCENT · Level %d" % model.level,"Choose an upgrade. The world is paused.")
 	for i in range(3): button("%d  ·  %s\n%s" % [i+1,model.title(cards[i]),model.describe(cards[i])],choose.bind(i))
-	button("Neu würfeln [R] · %d" % model.rerolls,reroll_cards).disabled=model.rerolls<=0
-	button("Überspringen [T] · %d" % model.skips,skip_cards).disabled=model.skips<=0
-	button("Verbannen [B] · %d" % model.banishes,toggle_banish).disabled=model.banishes<=0
+	button("Reroll [R] · %d" % model.rerolls,reroll_cards).disabled=model.rerolls<=0
+	panel.get_child(-1).visible=model.meta.get("rerolls",0)>0
+	button("Skip [T] · %d" % model.skips,skip_cards).disabled=model.skips<=0
+	panel.get_child(-1).visible=model.meta.get("skips",0)>0
+	button("Banish [B] · %d" % model.banishes,toggle_banish).disabled=model.banishes<=0
+	panel.get_child(-1).visible=model.meta.get("banishes",0)>0
 func reroll_cards() -> void:
 	if state!="LEVELUP": return
 	var next: Array=model.reroll()
@@ -340,12 +343,12 @@ func toggle_banish() -> void:
 
 func character_select() -> void:
 	state="MENU"
-	box("WÄHLE DEINEN STERN","Jeder Held beginnt mit einer eigenen Waffe.")
+	box("CHOOSE YOUR STAR","Each hero starts with a unique weapon.")
 	for id in catalog.catalogs.character:
 		var d: Resource=catalog.get_def(id)
 		var locked: bool=not id in save.data.unlocked_characters
-		var requirement: String={"lyra":"sofort","brann":"1.000 Gesamtkills","noctis":"10 Minuten überleben","eira":"einen Boss besiegen"}[id]
-		button("%s · %d HP · %d Tempo\n%s · %s" % [d.display_name,d.values.hp,d.values.speed,catalog.get_def(d.values.weapon).display_name,"Gesperrt: "+requirement if locked else {"lyra":"+10 % XP","brann":"+1 Rüstung / −5 % Abklingzeit","noctis":"+15 % Kritschaden / +10 % Glück","eira":"+15 % Radius / +10 % Projektiltempo"}[id]],select_hero.bind(id)).disabled=locked
+		var requirement: String={"lyra":"Available now","brann":"1,000 total kills","noctis":"Survive 10 minutes","eira":"Defeat a boss"}[id]
+		button("%s · %d HP · %d speed\n%s · %s" % [d.display_name,d.values.hp,roundi(d.values.speed*.8),catalog.get_def(d.values.weapon).display_name,"Locked: "+requirement if locked else {"lyra":"+10 % XP","brann":"+1 armor / −5 % cooldown","noctis":"+15 % critical damage / +10 % luck","eira":"+15 % Radius / +10 % projectile speed"}[id]],select_hero.bind(id)).disabled=locked
 	preview=Control.new()
 	preview.custom_minimum_size=Vector2(700,55)
 	panel.add_child(preview)
@@ -353,19 +356,22 @@ func character_select() -> void:
 		var center: Vector2=preview.size*.5
 		preview.draw_arc(center,22,preview_time,preview_time+TAU*.8,24,Color("64c5c6"),2)
 		preview.draw_colored_polygon(PackedVector2Array([center+Vector2(0,-15),center+Vector2(11,10),center+Vector2(-11,10)]),Color("aaf6e5")))
-	button("Zurück",menu)
+	button("Back",menu)
 func select_hero(id: String) -> void:
+	if not id in save.data.unlocked_characters: return
+	save.mark_seen(id)
+	save.save()
 	selected_hero=id
 	stage_select()
 func stage_select() -> void:
-	box("AM RAND DES RISSES","Wähle Arena, Zeitmodus und freiwilligen Fluch.")
+	box("AT THE EDGE OF THE RIFT","Choose your arena, pace and optional curse.")
 	for id in catalog.catalogs.stage:
-		button(("◆ " if selected_stage==id else "◇ ")+catalog.get_def(id).display_name+(" · Gesperrt: erster Sieg" if not id in save.data.unlocked_stages else ""),func(): selected_stage=id; stage_select()).disabled=not id in save.data.unlocked_stages
-	button("Modus: "+("Schnell · 15 Minuten" if selected_fast else "Normal · 30 Minuten"),func(): selected_fast=not selected_fast; stage_select())
+		button(("◆ " if selected_stage==id else "◇ ")+catalog.get_def(id).display_name+(" · Locked: first victory" if not id in save.data.unlocked_stages else ""),func(): selected_stage=id; stage_select()).disabled=not id in save.data.unlocked_stages
+	button("Mode: "+("Quick · 15 minutes" if selected_fast else "Normal · 30 minutes"),func(): selected_fast=not selected_fast; stage_select())
 	var row:=HBoxContainer.new()
 	panel.add_child(row)
 	var text:=Label.new()
-	text.text="Fluch: +%d %% Gegner / Bonusgold" % roundi(selected_curse*100)
+	text.text="Curse: +%d %% enemies / bonus gold" % roundi(selected_curse*100)
 	row.add_child(text)
 	var slider:=HSlider.new()
 	slider.min_value=0
@@ -373,12 +379,12 @@ func stage_select() -> void:
 	slider.step=.1
 	slider.value=selected_curse
 	slider.custom_minimum_size.x=300
-	slider.value_changed.connect(func(v): selected_curse=v; text.text="Fluch: +%d %% Gegner / Bonusgold" % roundi(v*100))
+	slider.value_changed.connect(func(v): selected_curse=v; text.text="Curse: +%d %% enemies / bonus gold" % roundi(v*100))
 	row.add_child(slider)
-	button("In den Riss",start_run)
-	button("Zurück",character_select)
+	button("Enter the Rift",start_run)
+	button("Back",character_select)
 func collection() -> void:
-	box("SAMMLUNG / BESTIARIUM","%d Entdeckungen · %d Erfolge · %d Gesamtkills" % [save.data.seen.size(),save.data.achievements.size(),save.data.stats.kills])
+	box("COLLECTION / BESTIARY","%d discoveries · %d achievements · %d total kills" % [save.data.seen.size(),save.data.achievements.size(),save.data.stats.kills])
 	var scroll:=ScrollContainer.new()
 	scroll.custom_minimum_size=Vector2(900,450)
 	panel.add_child(scroll)
@@ -387,17 +393,17 @@ func collection() -> void:
 	text.fit_content=true
 	var lines: String=""
 	for kind in catalog.catalogs:
-		lines+="\n"+{"weapon":"WAFFEN","passive":"PASSIVE","enemy":"BESTIARIUM","character":"HELDEN","wave":"WELLEN","evolution":"REZEPTE","rune":"RUNEN","stage":"ARENEN"}[kind]+"\n"
+		lines+="\n"+{"weapon":"WEAPONS","passive":"PASSIVES","enemy":"BESTIARY","character":"HEROES","wave":"WAVES","evolution":"RECIPES","rune":"RUNES","stage":"ARENAS"}[kind]+"\n"
 		for d in catalog.catalogs[kind].values():
-			var discovered: bool=d.id in save.data.seen or kind in ["weapon","passive","character","stage"]
-			lines+=(d.display_name+" · "+d.description if discovered else "??? · Noch nicht entdeckt")+"\n"
+			var discovered: bool=save.discovered(d.id,kind)
+			lines+=(d.display_name+" · "+d.description if discovered else "??? · Not yet discovered")+"\n"
 	text.text=lines
 	scroll.add_child(text)
-	button("Zurück",menu)
+	button("Back",menu)
 func confirm_end() -> void:
-	box("RUN BEENDEN?","Der Run endet als Niederlage. Erhaltenes Gold bleibt erhalten.")
-	button("Weiterspielen",resume)
-	button("Run abschließen",func(): model.finish(false))
+	box("END THIS RUN?","This ends the run as a defeat. Earned gold is kept.")
+	button("Keep Playing",resume)
+	button("Finish Run",func(): model.finish(false))
 
 func record_inventory() -> void:
 	for owned in [model.weapons.keys(),model.passives.keys(),model.runes]:
@@ -407,12 +413,13 @@ func record_inventory() -> void:
 		for base in recipe.values.bases:
 			if not model.weapons.has(base): valid=false
 		if valid: save.mark_seen(recipe.id)
+	save.save()
 	check_unlocks()
 func check_unlocks() -> void:
 	var added: Array=save.unlocks(model.kills,model.bosses,model.time,false,model.evolutions,model.passives)
 	if not added.is_empty(): save.save()
 func shop() -> void:
-	box("STERNENSCHMIEDE · %d Gold" % save.data.total_gold,"Dauerhafte Verstärkungen. Wirken ab dem nächsten Run.")
+	box("STAR FORGE · %d Gold" % save.data.total_gold,"Permanent upgrades. Take effect on your next run.")
 	var scroll:=ScrollContainer.new()
 	scroll.custom_minimum_size=Vector2(800,430)
 	panel.add_child(scroll)
@@ -429,15 +436,11 @@ func shop() -> void:
 		node.pressed.connect(func(): save.buy(id); shop())
 		style_button(node)
 		rows.add_child(node)
-	button("Zurück",menu)
-func apply_settings() -> void:
+	button("Back",menu)
+func apply_settings(key: String="") -> void:
 	var values: Dictionary=save.data.settings
 	audio.configure(values)
-	if DisplayServer.get_name()!="headless":
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if values.fullscreen else DisplayServer.WINDOW_MODE_WINDOWED)
-		if not values.fullscreen:
-			var resolutions: Array=[Vector2i(1280,720),Vector2i(1600,900),Vector2i(1920,1080)]
-			DisplayServer.window_set_size(resolutions[clampi(int(values.resolution),0,2)])
+	window_settings.apply(get_window(),values,key)
 	for action in ["move_left","move_right","move_up","move_down"]: InputMap.action_set_deadzone(action,clampf(values.deadzone,.05,.5))
 	get_window().content_scale_factor=clampf(values.ui_scale,.8,1.2)
 	if is_instance_valid(world):
@@ -447,10 +450,11 @@ func apply_settings() -> void:
 		world.damage_texts=values.damage_texts
 func set_setting(key: String,value: Variant) -> void:
 	save.data.settings[key]=value
-	apply_settings()
+	apply_settings(key)
 	save.save()
+	if key=="fullscreen": settings()
 func settings() -> void:
-	box("EINSTELLUNGEN")
+	box("SETTINGS")
 	var scroll:=ScrollContainer.new()
 	scroll.custom_minimum_size=Vector2(780,460)
 	panel.add_child(scroll)
@@ -458,7 +462,7 @@ func settings() -> void:
 	rows.size_flags_horizontal=Control.SIZE_EXPAND_FILL
 	rows.add_theme_constant_override("separation",12)
 	scroll.add_child(rows)
-	for pair in [["master","Gesamtlautstärke",0,1,.05],["music","Musik",0,1,.05],["sfx","Effekte",0,1,.05],["deadzone","Controller-Totzone",.05,.5,.05],["ui_scale","UI-Skalierung",.8,1.2,.1]]:
+	for pair in [["master","Master Volume",0,1,.05],["music","Music",0,1,.05],["sfx","Effects",0,1,.05],["deadzone","Controller Deadzone",.05,.5,.05],["ui_scale","UI Scale",.8,1.2,.1]]:
 		var row:=HBoxContainer.new()
 		rows.add_child(row)
 		var text:=Label.new()
@@ -473,18 +477,24 @@ func settings() -> void:
 		slider.custom_minimum_size=Vector2(300,30)
 		slider.value_changed.connect(func(v): set_setting(pair[0],v))
 		row.add_child(slider)
-	for pair in [["fullscreen","Vollbild"],["screen_shake","Kamerawackeln"],["reduce_flash","Blinken reduzieren"],["damage_texts","Schadenstexte"]]:
+	for pair in [["fullscreen","Fullscreen"],["screen_shake","Screen Shake"],["reduce_flash","Reduce Flashes"],["damage_texts","Damage Numbers"]]:
 		var toggle:=CheckButton.new()
 		toggle.text=pair[1]
 		toggle.button_pressed=save.data.settings[pair[0]]
+		toggle.disabled=pair[0]=="fullscreen" and window_settings.embedded(get_window())
 		toggle.toggled.connect(func(v): set_setting(pair[0],v))
 		rows.add_child(toggle)
 	var resolution:=OptionButton.new()
 	for option in ["1280 × 720","1600 × 900","1920 × 1080"]: resolution.add_item(option)
 	resolution.selected=clampi(int(save.data.settings.resolution),0,2)
+	resolution.disabled=window_settings.embedded(get_window()) or save.data.settings.fullscreen
 	resolution.item_selected.connect(func(v): set_setting("resolution",v))
 	rows.add_child(resolution)
-	button("Zurück",func():
+	if window_settings.embedded(get_window()):
+		var hint:=Label.new()
+		hint.text="Window size is controlled by the editor. Run in a separate window to change it."
+		rows.add_child(hint)
+	button("Back",func():
 		if return_to_pause: resume()
 		else: menu())
 

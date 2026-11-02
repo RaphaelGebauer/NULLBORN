@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "meteor_heart"
-display_name = "Meteorherz"
-description = "Sturmbombe Lv8 + Wachstumskrone"
+display_name = "Meteor Heart"
+description = "Storm Bomb Lv5+ + Growth Crown Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["storm_bomb"], "passive": "growth_crown", "changes": {"radius": 120, "secondary": 5}}
+values = {"bases": ["storm_bomb"], "passive": "growth_crown", "weapon_level": 5, "passive_level": 5, "changes": {"radius": 120, "secondary": 5}}

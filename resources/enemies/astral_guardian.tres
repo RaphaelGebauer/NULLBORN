@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "astral_guardian"
-display_name = "Astralwächter"
-description = "Astralwächter · 850 HP"
+display_name = "Astral Guardian"
+description = "Astral Guardian · 850 HP"
 weight = 100
 values = {"hp": 850, "speed": 65, "damage": 18, "xp": 60, "radius": 40, "boss": true, "color": 0.8}

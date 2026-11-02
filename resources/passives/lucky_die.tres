@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "lucky_die"
-display_name = "Glückswürfel"
-description = "+10 % Glück je Stufe"
+display_name = "Lucky Die"
+description = "+10 % luck per level"
 weight = 100
 values = {"stat": "luck", "bonus": 0.1}

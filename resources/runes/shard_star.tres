@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "shard_star"
-display_name = "Splitterstern"
-description = "Nadel/Frost: +1 Projektil"
+display_name = "Shard Star"
+description = "Needle/Frost: +1 projectile"
 weight = 100
 values = {}

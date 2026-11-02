@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "reaper_gaze"
+display_name = "Reaper's Gaze"
+description = "Targets the weakest enemy; triple damage below 35% health."
+weight = 60
+values = {"behavior": "execution", "damage": 18, "cooldown": 2.8, "speed": 0, "count": 1, "radius": 28, "duration": 0, "tick": 0.5, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.8, "bounces": 0}
+upgrades = Array[Dictionary]([{"delta": {"damage": 2.7}, "text": "Damage +2.7"}, {"delta": {"cooldown": -0.2}, "text": "Cooldown -0.2"}, {"delta": {"damage": 2.7}, "text": "Damage +2.7"}, {"delta": {"damage": 2.7}, "text": "Damage +2.7"}, {"delta": {"cooldown": -0.2}, "text": "Cooldown -0.2"}, {"delta": {"damage": 2.7}, "text": "Damage +2.7"}, {"delta": {"damage": 2.7}, "text": "Damage +2.7"}])

@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "iron_skin"
-display_name = "Eisenhaut"
-description = "+1 Rüstung je Stufe"
+display_name = "Iron Skin"
+description = "+1 armor per level"
 weight = 100
 values = {"stat": "armor", "bonus": 1}

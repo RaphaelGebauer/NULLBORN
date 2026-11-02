@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/evolution_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "spectral_carousel"
+display_name = "Spectral Carousel"
+description = "Prism Disc Lv5+ + Execution Seal Lv5; boss chest spawned at 10:00+."
+weight = 100
+values = {"bases": ["prism_disc"], "passive": "execution_seal", "weapon_level": 5, "passive_level": 5, "changes": {"count": 3, "bounces": 7, "speed": 500}}

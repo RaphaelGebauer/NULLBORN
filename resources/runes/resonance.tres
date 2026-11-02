@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "resonance"
-display_name = "Kampfresonanz"
-description = "Alle 20 Kills −15 % Abklingzeit für 3 s"
+display_name = "Battle Resonance"
+description = "Every 20 kills −15 % cooldown for 3 s"
 weight = 100
 values = {}

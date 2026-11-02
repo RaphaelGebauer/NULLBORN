@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "multiplicity"
-display_name = "Mehrfachkern"
-description = "+1 Projektil auf Lv2/4, sonst +5 % Projektilschaden"
+display_name = "Multiplicity"
+description = "+1 projectile at Lv2/4; otherwise +5% projectile damage"
 weight = 100
 values = {"stat": "amount", "bonus": 1}

@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "void_queen"
-display_name = "Leerenkönigin"
-description = "Leerenkönigin · 1250 HP"
+display_name = "Void Queen"
+description = "Void Queen · 1250 HP"
 weight = 100
 values = {"hp": 1250, "speed": 75, "damage": 20, "xp": 80, "radius": 43, "boss": true, "color": 0.8666666666666667}

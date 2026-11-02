@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "treasure"
-display_name = "Schatzsucher"
-description = "+25 % Gold und sofort +1 Neuwürfeln"
+display_name = "Treasure Hunter"
+description = "+25 % Gold and +1 reroll if unlocked in the meta shop"
 weight = 100
 values = {}

@@ -29,7 +29,7 @@ func run() -> void:
 	check(scene.model.kills>=1,"Echtes automatisches Projektil tötet Gegner")
 	var registry=model.registry
 	check(registry.errors.is_empty(),"Registry validiert Ressourcen und Abhängigkeiten")
-	for pair in [["weapon",12],["passive",13],["enemy",15],["character",4],["wave",30],["evolution",14],["rune",8],["stage",2]]:
+	for pair in [["weapon",15],["passive",17],["enemy",15],["character",4],["wave",30],["evolution",17],["rune",8],["stage",2]]:
 		check(registry.catalogs[pair[0]].size()==pair[1],"Katalog "+pair[0])
 	for weapon in registry.catalogs.weapon:
 		check(registry.get_def(weapon).upgrades.size()==7 and registry.weapon_values(weapon,8).damage>=registry.weapon_values(weapon,1).damage,"Sieben echte Upgrades: "+weapon)
@@ -39,6 +39,10 @@ func run() -> void:
 	check(model.offers()==["reward_gold","reward_heal","reward_xp"],"Drei verschiedene Fallbacks")
 	model.weapons={"arcane_needle":1}
 	model.passives={}
+	check(model.rerolls==0 and model.skips==0 and model.banishes==0,"Fresh runs have no unpaid selection tools")
+	model.rerolls=2
+	model.skips=1
+	model.banishes=1
 	var rr: int=model.rerolls
 	check(model.reroll().size()==3 and model.rerolls==rr-1,"Reroll verbraucht Charge")
 	check(model.banish("power_core").size()==3 and not "power_core" in model.legal() and model.banishes==0,"Banish schließt Item aus")
@@ -82,13 +86,15 @@ func run() -> void:
 	combat_world.collect(coin)
 	check(scene.model.gold==before+5,"Gold nur einmal gesammelt")
 	var evo=load("res://scripts/run_model.gd").new()
-	evo.weapons={"arcane_needle":8}
+	evo.weapons={"arcane_needle":5}
 	check(evo.evolution(true)=="","Evolution braucht Katalysator")
-	evo.passives={"power_core":1}
+	evo.passives={"power_core":4}
+	check(evo.evolution(true)=="","Lv4 catalyst cannot evolve weapon")
+	evo.passives.power_core=5
 	check(evo.evolution(false)=="","Alte Boss-Truhe bleibt nicht evolutionsfähig")
 	check(evo.evolution(true)=="star_piercer" and evo.weapons.size()==1 and not evo.weapons.has("arcane_needle"),"Evolution ersetzt Basis, erhält Slotzahl")
-	evo.weapons={"ash_bow":8,"frost_shard":8}
-	evo.passives={"runner_boots":1}
+	evo.weapons={"ash_bow":5,"frost_shard":5}
+	evo.passives={"runner_boots":5}
 	check(evo.evolution(true)=="dusk_storm" and evo.weapons.size()==1,"Fusion hat Vorrang und gibt Slot frei")
 	for recipe in registry.catalogs.evolution.values():
 		var v: Dictionary=registry.weapon_values(recipe.id,1)
@@ -189,7 +195,7 @@ func run() -> void:
 	proc_model.tick(3.1)
 	check(proc_model.resonance==0,"Resonanz läuft in Spielzeit aus")
 	proc_model.add_rune("treasure")
-	check(proc_model.rerolls==3 and proc_model.greed==1.25,"Schatzsucher gibt Goldbonus und Reroll")
+	check(proc_model.rerolls==0 and proc_model.greed==1.25,"Treasure grants gold without bypassing reroll unlock")
 	combat_world.enemies.clear()
 	combat_world.model.weapons={}
 	combat_world.model.runes=[]
@@ -214,6 +220,69 @@ func run() -> void:
 	combat_world.model.runes=["time_anchor"]
 	var duration_values: Dictionary=registry.weapon_values("sun_beam",1)
 	check(is_equal_approx(combat_world.combat.params(duration_values).duration,duration_values.duration*combat_world.model.duration*1.25),"Zeitanker verlängert echten Beam")
+	var pace=load("res://scripts/run_model.gd").new()
+	pace.recalculate()
+	check(is_equal_approx(pace.speed,176),"Slower starting movement")
+	pace.meta={"long_stride":2}
+	pace.recalculate()
+	pace.tick(120)
+	check(pace.speed>176 and is_equal_approx(pace.speed,176*1.04),"Long Stride increases movement with game time")
+	pace.passives={"momentum_feather":2,"recovery_moss":4}
+	pace.recalculate()
+	check(pace.speed>176*1.04 and pace.regeneration==1,"Momentum Feather and Recovery Moss have real effects")
+	check(not scene.save.discovered("prism_disc","weapon") and not scene.save.discovered("brann","character"),"Unselected equipment and characters stay hidden")
+	scene.save.mark_seen("prism_disc")
+	check(scene.save.discovered("prism_disc","weapon"),"Selecting equipment reveals its collection entry")
+	var paid_tools=load("res://scripts/run_model.gd").new()
+	paid_tools.meta={"rerolls":2,"skips":1,"banishes":1}
+	paid_tools.initialize_meta()
+	check(paid_tools.rerolls==2 and paid_tools.skips==1 and paid_tools.banishes==1,"Purchased meta ranks grant exact run charges")
+	paid_tools.add_rune("treasure")
+	check(paid_tools.rerolls==3,"Treasure adds a reroll after its meta unlock")
+	var before_requests: int=scene.window_settings.requests
+	scene.set_setting("music",.3)
+	scene.set_setting("sfx",.4)
+	check(scene.window_settings.requests==before_requests,"Audio controls never resize the window")
+	check(scene.window_settings.embedded(root,PackedStringArray(["--wid","123"])) and scene.window_settings.embedded(root,PackedStringArray(["--wid=123"])),"Native embedded-window arguments detected")
+	check(scene.save.defaults().settings.resolution==2,"New saves default to 1920x1080")
+	combat_world.model.passives={}
+	combat_world.model.runes=[]
+	combat_world.model.crit=0
+	combat_world.model.might=1
+	combat_world.model.projectile_damage=1
+	combat_world.model.amount=0
+	for weapon in ["prism_disc","gravity_mine","reaper_gaze"]:
+		combat_world.enemies.clear()
+		combat_world.shots.clear()
+		combat_world.combat.effects.clear()
+		var first: Dictionary=combat_world.spawn_enemy("guardian",Vector2(60,0))
+		var second: Dictionary=combat_world.spawn_enemy("guardian",Vector2(140,0))
+		first.hp=200
+		first.max_hp=1000
+		second.hp=500
+		second.max_hp=1000
+		combat_world.grid.rebuild(combat_world.enemies)
+		var v: Dictionary=registry.weapon_values(weapon,1)
+		combat_world.combat.call("attack_"+v.behavior,weapon,v,first)
+		for i in range(90):
+			combat_world.combat.update(.016)
+			combat_world.update_shots(.016)
+		check(first.hp<200,"New weapon damages enemies: "+weapon)
+		if weapon=="prism_disc": check(second.hp<500,"Prism Disc bounces to a different enemy")
+		if weapon=="gravity_mine": check(second.statuses.has("slow") and second.pos.x<140,"Gravity Mine pulls and slows")
+		if weapon=="reaper_gaze": check(first.hp<=146,"Reaper's Gaze deals triple damage below 35% HP")
+	combat_world.enemies.clear()
+	combat_world.model.passives={"execution_seal":5}
+	var wounded: Dictionary=combat_world.spawn_enemy("guardian",Vector2(40,0))
+	wounded.hp=300
+	wounded.max_hp=1000
+	combat_world.hit(wounded,10,{},"test")
+	check(wounded.hp==286,"Execution Seal amplifies direct damage to wounded enemies")
+	combat_world.model.passives={"frost_thorns":3}
+	combat_world.grid.rebuild(combat_world.enemies)
+	combat_world.player.invulnerable=0
+	combat_world.hurt_player(1)
+	check(wounded.hp<286 and wounded.statuses.has("slow"),"Frost Thorns retaliates with actual damage and slow")
 	scene.model.hurt(1000)
 	check(scene.state=="DEFEAT","Tod und Ergebnis")
 	# These screens build real Controls; catch stale paths and signal/closure errors.

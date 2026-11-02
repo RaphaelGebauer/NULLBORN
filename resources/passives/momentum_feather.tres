@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/passive_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "momentum_feather"
+display_name = "Momentum Feather"
+description = "Gain +2% movement speed per minute per level; caps after 5 minutes."
+weight = 100
+values = {"stat": "momentum", "bonus": 0.02}

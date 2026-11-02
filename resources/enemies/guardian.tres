@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "guardian"
-display_name = "Nebelwächter"
-description = "Nebelwächter · 70 HP"
+display_name = "Mist Guardian"
+description = "Mist Guardian · 70 HP"
 weight = 100
 values = {"hp": 70, "speed": 60, "damage": 12, "xp": 4, "radius": 22, "boss": false, "color": 0.2}

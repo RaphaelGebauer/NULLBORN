@@ -1,5 +1,5 @@
 extends CharacterBody2D
-var speed: float = 220.0
+var speed: float = 176.0
 var facing := Vector2.RIGHT
 var tint: Color=Color("8df5eb")
 var shape_id: int=0
@@ -30,8 +30,8 @@ func _draw() -> void:
 	draw_circle(Vector2(0,8), 16, Color(0,0,0,0.4))
 	var color: Color=tint
 	if not reduce_flash and invulnerable > 0 and int(invulnerable * 18) % 2 == 0: color = Color.WHITE
+	draw_set_transform(Vector2.ZERO,facing.angle()+PI/2)
 	draw_colored_polygon(PackedVector2Array([Vector2(0,-21),Vector2(14,12),Vector2(0,7),Vector2(-14,12)]),color)
-	draw_circle(facing * 9, 4, Color("fff2b0"))
 	if shape_id==1: draw_rect(Rect2(Vector2(-17,-5),Vector2(34,12)),color.darkened(.15))
 	if shape_id==2: draw_arc(Vector2(0,-5),19,-PI,0,16,color,3)
 	if shape_id==3:

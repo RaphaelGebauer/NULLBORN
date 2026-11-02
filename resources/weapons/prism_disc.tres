@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/weapon_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "prism_disc"
+display_name = "Prism Disc"
+description = "Discs bounce between different enemies, up to 240 px apart."
+weight = 60
+values = {"behavior": "ricochet", "damage": 15, "cooldown": 1.7, "speed": 380, "count": 1, "radius": 12, "duration": 0, "tick": 0.5, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.8, "bounces": 2}
+upgrades = Array[Dictionary]([{"delta": {"damage": 2.25}, "text": "Damage +2.25"}, {"delta": {"bounces": 1}, "text": "Bounces +1"}, {"delta": {"damage": 2.25}, "text": "Damage +2.25"}, {"delta": {"damage": 2.25}, "text": "Damage +2.25"}, {"delta": {"bounces": 1}, "text": "Bounces +1"}, {"delta": {"damage": 2.25}, "text": "Damage +2.25"}, {"delta": {"damage": 2.25}, "text": "Damage +2.25"}])

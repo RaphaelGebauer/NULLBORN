@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "lasting_seal"
-display_name = "Dauersiegel"
-description = "+12 % Wirkdauer je Stufe"
+display_name = "Lasting Seal"
+description = "+12 % duration per level"
 weight = 100
 values = {"stat": "duration", "bonus": 0.12}

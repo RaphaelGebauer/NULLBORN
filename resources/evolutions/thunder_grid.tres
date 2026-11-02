@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "thunder_grid"
-display_name = "Donnergitter"
-description = "Blitzruf Lv8 + Glückswürfel"
+display_name = "Thunder Grid"
+description = "Lightning Call Lv5+ + Lucky Die Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["lightning_call"], "passive": "lucky_die", "changes": {"count": 4, "chain": 3}}
+values = {"bases": ["lightning_call"], "passive": "lucky_die", "weapon_level": 5, "passive_level": 5, "changes": {"count": 4, "chain": 3}}

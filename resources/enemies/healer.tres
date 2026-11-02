@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "healer"
-display_name = "Dunstpriester"
-description = "Dunstpriester · 50 HP"
+display_name = "Haze Priest"
+description = "Haze Priest · 50 HP"
 weight = 100
 values = {"hp": 50, "speed": 70, "damage": 7, "xp": 5, "radius": 16, "boss": false, "color": 0.6}

@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "ash"
-display_name = "Sternenasche"
-description = "Kristallkrater · +10 % Gegnerdichte"
+display_name = "Star Ash"
+description = "Crystal craters · +10% enemy density"
 weight = 100
 values = {"density": 1.1, "background": "251d30", "accent": "88608a"}

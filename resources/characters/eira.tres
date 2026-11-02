@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "eira"
-display_name = "Eira · Frostseherin"
-description = "Eira · Frostseherin"
+display_name = "Eira · Frost Seer"
+description = "Eira · Frost Seer"
 weight = 100
 values = {"weapon": "frost_shard", "hp": 95, "speed": 220, "bonuses": {"area": 0.15, "projectile_speed": 0.1}}

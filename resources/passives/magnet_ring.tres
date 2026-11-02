@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "magnet_ring"
-display_name = "Magnetring"
-description = "+25 Magnetradius (px) je Stufe"
+display_name = "Magnet Ring"
+description = "+25 magnet radius (px) per level"
 weight = 100
 values = {"stat": "magnet", "bonus": 25}

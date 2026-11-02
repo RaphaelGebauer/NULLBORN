@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "dusk_storm"
-display_name = "Dämmersturm"
-description = "Aschebogen Lv8 + Frostsplitter Lv8 + Laufstiefel"
+display_name = "Dusk Storm"
+description = "Ash Bow Lv5+ + Frost Shard Lv5+ + Runner Boots Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["ash_bow", "frost_shard"], "passive": "runner_boots", "changes": {"behavior": "radial", "count": 20, "burn": 1, "slow": 1, "echo": 1}}
+values = {"bases": ["ash_bow", "frost_shard"], "passive": "runner_boots", "weapon_level": 5, "passive_level": 5, "changes": {"behavior": "radial", "count": 20, "burn": 1, "slow": 1, "echo": 1}}

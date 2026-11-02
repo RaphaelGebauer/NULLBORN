@@ -1,54 +1,73 @@
 # STERNENBRUCH
 
-Eigenständiges, offline spielbares Cosmic-Fantasy-Survivor-Roguelite. Ausschließlich **Godot 4.7.2 Stable**, GDScript 2.0, Compatibility-Renderer. Keine Plugins, Asset-Downloads, .NET-Abhängigkeiten oder Netzwerkdienste erforderlich.
+An original, offline cosmic-fantasy survivor roguelite. **Godot 4.7.2 Stable**, GDScript 2.0, Compatibility renderer. No plugins, downloaded assets or network services required. All gameplay text is English.
 
-![Tatsächliche Arena mit automatischen Angriffen](docs/screenshots/arena.png)
+![Arena](docs/screenshots/arena.png)
 
-## Starten
+## Play
 
-Godot **4.7.2 Stable** öffnen → Importieren → `project.godot` → F5. Alternativ:
+Import `project.godot` in **Godot 4.7.2 Stable**, then press **F5**. In this cloud environment use `/workspace/tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64`; the system-wide `godot` is an older version.
+
+Choose a hero and arena, select a rune and survive for 30 minutes. Quick mode advances the same waves in 15 real minutes. Weapons fire automatically. Move with WASD, arrow keys or the left controller stick. The player arrow points along the last movement direction and stays pointed that way when stationary.
+
+- 1/2/3: choose a level-up or rune card.
+- R/T/B: reroll/skip/banish **after buying their meta upgrades**. They start locked, with no free charges.
+- Esc / controller Start: pause. Enter/A confirms; arrow keys/D-pad navigate menus.
+- Break lanterns for healing, gold and rare specials; collect chests by touching them.
+- Six weapon slots and six passive slots. Weapons have eight levels; passives have five.
+
+## Window and audio settings
+
+The default standalone window is **1920×1080**. Settings offer 1280×720, 1600×900 and 1920×1080. Existing saved resolution choices are preserved. Resolution selection is available in windowed mode; fullscreen uses the display.
+
+Godot's embedded game view belongs to the editor and cannot be resized by the game. Its resolution/fullscreen controls are disabled with an explanation. Disable **Embed Game on Play** / run the project in a separate window to test native resizing. Audio changes never request window resizing or mode changes.
+
+## Progression and pacing
+
+The opening is slower: base hero movement is 80% of the original values (Lyra: 176 px/s), enemy movement begins at 85%, and spawn rate begins at 60%. Enemy/spawn opening modifiers ramp to their full values over five in-game minutes.
+
+The Star Forge offers **16 permanent upgrades**. Fleet Foot grants immediate movement speed; Long Stride grants +1% movement speed per in-game minute **per rank**, capped after ten minutes. Additional upgrades include regeneration, crit chance, area, duration and cooldown. Reroll, skip and banish must be purchased first. Treasure Hunter can add a reroll only after that feature is unlocked.
+
+The collection hides weapons, passives and heroes until selected. A starting weapon counts as acquired when starting its hero's run. Merely seeing a card or unlocking a hero does not reveal that entry. Discoveries are saved immediately.
+
+## Equipment and evolution
+
+**15 weapons, 17 passives, 15 weapon evolutions and 2 fusions.**
+
+New weapons: **Prism Disc** bounces between distinct enemies; **Gravity Mine** arms and detonates with pull/slow; **Reaper's Gaze** targets the weakest enemy and deals triple damage below 35% HP.
+
+New passives: **Recovery Moss** regenerates HP, **Execution Seal** increases damage against wounded enemies, **Frost Thorns** retaliates with a slowing nova when contact damage is taken, and **Momentum Feather** increases movement speed over time.
+
+An evolution requires:
+
+1. Its base weapon at **level 5 or higher**.
+2. Its matching passive at **level 5**.
+3. A chest from a boss **spawned at 10:00 or later**. Opening an older chest later does not upgrade its eligibility.
+
+Example: **Arcane Needle Lv5+ + Power Core Lv5 → Star Piercer** in an eligible boss chest. The weapon is replaced and the passive is kept. Passives do not evolve independently. Fusions require both base weapons at Lv5+ and their matching passive at Lv5; both bases become one weapon, freeing a slot. Recipes are listed in the pause screen and discovered collection entries.
+
+## Save compatibility
+
+Save data uses `user://savegame.json`. Existing gold, upgrades, unlocks and settings are retained; the new weapons are added to existing offer pools. Invalid saves are backed up as `.corrupt.bak`. Gold is banked once per run. Meta purchases apply to the next run.
+
+## Validation
 
 ```sh
-godot --path .
+GODOT_BIN=/path/to/Godot_v4.7.2-stable_linux.x86_64 ./tools/check.sh
+# CPU load test and complete 30-minute simulation:
+GODOT_BIN=/path/to/Godot_v4.7.2-stable_linux.x86_64 ./tools/check.sh --long
 ```
 
-In dieser Cloud-Umgebung ist die geprüfte Engine unter `/workspace/tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64` installiert. Das systemweite `godot` ist **4.6.3** und wird für dieses Projekt nicht verwendet. Bei gesperrten Home-Verzeichnissen XDG_DATA_HOME, XDG_CONFIG_HOME und XDG_CACHE_HOME auf beschreibbare Verzeichnisse setzen; `tools/check.sh` erledigt das für Tests.
+`tests/window_runner.gd` requires a graphical display and checks actual native window sizes and audio changes. Run it again with Godot's `--wid <parent-window-id>` to verify true embedded mode. `tests/visual_runner.gd` renders menus/gameplay and checks keyboard and simulated stick movement. Captures go to `STERNENBRUCH_CAPTURE_DIR`, or `user://captures` by default.
 
-## Spielen
+Headless simulation measures simulation CPU time, not rendered FPS. Physical controller, audible balance, fullscreen/DPI on target hardware, and a human 30-minute balance playthrough remain manual checks. See `STATUS.md`, `DESIGN.md`, `BALANCE.md` and `docs/SMOKE_TEST.md`.
 
-Hauptmenü → Neues Spiel → Held → Arena → Modus/Fluch → In den Riss → Runensegen. Bewegung mit WASD, Pfeiltasten oder linkem Controller-Stick. Waffen greifen automatisch an. XP-Juwelen einsammeln; pro Aufstieg genau eine von drei verschiedenen Verstärkungen wählen. Standardmäßig maximal sechs Waffen und sechs Passive. Bosse ab Minute 10 bringen evolutionsfähige Truhen: Basiswaffe Lv8 + Katalysator mindestens Lv1. Fusionen haben Vorrang. Überleben bis 30:00 gewinnt; Schnellmodus durchläuft dieselben Wellen in 15 realen Minuten.
+## Debug shortcuts
 
-- 1/2/3: Level-up-/Runenkarte auswählen.
-- R: neu würfeln; T: überspringen; B: Verbannen aktivieren, danach eine Karte auswählen.
-- Esc / Controller-Start: Pause; Enter/A bestätigt Menüs, Pfeile/D-Pad wechseln Fokus.
-- Menüs, Reroll/Skip/Banish und alle Karten sind auch direkt mit Maus bzw. Controller-Fokus bedienbar.
-- Truhen werden bei Berührung geöffnet; sie werden nicht magnetisch angezogen.
-- Laternen können durch Angriffe zerstört werden und Heilung/Gold/Spezialpickups freigeben.
+Only in debug builds and while playing: F6/F7/F8/F9 jump to 09:50/10:00/20:00/29:00; F10 grants XP; F11 grants weapons and matching Lv5 catalysts; F12 drops a real eligible chest and grants run gold. Disabled in release builds. These use production gameplay logic.
 
-Gold wird beim Run-Ende einmalig verbucht. Shop-Upgrades wirken ab dem nächsten Run. Helden und die zweite Arena werden durch Erfolge freigeschaltet. Save: `user://savegame.json`; beschädigte Dateien werden nach `.corrupt.bak` gesichert.
+## Editing
 
-## Inhalt
+`resources/` contains editable typed `.tres` definitions. `tools/generate_data.py` regenerates that catalog and overwrites its definition files: keep changes to the generator and resources consistent. `scripts/run_model.gd` owns run stats/progression, `combat.gd` owns attack behavior, `world.gd` owns enemies/loot, `save_manager.gd` owns meta/unlocks, and `window_settings.gd` isolates native window changes.
 
-4 Helden, 12 Basiswaffen mit jeweils sieben Upgrades, 13 Passive, 12 Evolutionen, 2 Fusionen, 12 reguläre Gegner, 3 Bosse, 30 Wellen, 8 Runen, 2 Arenen. Normal/Schnell/Fluch, HP/XP/Gold, Status-Effekte, Truhen, Runen-/Level-up-Queue, Meta-Shop, Sammlung/Bestiarium und Einstellungen. Alle Grafiken und Klänge sind prozedural und original.
-
-## Prüfen
-
-```sh
-GODOT_BIN=/pfad/zu/Godot_v4.7.2-stable_linux.x86_64 ./tools/check.sh
-# Zusätzlich drei Minuten Lastsimulation und vollständiger 30-Minuten-Run:
-GODOT_BIN=/pfad/zu/Godot_v4.7.2-stable_linux.x86_64 ./tools/check.sh --long
-```
-
-Einzelne Tests: `godot --headless --path . -s res://tests/test_runner.gd`, `tests/stress_runner.gd`, `tests/full_run_runner.gd`. Parsercheck: `godot --headless --editor --path . --quit`. `tools/check.sh` kontrolliert zusätzlich Logs auf Scriptfehler, Fehlerausgaben und Leaks, da Godot bei manchen Scriptfehlern keinen Fehlerstatus liefert. Tests schreiben keine echten Spielerfortschritte.
-
-`tests/visual_runner.gd` benötigt einen tatsächlichen oder virtuellen Bildschirm, läuft **ohne** `--headless`, prüft Tastatur-/simulierte Stickbewegung und fotografiert zehn Menüs/Spielzustände sowie UI-Skalierung. Zielverzeichnis optional über `STERNENBRUCH_CAPTURE_DIR`, sonst `user://captures`. Ein physischer Controller und Audio-Wiedergabe müssen auf dem Zielrechner manuell geprüft werden.
-
-## Debug-Werkzeuge
-
-Nur `OS.is_debug_build()`, nur während einer laufenden Welt: F6 → 09:50, F7 → 10:00, F8 → 20:00, F9 → 29:00; F10 → +500 XP; F11 → Nadel/Bogen/Frost Lv8 mit Katalysatoren; F12 → echte evolutionsfähige Truhe +500 Run-Gold. In Release-Exports deaktiviert. Diese Werkzeuge nutzen dieselbe Inventar-, Truhen- und Kampfimplementierung wie das Spiel.
-
-## Aufbau und Grenzen
-
-`STATUS.md` enthält den Fortsetzungsstand und tatsächliche Testergebnisse. `DESIGN.md` erläutert Architektur und bewusste Vereinfachungen. `BALANCE.md` nennt die Datenquellen. `docs/SMOKE_TEST.md` trennt automatisiert geprüfte Bedienabläufe von offenen manuellen Prüfungen. Prüflogs liegen unter `test-results/`.
-
-Die Inspiration sind automatische Angriffe, Minutenwellen, drei Upgrade-Angebote, 6+6 Ausrüstung und Truhenevolutionen. Namen, Welt, Zahlen, Rezepte, Formen und Klänge sind eigene Inhalte gemäß Spezifikation. Es werden keine Assets des Vorbilds verwendet.
+Automatic combat, minute waves, three upgrade choices, 6+6 slots and chest evolutions are genre inspirations. Names, graphics, audio, world and balance are original. `CODEX_MASTERPROMPT.md` preserves the original German brief; later user-requested changes documented here supersede its original language/balance requirements.

@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "ghost_well"
-display_name = "Geisterbrunnen"
-description = "Seelensog Lv8 + Blutphiole"
+display_name = "Ghost Well"
+description = "Soul Well Lv5+ + Blood Vial Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["soul_well"], "passive": "blood_vial", "changes": {"count": 2, "pull": 1, "leech_kills": 20, "radius": 110}}
+values = {"bases": ["soul_well"], "passive": "blood_vial", "weapon_level": 5, "passive_level": 5, "changes": {"count": 2, "pull": 1, "leech_kills": 20, "radius": 110}}

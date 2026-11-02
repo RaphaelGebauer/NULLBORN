@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "solar_orbit"
-display_name = "Sonnenorbit"
-description = "Funkenkranz Lv8 + Dauersiegel"
+display_name = "Solar Orbit"
+description = "Spark Orbit Lv5+ + Lasting Seal Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["spark_orbit"], "passive": "lasting_seal", "changes": {"count": 6, "pulse": 1}}
+values = {"bases": ["spark_orbit"], "passive": "lasting_seal", "weapon_level": 5, "passive_level": 5, "changes": {"count": 6, "pulse": 1}}

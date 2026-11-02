@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "wave_01"
-display_name = "Welle 02 · Sternenbruch"
-description = "Welle 02 · Sternenbruch"
+display_name = "Wave 02 · Sternenbruch"
+description = "Wave 02 · Sternenbruch"
 weight = 100
 values = {"minute": 1, "weights": {"wisp": 55, "mite": 30, "crawler": 15}, "boss": "", "rune": false}

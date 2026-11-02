@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "storm_core"
-display_name = "Sturmkern"
-description = "Sturmkern · 2400 HP"
+display_name = "Storm Core"
+description = "Storm Core · 2400 HP"
 weight = 100
 values = {"hp": 2400, "speed": 80, "damage": 24, "xp": 100, "radius": 48, "boss": true, "color": 0.9333333333333333}

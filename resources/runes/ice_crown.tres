@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "ice_crown"
-display_name = "Eiskrone"
-description = "8 % Verlangsamungschance bei direkten Treffern"
+display_name = "Ice Crown"
+description = "8% slow chance on direct hits"
 weight = 100
 values = {}

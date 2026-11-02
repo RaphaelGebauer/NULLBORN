@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "focus_lens"
-display_name = "Linsenfokus"
-description = "+10 % Flächenradius je Stufe"
+display_name = "Focus Lens"
+description = "+10 % area radius per level"
 weight = 100
 values = {"stat": "area", "bonus": 0.1}

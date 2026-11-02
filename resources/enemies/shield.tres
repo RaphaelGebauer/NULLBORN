@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "shield"
-display_name = "Eisenhüter"
-description = "Eisenhüter · 110 HP"
+display_name = "Iron Sentinel"
+description = "Iron Sentinel · 110 HP"
 weight = 100
 values = {"hp": 110, "speed": 65, "damage": 14, "xp": 6, "radius": 22, "boss": false, "color": 0.5333333333333333}

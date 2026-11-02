@@ -51,7 +51,7 @@ func spawn_enemy(id: String="wisp",pos: Vector2=Vector2.INF,child: bool=false) -
 	var hp_scale: float=(1+.055*m+.0025*m*m)*(1+.006*maxi(model.level-1,0))*(1+.10*floori(m/5.0))*(1+model.curse)
 	var e: Dictionary={} if enemy_pool.is_empty() else enemy_pool.pop_back()
 	e.clear()
-	e.merge({"id":serial,"kind":id,"pos":pos,"hp":v.hp*hp_scale,"max_hp":v.hp*hp_scale,"speed":v.speed*minf(1.35,1+.012*m)*(1+.35*model.curse),"damage":v.damage*(1+.035*m),"xp":v.xp,"radius":float(v.radius),"velocity":Vector2.ZERO,"boss":boss,"timer":2.0,"phase":0,"charge":Vector2.ZERO,"age":0.0,"hits":{},"statuses":{},"dot":0.0,"child":child,"spawn_minute":m,"flash":0.0,"leech_source":""})
+	e.merge({"id":serial,"kind":id,"pos":pos,"hp":v.hp*hp_scale,"max_hp":v.hp*hp_scale,"speed":v.speed*lerpf(.85,1,minf(1,model.time/300))*minf(1.35,1+.012*m)*(1+.35*model.curse),"damage":v.damage*(1+.035*m),"xp":v.xp,"radius":float(v.radius),"velocity":Vector2.ZERO,"boss":boss,"timer":2.0,"phase":0,"charge":Vector2.ZERO,"age":0.0,"hits":{},"statuses":{},"dot":0.0,"child":child,"spawn_minute":m,"flash":0.0,"leech_source":""})
 	enemies.append(e)
 	return e
 func nearest(pos: Vector2) -> Dictionary:
@@ -71,7 +71,7 @@ func projectile(pos: Vector2,velocity: Vector2,values: Dictionary,source: String
 	if shots.size()>=650: return
 	var s: Dictionary={} if shot_pool.is_empty() else shot_pool.pop_back()
 	s.clear()
-	s.merge({"pos":pos,"velocity":velocity,"life":4.0,"age":0.0,"delay":delay,"damage":values.get("damage",10.0)* (1 if hostile else model.projectile_damage),"values":values,"source":source,"pierce":values.get("pierce",0),"hits":{},"hostile":hostile})
+	s.merge({"pos":pos,"velocity":velocity,"life":4.0,"age":0.0,"delay":delay,"damage":values.get("damage",10.0)* (1 if hostile else model.projectile_damage),"values":values,"source":source,"pierce":values.get("pierce",0),"bounces":values.get("bounces",0),"hits":{},"hostile":hostile})
 	shots.append(s)
 func drop(pos: Vector2,value: float,kind: String="xp",eligible: bool=false) -> void:
 	if kind=="xp":
@@ -105,6 +105,7 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 	if e.is_empty() or e.hp<=0: return
 	var damage: float=value
 	if not proc:
+		if e.hp/e.max_hp<=.35: damage*=1+.08*model.passives.get("execution_seal",0)
 		if model.rng.randf()<model.crit: damage*=model.crit_factor
 		if e.statuses.has("mark"): damage*=1.15
 		if e.kind=="shield" and ((player.position if incoming_origin==Vector2.INF else incoming_origin)-e.pos).normalized().dot(e.velocity.normalized())>.4: damage*=.65
@@ -141,6 +142,8 @@ func hurt_player(value: float) -> void:
 	if not attacker.is_empty(): player.position+=attacker.pos.direction_to(player.position)*10
 	shake=.15
 	sound_requested.emit("hurt")
+	if model.passives.get("frost_thorns",0)>0:
+		combat.area_hit(player.position,100,5*model.passives.frost_thorns,{"slow":1},"frost_thorns")
 	if model.weapons.has("blood_thorns"):
 		combat.area_hit(player.position,70,20,{},"reflect")
 func _physics_process(delta: float) -> void:
@@ -154,7 +157,7 @@ func _physics_process(delta: float) -> void:
 		if not wave.boss.is_empty(): spawn_enemy(wave.boss)
 		if wave.rune and model.runes.size()<3: model.modal_requested.emit("RUNE")
 	var spawn_rate: float=(1.6+.38*m+.008*m*m)*(1+.09*floori(m/5.0))*(1+model.curse)*model.registry.get_def(model.stage).values.density
-	budget=minf(3,budget+delta*spawn_rate)
+	budget=minf(3,budget+delta*spawn_rate*lerpf(.6,1,minf(1,model.time/300)))
 	var cap: int=mini(420,55+12*m)
 	while budget>=1 and enemies.size()<cap:
 		budget-=1
@@ -305,6 +308,17 @@ func update_shots(delta: float) -> void:
 					child.damage=s.values.damage*.4
 					child.pierce=0
 					for i in range(4): projectile(e.pos,Vector2.RIGHT.rotated(TAU*i/4)*300,child,s.source)
+				if s.bounces>0:
+					var candidates: Array=grid.query(e.pos,240).filter(func(other):return other.id!=e.id and not s.hits.has(other.id))
+					candidates.sort_custom(func(a,b):
+						if is_equal_approx(a.pos.distance_squared_to(e.pos),b.pos.distance_squared_to(e.pos)): return a.id<b.id
+						return a.pos.distance_squared_to(e.pos)<b.pos.distance_squared_to(e.pos))
+					if not candidates.is_empty():
+						s.velocity=e.pos.direction_to(candidates[0].pos)*s.values.speed
+						s.pos=e.pos
+						s.bounces-=1
+						break
+					else: s.life=0
 				s.pierce-=1
 				if s.pierce<0:
 					s.life=0
@@ -454,7 +468,8 @@ func _draw() -> void:
 	for s in shots:
 		if s.delay>0: continue
 		var c:=Color("ff756d") if s.hostile else Color.from_hsv(s.values.get("color",.5),.5,1)
-		if s.values.get("boomerang",false): draw_arc(s.pos,14,s.age*8,s.age*8+PI,9,c,4)
+		if s.bounces>0: draw_arc(s.pos,9,s.age*9,s.age*9+TAU*.8,10,c,3)
+		elif s.values.get("boomerang",false): draw_arc(s.pos,14,s.age*8,s.age*8+PI,9,c,4)
 		else: draw_line(s.pos-s.velocity.normalized()*14,s.pos,c,4)
 	for id in model.weapons:
 		var v: Dictionary=model.registry.weapon_values(id,model.weapons[id])

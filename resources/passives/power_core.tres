@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "power_core"
-display_name = "Kraftstein"
-description = "+10 % Waffenschaden je Stufe"
+display_name = "Power Core"
+description = "+10 % weapon damage per level"
 weight = 100
 values = {"stat": "might", "bonus": 0.1}

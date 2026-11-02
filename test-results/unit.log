@@ -18,9 +18,12 @@ PASS Katalog stage
 PASS Sieben echte Upgrades: arcane_needle
 PASS Sieben echte Upgrades: ash_bow
 PASS Sieben echte Upgrades: frost_shard
+PASS Sieben echte Upgrades: gravity_mine
 PASS Sieben echte Upgrades: lightning_call
 PASS Sieben echte Upgrades: meteor_rain
 PASS Sieben echte Upgrades: moon_blade
+PASS Sieben echte Upgrades: prism_disc
+PASS Sieben echte Upgrades: reaper_gaze
 PASS Sieben echte Upgrades: shadow_fan
 PASS Sieben echte Upgrades: soul_well
 PASS Sieben echte Upgrades: spark_orbit
@@ -29,6 +32,7 @@ PASS Sieben echte Upgrades: sun_beam
 PASS Sieben echte Upgrades: thorn_halo
 PASS 6+6 voll und maximal: keine illegalen Angebote
 PASS Drei verschiedene Fallbacks
+PASS Fresh runs have no unpaid selection tools
 PASS Reroll verbraucht Charge
 PASS Banish schließt Item aus
 PASS Skip mit XP und Charge
@@ -42,6 +46,7 @@ PASS Echter Schaden durch bomb
 PASS XP-Merging erhält Wert
 PASS Gold nur einmal gesammelt
 PASS Evolution braucht Katalysator
+PASS Lv4 catalyst cannot evolve weapon
 PASS Alte Boss-Truhe bleibt nicht evolutionsfähig
 PASS Evolution ersetzt Basis, erhält Slotzahl
 PASS Fusion hat Vorrang und gibt Slot frei
@@ -50,12 +55,15 @@ PASS Funktionale Evolutionsdaten comet_shower
 PASS Funktionale Evolutionsdaten crescent_storm
 PASS Funktionale Evolutionsdaten day_night
 PASS Funktionale Evolutionsdaten dusk_storm
+PASS Funktionale Evolutionsdaten event_horizon
 PASS Funktionale Evolutionsdaten ghost_well
 PASS Funktionale Evolutionsdaten ice_prism
+PASS Funktionale Evolutionsdaten last_judgment
 PASS Funktionale Evolutionsdaten meteor_heart
 PASS Funktionale Evolutionsdaten night_storm
 PASS Funktionale Evolutionsdaten phoenix_fan
 PASS Funktionale Evolutionsdaten solar_orbit
+PASS Funktionale Evolutionsdaten spectral_carousel
 PASS Funktionale Evolutionsdaten star_piercer
 PASS Funktionale Evolutionsdaten thunder_grid
 PASS Funktionale Evolutionsdaten zenith_beam
@@ -91,11 +99,29 @@ PASS Rune registriert: treasure
 PASS Blutmond heilt höchstens 30 HP pro Minute
 PASS Kampfresonanz alle 20 Kills
 PASS Resonanz läuft in Spielzeit aus
-PASS Schatzsucher gibt Goldbonus und Reroll
+PASS Treasure grants gold without bypassing reroll unlock
 PASS Brennen/Gift ticken und Slow bleibt aktiv
 PASS Status-Effekte laufen aus
 PASS Splitterstern erzeugt zusätzliches echtes Projektil
 PASS Zeitanker verlängert echten Beam
+PASS Slower starting movement
+PASS Long Stride increases movement with game time
+PASS Momentum Feather and Recovery Moss have real effects
+PASS Unselected equipment and characters stay hidden
+PASS Selecting equipment reveals its collection entry
+PASS Purchased meta ranks grant exact run charges
+PASS Treasure adds a reroll after its meta unlock
+PASS Audio controls never resize the window
+PASS Native embedded-window arguments detected
+PASS New saves default to 1920x1080
+PASS New weapon damages enemies: prism_disc
+PASS Prism Disc bounces to a different enemy
+PASS New weapon damages enemies: gravity_mine
+PASS Gravity Mine pulls and slows
+PASS New weapon damages enemies: reaper_gaze
+PASS Reaper's Gaze deals triple damage below 35% HP
+PASS Execution Seal amplifies direct damage to wounded enemies
+PASS Frost Thorns retaliates with actual damage and slow
 PASS Tod und Ergebnis
 PASS Charaktermenü gebaut
 PASS Shop, Einstellungen, Sammlung gebaut

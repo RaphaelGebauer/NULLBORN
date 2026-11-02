@@ -14,7 +14,7 @@ signal ended(victory: bool)
 var rng := RandomNumberGenerator.new()
 var hp: float = 100
 var max_hp: float = 100
-var speed: float = 220
+var speed: float = 176
 var armor: float = 0
 var regeneration: float=0
 var might: float = 1
@@ -41,9 +41,9 @@ var weapons: Dictionary = {"arcane_needle":1}
 var passives: Dictionary = {}
 var runes: Array = []
 var banned: Array = []
-var rerolls: int = 2
-var skips: int = 1
-var banishes: int = 1
+var rerolls: int = 0
+var skips: int = 0
+var banishes: int = 0
 var hero: String = "lyra"
 var stage: String = "mist"
 var fast: bool = false
@@ -58,11 +58,21 @@ var resonance: float=0
 var chain_cooldown: float=0
 var blood_healed: int=0
 var blood_minute: int=0
+var speed_base: float=176
+var speed_bonus: float=1
+func update_movement_speed() -> void:
+	var minutes: float=minf(10,time/60)
+	speed=minf(500,speed_base*(speed_bonus+.01*meta.get("long_stride",0)*minutes+.02*passives.get("momentum_feather",0)*minf(5,time/60)))
 
 func _init() -> void:
 	rng.seed = 72047
 	registry=preload("res://scripts/data/registry.gd").new()
 	unlocked_weapons=registry.catalogs.weapon.keys()
+func initialize_meta() -> void:
+	rerolls=int(meta.get("rerolls",0))
+	skips=int(meta.get("skips",0))
+	banishes=int(meta.get("banishes",0))
+	recalculate()
 func required_xp() -> int:
 	return roundi(8+9*(level-1)+0.2*pow(level-1,2))
 func add_xp(value: float, apply_growth: bool = true) -> void:
@@ -97,6 +107,7 @@ func tick(delta: float) -> void:
 	if int(time/60)!=blood_minute:
 		blood_minute=int(time/60)
 		blood_healed=0
+	update_movement_speed()
 	time_changed.emit()
 	if time >= 1800: finish(true)
 func legal() -> Array:
@@ -149,19 +160,25 @@ func recalculate() -> void:
 	var stats: Dictionary={"max_hp":1.0,"speed":1.0,"might":1.0,"cooldown":1.0,"area":1.0,"duration":1.0,"projectile_speed":1.0,"growth":1.0,"greed":1.0,"luck":1.0,"armor":0.0,"magnet":95.0,"crit_factor":1.5}
 	for stat in h.bonuses: stats[stat]+=h.bonuses[stat]
 	for id in passives:
-		if id=="multiplicity": continue
+		if id in ["multiplicity","recovery_moss","execution_seal","frost_thorns","momentum_feather"]: continue
 		var v: Dictionary=registry.get_def(id).values
 		stats[v.stat]+=v.bonus*passives[id]
 	stats.max_hp+=0.05*meta.get("max_hp",0)
 	stats.might+=0.03*meta.get("might",0)
-	stats.speed+=0.02*meta.get("speed",0)
+	stats.speed+=0.04*meta.get("speed",0)
+	stats.area+=.04*meta.get("area",0)
+	stats.duration+=.05*meta.get("duration",0)
+	stats.cooldown-=.02*meta.get("cooldown",0)
+	regeneration=.15*meta.get("regeneration",0)+.25*passives.get("recovery_moss",0)
 	stats.magnet+=10*meta.get("magnet",0)
 	stats.growth+=0.04*meta.get("growth",0)
 	stats.greed+=0.05*meta.get("greed",0)+(.25 if "treasure" in runes else 0)
 	stats.armor+=floori(meta.get("armor",0)/2.0)
 	max_hp=h.hp*stats.max_hp
 	hp=clampf(ratio*max_hp,0,max_hp)
-	speed=minf(500,h.speed*stats.speed)
+	speed_base=h.speed*.8
+	speed_bonus=stats.speed
+	update_movement_speed()
 	might=stats.might
 	cooldown=maxf(.15,stats.cooldown)
 	area=minf(3,stats.area)
@@ -172,7 +189,7 @@ func recalculate() -> void:
 	magnet=stats.magnet
 	armor=stats.armor
 	luck=stats.luck+temporary_luck
-	crit=minf(.6,.05*luck)
+	crit=minf(.6,.05*luck+.02*meta.get("crit",0))
 	crit_factor=stats.crit_factor
 	amount=mini(6,floori(passives.get("multiplicity",0)/2.0))
 	projectile_damage=1+.05*(passives.get("multiplicity",0)-amount)
@@ -192,16 +209,16 @@ func skip() -> bool:
 	return true
 func title(id: String) -> String:
 	if id=="reward_gold": return "+25 Gold"
-	if id=="reward_heal": return "+30 HP (sonst +25 Gold)"
-	if id=="reward_xp": return "+10 % XP zum nächsten Level"
+	if id=="reward_heal": return "+30 HP (otherwise +25 Gold)"
+	if id=="reward_xp": return "+10% XP toward the next level"
 	return registry.get_def(id).display_name
 func describe(id: String) -> String:
-	if id.begins_with("reward_"): return "Sofortige Belohnung"
+	if id.begins_with("reward_"): return "Instant reward"
 	var d: Resource=registry.get_def(id)
 	if registry.catalogs.weapon.has(id):
 		var lv: int=weapons.get(id,0)
-		return "Waffe · Lv %d → %d\n%s" % [lv,lv+1,d.description if lv==0 else d.upgrades[lv-1].text]
-	return "Passiv · Lv %d → %d\n%s" % [passives.get(id,0),passives.get(id,0)+1,d.description]
+		return "Weapon · Lv %d → %d\n%s" % [lv,lv+1,d.description if lv==0 else d.upgrades[lv-1].text]
+	return "Passives · Lv %d → %d\n%s" % [passives.get(id,0),passives.get(id,0)+1,d.description]
 func evolution(eligible: bool) -> String:
 	if not eligible: return ""
 	var recipes: Array=registry.catalogs.evolution.values()
@@ -209,10 +226,10 @@ func evolution(eligible: bool) -> String:
 		if a.values.bases.size()!=b.values.bases.size(): return a.values.bases.size()>b.values.bases.size()
 		return a.id<b.id)
 	for recipe in recipes:
-		if weapons.has(recipe.id) or not passives.has(recipe.values.passive): continue
+		if weapons.has(recipe.id) or passives.get(recipe.values.passive,0)<recipe.values.get("passive_level",5): continue
 		var valid: bool=true
 		for base in recipe.values.bases:
-			if weapons.get(base,0)!=8: valid=false
+			if weapons.get(base,0)<recipe.values.get("weapon_level",5): valid=false
 		if not valid: continue
 		for base in recipe.values.bases: weapons.erase(base)
 		weapons[recipe.id]=1
@@ -223,7 +240,7 @@ func evolution(eligible: bool) -> String:
 func add_rune(id: String) -> void:
 	if id in runes or runes.size()>=3: return
 	runes.append(id)
-	if id=="treasure": rerolls+=1
+	if id=="treasure" and meta.get("rerolls",0)>0: rerolls+=1
 	recalculate()
 	rune_changed.emit()
 func kill() -> void:

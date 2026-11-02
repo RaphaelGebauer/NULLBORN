@@ -23,7 +23,8 @@ func update(delta: float) -> void:
 		if effect.delay>0:
 			effect.delay-=delta
 			continue
-		if effect.behavior=="beam": update_beam(effect,delta)
+		if effect.behavior=="mine": update_mine(effect)
+		elif effect.behavior=="beam": update_beam(effect,delta)
 		elif effect.behavior=="zone": update_zone(effect,delta)
 		elif effect.behavior=="blast":
 			if not effect.fired:
@@ -162,3 +163,32 @@ func update_zone(e: Dictionary,delta: float) -> void:
 	if e.tick<=0:
 		e.tick=maxf(.12,e.values.tick)
 		area_hit(e.pos,e.radius,e.damage,e.values,e.source)
+
+func attack_ricochet(id: String,v: Dictionary,target: Dictionary) -> void:
+	if target.is_empty(): return
+	var p:=params(v)
+	for i in range(int(p.count)):
+		world.projectile(world.player.position,world.player.position.direction_to(target.pos).rotated((i-(p.count-1)*.5)*.15)*p.speed,p,id)
+func attack_mine(id: String,v: Dictionary,target: Dictionary) -> void:
+	var p:=params(v)
+	var center: Vector2=world.player.position if target.is_empty() else target.pos
+	for i in range(int(p.count)):
+		add_effect({"behavior":"mine","pos":center+Vector2(i*75,0),"radius":p.radius,"damage":p.damage,"delay":.4,"life":p.duration,"values":p,"source":id})
+func update_mine(e: Dictionary) -> void:
+	if e.fired: return
+	if world.grid.query(e.pos,40).is_empty() and e.age<e.life-.3: return
+	e.fired=true
+	e.life=e.age+.25
+	for enemy in world.grid.query(e.pos,e.radius):
+		if not enemy.boss: enemy.pos=enemy.pos.move_toward(e.pos,55)
+		world.hit(enemy,e.damage,{"slow":1},e.source)
+func attack_execution(id: String,v: Dictionary,_target: Dictionary) -> void:
+	var targets: Array=world.visible_enemies()
+	if targets.is_empty(): return
+	targets.sort_custom(func(a,b):
+		if is_equal_approx(a.hp/a.max_hp,b.hp/b.max_hp): return a.id<b.id
+		return a.hp/a.max_hp<b.hp/b.max_hp)
+	var target: Dictionary=targets[0]
+	var p:=params(v)
+	p.execution=true
+	add_effect({"pos":target.pos,"radius":p.radius,"damage":p.damage*(3 if target.hp/target.max_hp<=.35 else 1),"delay":.3,"life":.55,"values":p,"source":id,"launch":world.player.position})

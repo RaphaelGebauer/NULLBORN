@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "shield_sign"
-display_name = "Schildzeichen"
-description = "10 % Chance auf Schadensblock"
+display_name = "Shield Sign"
+description = "10% chance to block damage"
 weight = 100
 values = {}

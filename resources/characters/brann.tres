@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "brann"
-display_name = "Brann · Aschenwächter"
-description = "Brann · Aschenwächter"
+display_name = "Brann · Ash Warden"
+description = "Brann · Ash Warden"
 weight = 100
 values = {"weapon": "ash_bow", "hp": 125, "speed": 205, "bonuses": {"armor": 1, "cooldown": -0.05}}

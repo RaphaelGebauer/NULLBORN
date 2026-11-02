@@ -3,8 +3,8 @@
 [resource]
 script = ExtResource("1")
 id = "moon_blade"
-display_name = "Mondklinge"
-description = "Mondklinge: 17 Schaden · 1.6 s · kehrende Sichel"
+display_name = "Moon Blade"
+description = "Moon Blade: 17 Damage · 1.6 s · returning crescent"
 weight = 60
 values = {"behavior": "boomerang", "damage": 17, "cooldown": 1.6, "speed": 340, "count": 1, "radius": 20, "duration": 1.6, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.4166666666666667}
-upgrades = Array[Dictionary]([{"delta": {"damage": 2.55}, "text": "Schaden +2.55"}, {"delta": {"damage": 2.55}, "text": "Schaden +2.55"}, {"delta": {"count": 1}, "text": "Anzahl +1"}, {"delta": {"damage": 2.55}, "text": "Schaden +2.55"}, {"delta": {"pierce": 3}, "text": "Durchschläge +3"}, {"delta": {"damage": 2.55}, "text": "Schaden +2.55"}, {"delta": {"count": 1}, "text": "Anzahl +1"}])
+upgrades = Array[Dictionary]([{"delta": {"damage": 2.55}, "text": "Damage +2.55"}, {"delta": {"damage": 2.55}, "text": "Damage +2.55"}, {"delta": {"count": 1}, "text": "Amount +1"}, {"delta": {"damage": 2.55}, "text": "Damage +2.55"}, {"delta": {"pierce": 3}, "text": "Pierce +3"}, {"delta": {"damage": 2.55}, "text": "Damage +2.55"}, {"delta": {"count": 1}, "text": "Amount +1"}])

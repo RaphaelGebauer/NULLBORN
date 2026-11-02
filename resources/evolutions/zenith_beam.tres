@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "zenith_beam"
-display_name = "Zenithstrahl"
-description = "Sonnenlaser Lv8 + Uhrwerk"
+display_name = "Zenith Beam"
+description = "Sun Beam Lv5+ + Clockwork Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["sun_beam"], "passive": "clockwork", "changes": {"count": 2, "duration": 2.8, "counter": 1}}
+values = {"bases": ["sun_beam"], "passive": "clockwork", "weapon_level": 5, "passive_level": 5, "changes": {"count": 2, "duration": 2.8, "counter": 1}}

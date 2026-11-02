@@ -32,9 +32,9 @@ func run() -> void:
 	key.pressed=false
 	Input.parse_input_event(key)
 	var moved: float=app.world.player.position.distance_to(start)
-	print("PASS Tastaturbewegung ",moved)
+	print("PASS keyboard movement ",moved)
 	if moved<100:
-		push_error("FAIL Tastaturbewegung")
+		push_error("FAIL keyboard movement")
 		quit(1)
 		return
 	var stick:=InputEventJoypadMotion.new()
@@ -46,9 +46,9 @@ func run() -> void:
 	stick.axis_value=0
 	Input.parse_input_event(stick)
 	moved=app.world.player.position.distance_to(start)
-	print("PASS Simulierter Controller-Stick ",moved)
+	print("PASS simulated controller stick ",moved)
 	if moved<50:
-		push_error("FAIL Controllerbewegung")
+		push_error("FAIL controller movement")
 		quit(1)
 		return
 	for i in range(20): app.world.spawn_enemy("crawler",app.world.player.position+Vector2.RIGHT.rotated(i*.8)*(100+i*15))

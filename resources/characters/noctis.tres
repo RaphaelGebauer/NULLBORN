@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "noctis"
-display_name = "Noctis · Mondjäger"
-description = "Noctis · Mondjäger"
+display_name = "Noctis · Moon Hunter"
+description = "Noctis · Moon Hunter"
 weight = 100
 values = {"weapon": "moon_blade", "hp": 85, "speed": 245, "bonuses": {"crit_factor": 0.15, "luck": 0.1}}

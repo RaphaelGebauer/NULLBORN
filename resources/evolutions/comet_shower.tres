@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "comet_shower"
-display_name = "Kometenschauer"
-description = "Splitterregen Lv8 + Magnetring"
+display_name = "Comet Shower"
+description = "Meteor Rain Lv5+ + Magnet Ring Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["meteor_rain"], "passive": "magnet_ring", "changes": {"count": 10, "pull": 1, "radius": 55}}
+values = {"bases": ["meteor_rain"], "passive": "magnet_ring", "weapon_level": 5, "passive_level": 5, "changes": {"count": 10, "pull": 1, "radius": 55}}

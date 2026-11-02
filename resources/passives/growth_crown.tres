@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "growth_crown"
-display_name = "Wachstumskrone"
-description = "+10 % XP-Ausbeute je Stufe"
+display_name = "Growth Crown"
+description = "+10 % XP gain per level"
 weight = 100
 values = {"stat": "growth", "bonus": 0.1}

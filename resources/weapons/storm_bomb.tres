@@ -3,8 +3,8 @@
 [resource]
 script = ExtResource("1")
 id = "storm_bomb"
-display_name = "Sturmbombe"
-description = "Sturmbombe: 27 Schaden · 3.1 s · verzögerte Explosion"
+display_name = "Storm Bomb"
+description = "Storm Bomb: 27 Damage · 3.1 s · delayed explosion"
 weight = 60
 values = {"behavior": "bomb", "damage": 27, "cooldown": 3.1, "speed": 0, "count": 1, "radius": 75, "duration": 0, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.5833333333333334}
-upgrades = Array[Dictionary]([{"delta": {"damage": 4.05}, "text": "Schaden +4.05"}, {"delta": {"radius": 20}, "text": "Radius +20"}, {"delta": {"damage": 4.05}, "text": "Schaden +4.05"}, {"delta": {"burn": 1}, "text": "Brennen +1"}, {"delta": {"damage": 4.05}, "text": "Schaden +4.05"}, {"delta": {"cooldown": -0.35}, "text": "Abklingzeit (s) -0.35"}, {"delta": {"echo": 1}, "text": "Nachsalve +1"}])
+upgrades = Array[Dictionary]([{"delta": {"damage": 4.05}, "text": "Damage +4.05"}, {"delta": {"radius": 20}, "text": "Radius +20"}, {"delta": {"damage": 4.05}, "text": "Damage +4.05"}, {"delta": {"burn": 1}, "text": "Burn +1"}, {"delta": {"damage": 4.05}, "text": "Damage +4.05"}, {"delta": {"cooldown": -0.35}, "text": "Cooldown (s) -0.35"}, {"delta": {"echo": 1}, "text": "Echo +1"}])

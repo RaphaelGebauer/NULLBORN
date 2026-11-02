@@ -3,7 +3,7 @@
 [resource]
 script = ExtResource("1")
 id = "crescent_storm"
-display_name = "Sichelmondsturm"
-description = "Mondklinge Lv8 + Linsenfokus"
+display_name = "Crescent Storm"
+description = "Moon Blade Lv5+ + Focus Lens Lv5; boss chest spawned at 10:00+."
 weight = 100
-values = {"bases": ["moon_blade"], "passive": "focus_lens", "changes": {"count": 3, "spiral": 1, "radius": 32, "pierce": 8}}
+values = {"bases": ["moon_blade"], "passive": "focus_lens", "weapon_level": 5, "passive_level": 5, "changes": {"count": 3, "spiral": 1, "radius": 32, "pierce": 8}}

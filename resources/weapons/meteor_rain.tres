@@ -3,8 +3,8 @@
 [resource]
 script = ExtResource("1")
 id = "meteor_rain"
-display_name = "Splitterregen"
-description = "Splitterregen: 14 Schaden · 2.8 s · Meteoreinschläge"
+display_name = "Meteor Rain"
+description = "Meteor Rain: 14 Damage · 2.8 s · meteor strikes"
 weight = 25
 values = {"behavior": "meteor", "damage": 14, "cooldown": 2.8, "speed": 0, "count": 3, "radius": 38, "duration": 0, "tick": 0, "pierce": 0, "spread": 0.7, "rotation": 2.4, "color": 0.9166666666666666}
-upgrades = Array[Dictionary]([{"delta": {"damage": 2.1}, "text": "Schaden +2.1"}, {"delta": {"count": 2}, "text": "Anzahl +2"}, {"delta": {"damage": 2.1}, "text": "Schaden +2.1"}, {"delta": {"burn": 1}, "text": "Brennen +1"}, {"delta": {"damage": 2.1}, "text": "Schaden +2.1"}, {"delta": {"radius": 12}, "text": "Radius +12"}, {"delta": {"count": 3}, "text": "Anzahl +3"}])
+upgrades = Array[Dictionary]([{"delta": {"damage": 2.1}, "text": "Damage +2.1"}, {"delta": {"count": 2}, "text": "Amount +2"}, {"delta": {"damage": 2.1}, "text": "Damage +2.1"}, {"delta": {"burn": 1}, "text": "Burn +1"}, {"delta": {"damage": 2.1}, "text": "Damage +2.1"}, {"delta": {"radius": 12}, "text": "Radius +12"}, {"delta": {"count": 3}, "text": "Amount +3"}])

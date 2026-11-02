@@ -4,6 +4,8 @@ Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserv
 
 ## Phase E2 — implemented; E3–E6 remain open
 
+E2 implementation commit: `5ab1f7e`.
+
 - 45 typed mutation definitions in resources/mutations, separate reproducible tools/generate_mutations.py, validated in the existing Registry.
 - Model owns pending choices and runtime imprints; Lv4 requests exactly once, app inserts mandatory three-card choices before pending modals. Debug F11 requests missing mutations. No additional inventory slots or alteration of normal offers/charges.
 - Shared Combat mutation helper implements parameter/attack/hit/periodic/contact/expiry processors, real bounded secondary hits/projectiles/mines/zones, per-impact/tick counters, status durations, deterministic Echo cadence and recursion protection.

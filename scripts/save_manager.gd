@@ -6,7 +6,7 @@ var warning: String=""
 const META: Dictionary={
 	"max_hp":{"name":"Vitality","effect":"+5 % Max-HP","cost":50,"max":5},
 	"might":{"name":"Star Power","effect":"+3 % Damage","cost":75,"max":5},
-	"speed":{"name":"Fleet Foot","effect":"+4% movement speed","cost":50,"max":5},
+	"speed":{"name":"Fleet Foot","effect":"+5% movement speed","cost":40,"max":5},
 	"magnet":{"name":"Attraction","effect":"+10 px magnet radius","cost":50,"max":5},
 	"growth":{"name":"Insight","effect":"+4 % XP","cost":75,"max":5},
 	"greed":{"name":"Treasure Gleam","effect":"+5 % Gold","cost":75,"max":5},
@@ -19,7 +19,11 @@ const META: Dictionary={
 	"crit":{"name":"Keen Eye","effect":"+2% critical chance","cost":100,"max":5},
 	"area":{"name":"Wide Reach","effect":"+4% weapon radius","cost":75,"max":5},
 	"duration":{"name":"Enduring Light","effect":"+5% effect duration","cost":75,"max":5},
-	"cooldown":{"name":"Quickening","effect":"-2% weapon cooldown","cost":125,"max":5}}
+	"cooldown":{"name":"Quickening","effect":"-2% weapon cooldown","cost":125,"max":5},
+	"projectile_speed":{"name":"Swift Missiles","effect":"+6% projectile speed","cost":60,"max":5},
+	"battle_rhythm":{"name":"Battle Rhythm","effect":"-1% cooldown per minute per rank, caps at 10 minutes","cost":100,"max":5},
+	"pickup_speed":{"name":"Gathering Flow","effect":"+12% pickup attraction speed","cost":50,"max":5},
+	"evasive_instinct":{"name":"Evasive Instinct","effect":"+3% movement per rank while below 50% HP","cost":75,"max":5}}
 func _init() -> void:
 	data=defaults()
 func defaults() -> Dictionary:

@@ -1,5 +1,12 @@
 # Changelog
 
+## Slower opening and expanded tempo progression
+
+- Central eight-minute opening ramp now covers density, enemy movement, attacks and projectile/rotation speed.
+- Player movement only moderately reduced, preserving a larger early escape advantage over pursuers.
+- 20 meta upgrades, with new projectile, timed attack, gathering and low-health movement options; stronger, cheaper Fleet Foot.
+- 158 passing checks and an updated successful full 30-minute simulation.
+
 ## Character overview, hidden evolution history and reset
 
 - Characters in the main menu is a read-only overview; locked heroes expose names only. New Run remains separate.

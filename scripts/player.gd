@@ -1,5 +1,5 @@
 extends CharacterBody2D
-var speed: float = 176.0
+var speed: float = 165.0
 var facing := Vector2.RIGHT
 var tint: Color=Color("8df5eb")
 var shape_id: int=0

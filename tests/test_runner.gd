@@ -161,6 +161,8 @@ func run() -> void:
 		if FileAccess.file_exists(path): DirAccess.remove_absolute(path)
 	var old_health: float=scene.model.hp
 	scene.model.hp=100
+	scene.model.armor=0
+	scene.model.runes=[]
 	scene.world.player.invulnerable=0
 	scene.world.hurt_player(10)
 	var injured: float=scene.model.hp
@@ -222,14 +224,14 @@ func run() -> void:
 	check(is_equal_approx(combat_world.combat.params(duration_values).duration,duration_values.duration*combat_world.model.duration*1.25),"Zeitanker verlängert echten Beam")
 	var pace=load("res://scripts/run_model.gd").new()
 	pace.recalculate()
-	check(is_equal_approx(pace.speed,176),"Slower starting movement")
+	check(is_equal_approx(pace.speed,165),"Slower starting movement")
 	pace.meta={"long_stride":2}
 	pace.recalculate()
 	pace.tick(120)
-	check(pace.speed>176 and is_equal_approx(pace.speed,176*1.04),"Long Stride increases movement with game time")
+	check(pace.speed>165 and is_equal_approx(pace.speed,165*1.04),"Long Stride increases movement with game time")
 	pace.passives={"momentum_feather":2,"recovery_moss":4}
 	pace.recalculate()
-	check(pace.speed>176*1.04 and pace.regeneration==1,"Momentum Feather and Recovery Moss have real effects")
+	check(pace.speed>165*1.04 and pace.regeneration==1,"Momentum Feather and Recovery Moss have real effects")
 	check(not scene.save.discovered("prism_disc","weapon") and not scene.save.discovered("brann","character"),"Unselected equipment and characters stay hidden")
 	scene.save.mark_seen("prism_disc")
 	check(scene.save.discovered("prism_disc","weapon"),"Selecting equipment reveals its collection entry")
@@ -348,6 +350,60 @@ func run() -> void:
 	for child in scene.panel.get_children():
 		if child is Button and child.text=="Reset Everything": child.pressed.emit(); break
 	check(scene.save.data==scene.save.defaults() and scene.model==null and scene.selected_hero=="lyra" and scene.selected_stage=="mist" and scene.state=="MENU","Confirmed reset clears all data and stale session selections")
+	var slow_model=load("res://scripts/run_model.gd").new()
+	slow_model.recalculate()
+	check(scene.save.META.size()==20,"Twenty permanent meta upgrades are available")
+	check(is_equal_approx(slow_model.opening_factor("spawn_rate"),.4) and is_equal_approx(slow_model.opening_factor("enemy_speed"),.65),"Fresh run has lower density and enemy speed")
+	slow_model.time=240
+	check(is_equal_approx(slow_model.opening_factor("spawn_rate"),.7) and is_equal_approx(slow_model.opening_factor("attack_interval"),1.1),"Opening pace ramps smoothly at its midpoint")
+	slow_model.time=480
+	check(is_equal_approx(slow_model.opening_factor("projectile_speed"),1) and is_equal_approx(slow_model.opening_factor("enemy_speed"),1),"Opening modifiers reach normal pace after eight minutes")
+	slow_model.time=0
+	var pace_world=load("res://scenes/game.tscn").instantiate()
+	pace_world.model=slow_model
+	root.add_child(pace_world)
+	pace_world.set_physics_process(false)
+	pace_world.player.set_physics_process(false)
+	var early_mite: Dictionary=pace_world.spawn_enemy("mite",Vector2(100,0))
+	pace_world.grid.rebuild(pace_world.enemies)
+	pace_world.update_enemy(early_mite,.1)
+	check(is_equal_approx(early_mite.velocity.length(),97.5),"Actual early enemy movement is slower")
+	for hero_id in registry.catalogs.character:
+		slow_model.hero=hero_id
+		slow_model.recalculate()
+		check(slow_model.speed>early_mite.velocity.length()*1.3,"Safe early kiting margin for "+hero_id)
+	slow_model.hero="lyra"
+	slow_model.recalculate()
+	pace_world.combat.update(.001)
+	check(is_equal_approx(pace_world.combat.timers.arcane_needle,1.02),"Actual opening auto-attack interval is slower")
+	check(is_equal_approx(pace_world.shots[0].velocity.length(),360),"Actual friendly projectile starts slower")
+	pace_world.projectile(Vector2(400,0),Vector2(150,0),{"damage":1},"test",0,true)
+	check(is_equal_approx(pace_world.shots[-1].velocity.length(),120),"Hostile projectiles are slowed as well")
+	slow_model.meta={"projectile_speed":5,"battle_rhythm":5,"pickup_speed":5,"evasive_instinct":5,"speed":5}
+	slow_model.recalculate()
+	check(slow_model.speed>165 and slow_model.projectile_speed==1.3 and slow_model.pickup_speed==1.6,"Movement, missile and gathering meta upgrades take effect")
+	slow_model.time=600
+	slow_model.tick(0)
+	check(is_equal_approx(slow_model.cooldown,.5),"Battle Rhythm accelerates weapons over time")
+	var healthy_speed: float=slow_model.speed
+	slow_model.hp=slow_model.max_hp*.4
+	slow_model.tick(0)
+	check(slow_model.speed>healthy_speed,"Evasive Instinct adds escape speed at low HP")
+	slow_model.hp=slow_model.max_hp
+	slow_model.tick(0)
+	check(is_equal_approx(slow_model.speed,healthy_speed),"Escape bonus ends on recovery without stacking")
+	slow_model.meta={}
+	slow_model.recalculate()
+	pace_world.drop(Vector2(80,0),1)
+	pace_world.update_pickups(.1)
+	var normal_pickup_x: float=pace_world.pickups[0].pos.x
+	pace_world.pickups[0].pos=Vector2(80,0)
+	pace_world.pickups[0].speed=60
+	slow_model.meta={"pickup_speed":5}
+	slow_model.recalculate()
+	pace_world.update_pickups(.1)
+	check(pace_world.pickups[0].pos.x<normal_pickup_x,"Gathering Flow increases actual pickup movement")
+	pace_world.queue_free()
 	scene.queue_free()
 	await process_frame
 	await process_frame

@@ -1,10 +1,10 @@
 Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
 
 RUN 0 s · [0, 36, 0] · Kills 0
-RUN 300 s · [6, 142, 268] · Kills 592
-RUN 600 s · [19, 129, 300] · Kills 2213
-RUN 900 s · [30, 124, 300] · Kills 5149
-RUN 1200 s · [87, 89, 300] · Kills 9473
-RUN 1500 s · [65, 67, 300] · Kills 16489
-RUN 1800 s · [132, 24, 300] · Kills 24125
-PASS voller 30-Minuten-Run; Zeit 1800.0; Ergebnis [true]; Runen 3; Laufzeit 74.796 s; Kills 24125
+RUN 300 s · [3, 143, 266] · Kills 441
+RUN 600 s · [18, 125, 300] · Kills 1976
+RUN 900 s · [27, 118, 300] · Kills 4898
+RUN 1200 s · [70, 71, 300] · Kills 9268
+RUN 1500 s · [57, 99, 300] · Kills 16294
+RUN 1800 s · [132, 26, 300] · Kills 23923
+PASS voller 30-Minuten-Run; Zeit 1800.0; Ergebnis [true]; Runen 3; Laufzeit 75.481 s; Kills 23923

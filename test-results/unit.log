@@ -141,4 +141,21 @@ PASS Main-menu settings includes a reset entry
 PASS Reset confirmation alone never deletes progress
 PASS Cancel preserves progress
 PASS Confirmed reset clears all data and stale session selections
+PASS Twenty permanent meta upgrades are available
+PASS Fresh run has lower density and enemy speed
+PASS Opening pace ramps smoothly at its midpoint
+PASS Opening modifiers reach normal pace after eight minutes
+PASS Actual early enemy movement is slower
+PASS Safe early kiting margin for brann
+PASS Safe early kiting margin for eira
+PASS Safe early kiting margin for lyra
+PASS Safe early kiting margin for noctis
+PASS Actual opening auto-attack interval is slower
+PASS Actual friendly projectile starts slower
+PASS Hostile projectiles are slowed as well
+PASS Movement, missile and gathering meta upgrades take effect
+PASS Battle Rhythm accelerates weapons over time
+PASS Evasive Instinct adds escape speed at low HP
+PASS Escape bonus ends on recovery without stacking
+PASS Gathering Flow increases actual pickup movement
 Ergebnis: 0 Fehler

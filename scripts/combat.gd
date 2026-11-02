@@ -17,7 +17,7 @@ func update(delta: float) -> void:
 			var target: Dictionary=world.nearest(world.player.position)
 			if not target.is_empty() or v.behavior in ["aura","radial","beam","fan"]:
 				call("attack_"+v.behavior,id,v,target)
-				timers[id]=maxf(.12,v.cooldown*world.model.cooldown*(.85 if world.model.resonance>0 else 1))
+				timers[id]=maxf(.12,v.cooldown*world.model.cooldown*world.model.opening_factor("attack_interval")*(.85 if world.model.resonance>0 else 1))
 	for effect in effects.duplicate():
 		effect.age+=delta
 		if effect.delay>0:
@@ -37,7 +37,9 @@ func params(v: Dictionary) -> Dictionary:
 	var result: Dictionary=v.duplicate(true)
 	result.damage*=world.model.might
 	result.radius*=world.model.area
-	result.speed*=world.model.projectile_speed
+	result.speed*=world.model.projectile_speed*world.model.opening_factor("projectile_speed")
+	result.rotation=result.get("rotation",2.4)*world.model.opening_factor("projectile_speed")
+	result.tick*=world.model.opening_factor("attack_interval")
 	result.count+=world.model.amount
 	result.duration*=world.model.duration
 	if "time_anchor" in world.model.runes and v.behavior in ["zone","orbit","beam"]: result.duration*=1.25
@@ -92,7 +94,7 @@ func orbit(id: String,v: Dictionary,delta: float) -> void:
 		for e in world.grid.query(pos,16*world.model.area):
 			var key: String=id
 			if e.hits.get(key,-100.0)<=elapsed:
-				e.hits[key]=elapsed+maxf(.12,p.cooldown*world.model.cooldown*(.85 if world.model.resonance>0 else 1))
+				e.hits[key]=elapsed+maxf(.12,p.cooldown*world.model.cooldown*world.model.opening_factor("attack_interval")*(.85 if world.model.resonance>0 else 1))
 				world.hit(e,p.damage,p,id)
 	if v.get("pulse",0)>0 or v.get("diameter",0)>0:
 		if timers.get(id,0)<=0:
@@ -141,7 +143,7 @@ func attack_beam(id: String,v: Dictionary,_target: Dictionary) -> void:
 		add_effect({"behavior":"beam","pos":world.player.position,"radius":p.radius,"damage":p.damage,"life":p.duration,"angle":elapsed+i*PI,"values":p,"source":id,"counter":-1 if i%2==1 and p.get("counter",0)>0 else 1})
 func update_beam(e: Dictionary,delta: float) -> void:
 	e.pos=world.player.position
-	e.angle+=delta*1.8*e.counter
+	e.angle+=delta*1.8*e.counter*world.model.opening_factor("projectile_speed")
 	e.tick-=delta
 	if e.tick>0: return
 	e.tick=maxf(.12,e.values.tick)

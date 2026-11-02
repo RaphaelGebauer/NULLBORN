@@ -2,7 +2,16 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
-## Latest character/discovery/reset update
+## Latest overall pacing update
+
+- Added central `resources/pacing.tres`: 0.75 hero movement, 0.65 initial enemy speed, 0.4 initial spawn density, 0.8 initial projectile/rotation speed and 1.2 initial attack intervals. Opening modifiers ease to normal over eight minutes; the run clock remains unchanged.
+- Lyra now starts at 165 px/s. All four heroes retain a measured speed advantage over the early fast pursuer (97.5 px/s), rather than slowing the player alone.
+- Meta shop now has 20 upgrades. Added Swift Missiles, Battle Rhythm, Gathering Flow and Evasive Instinct. Fleet Foot grants +5% per rank and starts at 40 gold. Existing saves retain their ranks and gold.
+- Functional suite: **158 PASS / 0 FAIL**, clean import and no script errors/leak reports. Tests cover actual enemy/projectile/attack speed, all hero escape margins, ramp midpoint/end and each new meta effect.
+- Updated full-run simulation: 30:00, one victory, three runes, 23,923 kills; 75.481 s wall time. Harness still uses immunity/automatic choices, so this is no claim of perfect human balance.
+- Isolated armor/I-frame tests from previously selected random upgrades/runes to avoid order-dependent outcomes.
+
+## Previous character/discovery/reset update
 
 - Main-menu Characters is a read-only overview. Locked characters show their names only; no character entry can start a run. New Run retains its separate playable character picker.
 - Successful evolutions/fusions persist in a separate `evolved_recipes` list. Pause and collection reveal only explicitly completed recipes. Component ownership and legacy `seen` flags do not leak them. Pause counts unknown paths linked to current weapons without naming recipes.
@@ -30,11 +39,11 @@ Completed:
 All current tests use **4.7.2.stable.official.ed1daf0bf**. The downloaded engine was verified against the official SHA512 manifest during initial setup. System-wide `godot` is older and must not be used.
 
 - Import/parser/resource checks: passed. `test-results/import.log`.
-- **141 PASS, zero FAIL**, no script errors or reported leaks in the current functional suite. Includes real new-weapon damage, ricochets, mine pull/slow, execution multiplier, passive retaliation, meta charge gating, timed speed growth, collection hiding, audio isolation, and Lv5/Lv5 thresholds. `test-results/unit.log`.
+- **158 PASS, zero FAIL**, no script errors or reported leaks in the current functional suite. Includes real new-weapon damage, ricochets, mine pull/slow, execution multiplier, passive retaliation, meta charge gating, timed speed growth, collection hiding, audio isolation, and Lv5/Lv5 thresholds. `test-results/unit.log`.
 - Native graphical window test: ten audio changes cause no display requests; all three actual window sizes verified. `test-results/window.log`.
 - True native embedded test, launched with `--wid`: no native window requests, no resize spam; settings explain editor ownership. `test-results/embedded.log`. The software driver emits only its known VSync-support warning.
-- Graphical smoke test: English screens rendered at 1920×1080; keyboard movement ~114.4 px and simulated stick movement ~55.8 px confirm the slower movement. Rotated arrow and settings screenshots visually inspected. `test-results/visual.log`, `docs/screenshots/`.
-- Current complete accelerated run: reaches 30:00, emits victory once, processes three runes, 24,125 kills; ~74.796 s CPU wall time. `test-results/full-run.log`. Harness uses immunity and automated choices, not fake gameplay outcomes.
+- Previous graphical smoke test (before this tempo-only update): English screens rendered at 1920×1080; keyboard movement ~114.4 px and simulated stick movement ~55.8 px confirm the slower movement. Rotated arrow and settings screenshots visually inspected. `test-results/visual.log`, `docs/screenshots/`.
+- Current complete accelerated run: reaches 30:00, emits victory once, processes three runes, 23,923 kills; ~75.481 s CPU wall time. `test-results/full-run.log`. Harness uses immunity and automated choices, not fake gameplay outcomes.
 - Earlier sustained stress fixture: 180 simulated seconds / 5,400 steps, peaks 380 enemies / 261 projectiles / 300 pickups; 37.354 s wall time and no exceptions. `test-results/stress.log`. This log predates this revision; the current complete run and focused combat tests cover the changed systems.
 - Test environment: Linux x86_64, AMD EPYC 7763, five visible vCPUs, ~33 GiB RAM; graphical tests use Xorg dummy + Mesa llvmpipe. Simulation timings are not a claim of rendered FPS.
 

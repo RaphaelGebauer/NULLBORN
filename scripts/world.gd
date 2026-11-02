@@ -51,7 +51,7 @@ func spawn_enemy(id: String="wisp",pos: Vector2=Vector2.INF,child: bool=false) -
 	var hp_scale: float=(1+.055*m+.0025*m*m)*(1+.006*maxi(model.level-1,0))*(1+.10*floori(m/5.0))*(1+model.curse)
 	var e: Dictionary={} if enemy_pool.is_empty() else enemy_pool.pop_back()
 	e.clear()
-	e.merge({"id":serial,"kind":id,"pos":pos,"hp":v.hp*hp_scale,"max_hp":v.hp*hp_scale,"speed":v.speed*lerpf(.85,1,minf(1,model.time/300))*minf(1.35,1+.012*m)*(1+.35*model.curse),"damage":v.damage*(1+.035*m),"xp":v.xp,"radius":float(v.radius),"velocity":Vector2.ZERO,"boss":boss,"timer":2.0,"phase":0,"charge":Vector2.ZERO,"age":0.0,"hits":{},"statuses":{},"dot":0.0,"child":child,"spawn_minute":m,"flash":0.0,"leech_source":""})
+	e.merge({"id":serial,"kind":id,"pos":pos,"hp":v.hp*hp_scale,"max_hp":v.hp*hp_scale,"speed":v.speed*minf(1.35,1+.012*m)*(1+.35*model.curse),"damage":v.damage*(1+.035*m),"xp":v.xp,"radius":float(v.radius),"velocity":Vector2.ZERO,"boss":boss,"timer":2.0,"phase":0,"charge":Vector2.ZERO,"age":0.0,"hits":{},"statuses":{},"dot":0.0,"child":child,"spawn_minute":m,"flash":0.0,"leech_source":""})
 	enemies.append(e)
 	return e
 func nearest(pos: Vector2) -> Dictionary:
@@ -69,6 +69,7 @@ func visible_enemies() -> Array:
 	return enemies.filter(func(e): return e.hp>0 and absf(e.pos.x-player.position.x)<half.x and absf(e.pos.y-player.position.y)<half.y)
 func projectile(pos: Vector2,velocity: Vector2,values: Dictionary,source: String,delay: float=0,hostile: bool=false) -> void:
 	if shots.size()>=650: return
+	if hostile: velocity*=model.opening_factor("projectile_speed")
 	var s: Dictionary={} if shot_pool.is_empty() else shot_pool.pop_back()
 	s.clear()
 	s.merge({"pos":pos,"velocity":velocity,"life":4.0,"age":0.0,"delay":delay,"damage":values.get("damage",10.0)* (1 if hostile else model.projectile_damage),"values":values,"source":source,"pierce":values.get("pierce",0),"bounces":values.get("bounces",0),"hits":{},"hostile":hostile})
@@ -157,7 +158,7 @@ func _physics_process(delta: float) -> void:
 		if not wave.boss.is_empty(): spawn_enemy(wave.boss)
 		if wave.rune and model.runes.size()<3: model.modal_requested.emit("RUNE")
 	var spawn_rate: float=(1.6+.38*m+.008*m*m)*(1+.09*floori(m/5.0))*(1+model.curse)*model.registry.get_def(model.stage).values.density
-	budget=minf(3,budget+delta*spawn_rate*lerpf(.6,1,minf(1,model.time/300)))
+	budget=minf(3,budget+delta*spawn_rate*model.opening_factor("spawn_rate"))
 	var cap: int=mini(420,55+12*m)
 	while budget>=1 and enemies.size()<cap:
 		budget-=1
@@ -209,7 +210,7 @@ func update_enemy(e: Dictionary,delta: float) -> void:
 	var factor: float=1
 	if e.statuses.has("slow"): factor=.825 if e.boss else .65
 	if e.statuses.has("freeze") or (freeze_time>0 and not e.boss): factor=0
-	e.timer-=delta*factor
+	e.timer-=delta*factor/model.opening_factor("attack_interval")
 	var distance: float=e.pos.distance_to(player.position)
 	var velocity: Vector2=direction*e.speed
 	match e.kind:
@@ -244,7 +245,7 @@ func update_enemy(e: Dictionary,delta: float) -> void:
 		if diff.length_squared()>1: separation+=diff.normalized()*25
 		count+=1
 		if count>=5: break
-	e.velocity=(velocity+separation)*factor
+	e.velocity=(velocity+separation)*factor*model.opening_factor("enemy_speed")
 	e.pos+=e.velocity*delta
 	if e.boss and distance>1500: e.pos=player.position-direction*650
 	if e.pos.distance_to(player.position)<e.radius+13: hurt_player(e.damage)
@@ -359,7 +360,7 @@ func update_pickups(delta: float) -> void:
 	for p in pickups.duplicate():
 		var distance: float=p.pos.distance_to(player.position)
 		if p.kind!="chest" and distance<model.magnet:
-			p.speed=minf(800,p.speed+delta*1200)
+			p.speed=minf(800*model.pickup_speed,p.speed+delta*1200*model.pickup_speed)
 			p.pos=p.pos.move_toward(player.position,p.speed*delta)
 		if p.pos.distance_to(player.position)<21:
 			collect(p)

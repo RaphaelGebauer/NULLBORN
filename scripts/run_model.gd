@@ -14,7 +14,7 @@ signal ended(victory: bool)
 var rng := RandomNumberGenerator.new()
 var hp: float = 100
 var max_hp: float = 100
-var speed: float = 176
+var speed: float = 165
 var armor: float = 0
 var regeneration: float=0
 var might: float = 1
@@ -58,11 +58,18 @@ var resonance: float=0
 var chain_cooldown: float=0
 var blood_healed: int=0
 var blood_minute: int=0
-var speed_base: float=176
+var speed_base: float=165
 var speed_bonus: float=1
+var cooldown_base: float=1
+var pickup_speed: float=1
+var pacing: Resource=preload("res://resources/pacing.tres")
+func opening_factor(kind: String) -> float:
+	return lerpf(float(pacing.values[kind]),1.0,clampf(time/pacing.values.ramp_seconds,0,1))
+func update_attack_speed() -> void:
+	cooldown=maxf(.15,cooldown_base-.01*meta.get("battle_rhythm",0)*minf(10,time/60))
 func update_movement_speed() -> void:
 	var minutes: float=minf(10,time/60)
-	speed=minf(500,speed_base*(speed_bonus+.01*meta.get("long_stride",0)*minutes+.02*passives.get("momentum_feather",0)*minf(5,time/60)))
+	speed=minf(500,speed_base*(speed_bonus+(.03*meta.get("evasive_instinct",0) if hp/max_hp<.5 else 0)+.01*meta.get("long_stride",0)*minutes+.02*passives.get("momentum_feather",0)*minf(5,time/60)))
 
 func _init() -> void:
 	rng.seed = 72047
@@ -108,6 +115,7 @@ func tick(delta: float) -> void:
 		blood_minute=int(time/60)
 		blood_healed=0
 	update_movement_speed()
+	update_attack_speed()
 	time_changed.emit()
 	if time >= 1800: finish(true)
 func legal() -> Array:
@@ -165,7 +173,9 @@ func recalculate() -> void:
 		stats[v.stat]+=v.bonus*passives[id]
 	stats.max_hp+=0.05*meta.get("max_hp",0)
 	stats.might+=0.03*meta.get("might",0)
-	stats.speed+=0.04*meta.get("speed",0)
+	stats.speed+=0.05*meta.get("speed",0)
+	stats.projectile_speed+=.06*meta.get("projectile_speed",0)
+	pickup_speed=1+.12*meta.get("pickup_speed",0)
 	stats.area+=.04*meta.get("area",0)
 	stats.duration+=.05*meta.get("duration",0)
 	stats.cooldown-=.02*meta.get("cooldown",0)
@@ -176,11 +186,12 @@ func recalculate() -> void:
 	stats.armor+=floori(meta.get("armor",0)/2.0)
 	max_hp=h.hp*stats.max_hp
 	hp=clampf(ratio*max_hp,0,max_hp)
-	speed_base=h.speed*.8
+	speed_base=h.speed*pacing.values.player_speed
 	speed_bonus=stats.speed
 	update_movement_speed()
 	might=stats.might
-	cooldown=maxf(.15,stats.cooldown)
+	cooldown_base=maxf(.15,stats.cooldown)
+	update_attack_speed()
 	area=minf(3,stats.area)
 	duration=stats.duration
 	projectile_speed=stats.projectile_speed

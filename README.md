@@ -24,9 +24,9 @@ Godot's embedded game view belongs to the editor and cannot be resized by the ga
 
 ## Progression and pacing
 
-The opening is slower: base hero movement is 80% of the original values (Lyra: 176 px/s), enemy movement begins at 85%, and spawn rate begins at 60%. Enemy/spawn opening modifiers ramp to their full values over five in-game minutes.
+The opening is deliberately measured across movement, enemy pressure and combat. Hero base movement is 75% of the original values (Lyra: 165 px/s); enemies start at 65% speed and spawns at 40% density. Projectiles and orbit/beam rotation begin at 80% speed, while weapon/AI intervals begin 20% longer. Opening modifiers reach normal values smoothly over **eight in-game minutes**. The run clock and boss schedule are unchanged. Heroes retain a generous early speed advantage over normal pursuers.
 
-The Star Forge offers **16 permanent upgrades**. Fleet Foot grants immediate movement speed; Long Stride grants +1% movement speed per in-game minute **per rank**, capped after ten minutes. Additional upgrades include regeneration, crit chance, area, duration and cooldown. Reroll, skip and banish must be purchased first. Treasure Hunter can add a reroll only after that feature is unlocked.
+The Star Forge offers **20 permanent upgrades**. Fleet Foot grants +5% immediate movement speed per rank, starting at 40 gold; Long Stride grants +1% movement speed per in-game minute **per rank**, capped after ten minutes. Additional tempo upgrades include **Swift Missiles** (+6% projectile speed per rank), **Battle Rhythm** (-1% cooldown per minute per rank, capped at ten minutes), **Gathering Flow** (+12% pickup attraction speed per rank) and **Evasive Instinct** (+3% movement per rank while below 50% HP). Regeneration, crit chance, area, duration and instant cooldown upgrades remain available. Reroll, skip and banish must be purchased first. Treasure Hunter can add a reroll only after that feature is unlocked.
 
 The main-menu **Characters** page is read-only: locked heroes show only their names; unlocked heroes show details. Start runs exclusively through **New Run**.
 

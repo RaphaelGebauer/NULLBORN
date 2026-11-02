@@ -511,7 +511,7 @@ func style_button(node: Button) -> void:
 func character_details(id: String) -> String:
 	var d: Resource=catalog.get_def(id)
 	var bonus: String={"lyra":"+10% XP","brann":"+1 armor / -5% cooldown","noctis":"+15% critical damage / +10% luck","eira":"+15% radius / +10% projectile speed"}[id]
-	return "%s · %d HP · %d speed\n%s · %s" % [d.display_name,d.values.hp,roundi(d.values.speed*.8),catalog.get_def(d.values.weapon).display_name,bonus]
+	return "%s · %d HP · %d speed\n%s · %s" % [d.display_name,d.values.hp,roundi(d.values.speed*preload("res://resources/pacing.tres").values.player_speed),catalog.get_def(d.values.weapon).display_name,bonus]
 func character_overview() -> void:
 	state="MENU"
 	box("CHARACTERS","Your heroes. Start a run through New Run in the main menu.")

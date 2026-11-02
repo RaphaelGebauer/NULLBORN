@@ -11,17 +11,31 @@
 | 30 waves and boss/rune events | `resources/waves/*.tres` |
 | 4 heroes, 8 runes, 2 stages | Corresponding `resources/` folders |
 | Lantern drop weights | `resources/loot_table.tres` |
-| 16 meta upgrades, prices and unlock rules | `scripts/save_manager.gd`, `META` |
+| 20 meta upgrades, prices and unlock rules | `scripts/save_manager.gd`, `META` |
 | Stats, XP and selection tools | `scripts/run_model.gd` |
-| Opening ramp, spawn scaling and enemy behavior | `scripts/world.gd` |
+| Opening pace factors and ramp duration | `resources/pacing.tres` |
+| Spawn scaling and enemy behavior | `scripts/world.gd` |
 
 The generator `tools/generate_data.py` is retained. Regenerating overwrites catalog files; update it when changing generated definitions.
 
 ## Updated opening
 
-Hero speed is multiplied by 0.8 before passive/meta modifiers. Base Lyra speed is 176 px/s. Enemy speed starts at 0.85 of its normal value and spawn rate at 0.6; both reach 1.0 over 300 in-game seconds. The underlying minute-based difficulty formulas remain intact.
+Hero speed is multiplied by **0.75** before passive/meta modifiers. Base Lyra speed is **165 px/s** (previously 176), and the slowest hero starts at 153.75 px/s. A fresh normal mite moves at **97.5 px/s** (150 × 0.65), preserving an ample escape margin. Enemy movement starts at 0.65 and spawn rate at 0.4; both reach 1.0 over **480 in-game seconds**. This applies dynamically to movement, including charge and zigzag behavior. Weapon and enemy attack intervals start at ×1.2 and ease to ×1.0. Friendly/hostile projectile speeds and orbit/beam rotation start at ×0.8 and reach ×1.0. Beam/zone tick intervals use the same attack pacing. No global time-scale changes: run duration and minute/boss schedule remain intact.
 
-Fleet Foot grants +4% movement speed per rank. Long Stride grants +1% per in-game minute per rank, capped at ten minutes. Momentum Feather grants +2% per minute per passive level, capped at five minutes. These are additive speed bonuses, recalculated from base values without compounding drift. Overall movement remains capped at 500 px/s.
+Fleet Foot grants +5% movement speed per rank; base price 40 gold. Long Stride grants +1% per in-game minute per rank, capped at ten minutes. Momentum Feather grants +2% per minute per passive level, capped at five minutes. These are additive speed bonuses, recalculated from base values without compounding drift. Overall movement remains capped at 500 px/s.
+
+### Additional tempo progression
+
+All four added upgrades have five ranks and the standard quadratic rank pricing:
+
+| Upgrade | Per-rank effect | Base price |
+|---|---|---:|
+| Swift Missiles | +6% projectile speed | 60 |
+| Battle Rhythm | -1% cooldown per in-game minute, capped at ten minutes | 100 |
+| Gathering Flow | +12% pickup attraction acceleration and maximum speed | 50 |
+| Evasive Instinct | +3% movement speed while below 50% HP | 75 |
+
+Timed cooldown is derived from the base recalculation, never incrementally compounded. Low-health speed is removed on healing above the threshold. Existing cooldown/movement caps still apply. Pace values are editable in `resources/pacing.tres`; the catalog generator does not overwrite this separate tuning resource.
 
 ## Selection tools
 

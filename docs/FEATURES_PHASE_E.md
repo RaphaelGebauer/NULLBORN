@@ -17,11 +17,11 @@ All 45 definitions and processors; mandatory paused Lv4 choice; normal/evolved e
 
 ## E3 — implemented
 
- active five-band instability/HUD/director/gold, four proximity-only paused risk/reward nodes, all seven bounded elite affixes, separate half-HP boss phases with real dashes, starfalls, curved bolts, capped summons/null zones and safe-gap rings/beams. See BALANCE.md and tests/rift_runner.gd.
+Active five-band instability/HUD/director/gold, four proximity-only paused risk/reward nodes, all seven bounded elite affixes, separate half-HP boss phases with real dashes, starfalls, curved bolts, capped summons/null zones and safe-gap rings/beams. See BALANCE.md and tests/rift_runner.gd.
 
 ## E4 — implemented
 
- four bidirectional reactions with final-hit attribution, cached base/evolution/fusion tags and successful mutation/status tags, fixed priority, per-target 3-second history/1.5-second cooldown, forty-events-per-combat-second budget, capped feedback, boss dampening, bounded chain/AoE, result damage entry and general pause legend. Real Burn/Poison ownership and no proc reentry; exhaustive functional, graphical, stress and full-run verification.
+Four bidirectional reactions with final-hit attribution, cached base/evolution/fusion tags and successful mutation/status tags, fixed priority, per-target 3-second history/1.5-second cooldown, forty-events-per-combat-second budget, capped feedback, boss dampening, bounded chain/AoE, result damage entry and general pause legend. Real Burn/Poison ownership and no proc reentry; exhaustive functional, graphical, stress and full-run verification.
 
 ## Remaining delivery
 

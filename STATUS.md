@@ -4,7 +4,7 @@ Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserv
 
 ## Phase E4 — implemented and verified; E5–E6 remain open
 
-Implementation commit: recorded after committing this phase. E3 implementation `aee0e53` is already published and independently verified on GitHub main.
+Implementation commit: `8f07815`; pushed to GitHub main and independently verified with ls-remote plus a fresh bare clone containing project.godot, the reaction helper, tests and STATUS.md. E3 implementation `aee0e53` is also published and verified.
 
 - scripts/element_reactions.gd implements Arc Freeze, Blightburst, Void Shatter and Rift Conduction in both orders, on actual final hits, with fixed priority, 3-second element history, shared 1.5-second target cooldown and global forty-events-per-combat-second budget.
 - Cached immutable weapon/evolution/fusion tag unions plus successfully applied mutation/status tags; existing Ice Crown contributes Frost only on its real successful hit. No inventory-only or stale-status triggers; no first-hit self-reaction from a fusion union.

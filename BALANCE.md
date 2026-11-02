@@ -59,4 +59,12 @@ Caps remain: 6+6 equipment, 250 visible XP gems, 300 total pickups, 650 projecti
 
 ## Phase E work in progress
 
-E1 adds tested save/runtime/statistics foundations. E2–E6 gameplay extensions are not delivered yet. See `docs/FEATURES_PHASE_E.md` and `STATUS.md` for the exact continuation point.
+E1 provides tested save/runtime/statistics foundations; E2 implements all 45 weapon mutations and evolution/fusion inheritance. E3–E6 remain pending. See `docs/FEATURES_PHASE_E.md` and `STATUS.md` for the exact continuation point.
+
+## E2 mutation tuning
+
+45 definitions: `resources/mutations/*.tres`; regeneration script: `tools/generate_mutations.py`. Each definition has a base weapon, effect processor, interval, value and English explanation. The original generator does not overwrite this catalog. Mutation IDs use `mutation_` to avoid the pre-existing `last_judgment` evolution ID.
+
+Mutation inheritance retains a runtime array of `{id, strength}` per owned weapon. Regular evolution transfers full strength. Fusion follows recipe base order: 1.0 then 0.5. Continuous modifiers scale their magnitude; integer/counter procs double their interval for echoes; chance procs halve chance; cooldown procs double cooldown. Shared secondary budget is 24 per simulation step, bounded by the existing 650 projectile / 180 FX limits. Secondary hits neither reroll crits nor re-enter mutation hooks, lifesteal or on-death cascades.
+
+AoE impacts and zone ticks carry bounded event tokens so many targets do not falsely count as many casts/ticks. Afterglow/residual zones deliver four nonrecursive ticks totaling at most the configured damage fraction. Whiteout extends the refreshed base slow duration once, without repeated compounding or boss-freeze extension. Star Mark uses the strongest existing mark bonus, not an additional multiplier on the existing 15% mark.

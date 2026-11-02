@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_extra_facet"
+display_name = "Extra Facet"
+description = "Two additional distinct-target ricochets; other attacks gain chain hits."
+values = {"weapon": "prism_disc", "effect": "bounce", "interval": 0, "value": 2}

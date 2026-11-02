@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_residual_gravity"
+display_name = "Residual Gravity"
+description = "Explosion leaves a 1.5 s slow zone, total damage capped at 25%."
+values = {"weapon": "gravity_mine", "effect": "residual", "interval": 1.5, "value": 0.25}

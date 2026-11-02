@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_shardsplit"
+display_name = "Shardsplit"
+description = "Every fourth attack adds a 45% damage fragment or pulse."
+values = {"weapon": "frost_shard", "effect": "extra_attack", "interval": 4, "value": 0.45}

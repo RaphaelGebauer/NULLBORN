@@ -3,7 +3,7 @@ var catalogs: Dictionary = {}
 var errors: Array[String] = []
 func _init() -> void:
 	var ids: Dictionary={}
-	for kind in ["weapon","passive","enemy","character","wave","evolution","rune","stage"]:
+	for kind in ["weapon","passive","enemy","character","wave","evolution","rune","stage","mutation"]:
 		var catalog: Dictionary = {}
 		var path: String = "res://resources/"+("enemies" if kind=="enemy" else kind+"s")+"/"
 		var directory := DirAccess.open(path)
@@ -40,6 +40,13 @@ func _init() -> void:
 			total+=wave.values.weights[id]
 		if not is_equal_approx(total,100) or wave.values.minute<0 or wave.values.minute>29: errors.append("Invalid wave weights "+wave.id)
 		if wave.values.boss!="" and (not catalogs.enemy.has(wave.values.boss) or not catalogs.enemy[wave.values.boss].values.boss): errors.append("Invalid wave boss "+wave.id)
+	for id in catalogs.weapon:
+		var choices: Array=mutation_choices(id)
+		if choices.size()!=3: errors.append("Expected three mutations for "+id)
+	for mutation in catalogs.mutation.values():
+		if not catalogs.weapon.has(mutation.values.weapon) or not mutation.values.effect in preload("res://scripts/data/mutation_definition.gd").EFFECTS or mutation.values.interval<0 or mutation.values.value==0: errors.append("Invalid mutation "+mutation.id)
+func mutation_choices(weapon: String) -> Array:
+	return catalogs.get("mutation",{}).values().filter(func(d):return d.values.weapon==weapon)
 func elements_for_weapon(id: String) -> Array[String]:
 	return preload("res://scripts/data/element_tags.gd").for_weapon(id,self)
 func get_def(id: String) -> Resource:

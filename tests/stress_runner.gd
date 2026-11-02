@@ -4,7 +4,20 @@ func _initialize() -> void:
 func run() -> void:
 	var model=load("res://scripts/run_model.gd").new()
 	model.time=1200
-	model.weapons={"star_piercer":1,"solar_orbit":1,"blood_thorns":1,"zenith_beam":1,"night_storm":1,"ghost_well":1}
+	var evolved: Dictionary={}
+	var imprints: Dictionary={}
+	for id in ["star_piercer","solar_orbit","blood_thorns","zenith_beam","night_storm","ghost_well"]:
+		var recipe: Resource=model.registry.get_def(id)
+		var base: String=recipe.values.bases[0]
+		model.weapons={base:5}
+		model.passives={recipe.values.passive:5}
+		model.ensure_mutations()
+		model.select_mutation(base,model.registry.mutation_choices(base)[0].id)
+		assert(model.evolution(true)==id)
+		evolved[id]=1
+		imprints[id]=model.weapon_mutations[id].duplicate(true)
+	model.weapons=evolved
+	model.weapon_mutations=imprints
 	model.passives={"power_core":5,"clockwork":5,"focus_lens":5,"lasting_seal":5,"multiplicity":5,"blood_vial":5}
 	model.recalculate()
 	var world=load("res://scenes/game.tscn").instantiate()

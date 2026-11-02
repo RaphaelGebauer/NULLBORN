@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_sunburn"
+display_name = "Sunburn"
+description = "Burn on hits, refreshed at most once per target per 0.5 s."
+values = {"weapon": "sun_beam", "effect": "sunburn", "interval": 0.5, "value": 3}

@@ -6,8 +6,13 @@ var effects: Array=[]
 var free_effects: Array=[]
 var elapsed: float=0
 var hit_serial: int=0
+var effect_serial: int=0
+var modifiers=preload("res://scripts/mutation_effects.gd").new()
+var mutation_clocks: Dictionary={}
 func update(delta: float) -> void:
 	elapsed+=delta
+	modifiers.world=world
+	modifiers.tick(delta)
 	for id in world.model.weapons:
 		var v: Dictionary=world.model.registry.weapon_values(id,world.model.weapons[id])
 		timers[id]=timers.get(id,0.0)-delta
@@ -16,21 +21,29 @@ func update(delta: float) -> void:
 		elif timers[id]<=0:
 			var target: Dictionary=world.nearest(world.player.position)
 			if not target.is_empty() or v.behavior in ["aura","radial","beam","fan"]:
+				v=modifiers.parameters(id,v)
+				v.primary_id=target.get("id",-1)
 				call("attack_"+v.behavior,id,v,target)
+				modifiers.attack(id,params(v),target)
 				timers[id]=maxf(.12,v.cooldown*world.model.cooldown*world.model.opening_factor("attack_interval")*(.85 if world.model.resonance>0 else 1))
 	for effect in effects.duplicate():
 		effect.age+=delta
 		if effect.delay>0:
 			effect.delay-=delta
 			continue
-		if effect.behavior=="mine": update_mine(effect)
+		if effect.behavior=="mutation_pulse": modifiers.fire_pulse(effect)
+		elif effect.behavior=="mutation_zone": modifiers.zone(effect,delta)
+		elif effect.behavior=="mine": update_mine(effect)
 		elif effect.behavior=="beam": update_beam(effect,delta)
 		elif effect.behavior=="zone": update_zone(effect,delta)
 		elif effect.behavior=="blast":
 			if not effect.fired:
 				effect.fired=true
-				area_hit(effect.pos,effect.radius,effect.damage,effect.values,effect.source)
+				var hit_values: Dictionary=effect.values.duplicate()
+				hit_values.impact_token=effect.serial
+				area_hit(effect.pos,effect.radius,effect.damage,hit_values,effect.source)
 		if effect.age>effect.life:
+			if effect.behavior in ["zone","beam","mine"] and not effect.values.get("mutation_secondary",false): modifiers.expiry(effect.source,effect.pos,effect.values)
 			effects.erase(effect)
 			free_effects.append(effect)
 func params(v: Dictionary) -> Dictionary:
@@ -48,7 +61,8 @@ func add_effect(data: Dictionary) -> void:
 	if effects.size()>=180: return
 	var e: Dictionary={} if free_effects.is_empty() else free_effects.pop_back()
 	e.clear()
-	e.merge({"age":0.0,"delay":0.0,"life":.3,"behavior":"blast","pos":Vector2.ZERO,"radius":30.0,"damage":0.0,"values":{},"source":"","fired":false,"tick":0.0,"angle":0.0})
+	effect_serial+=1
+	e.merge({"serial":effect_serial,"age":0.0,"delay":0.0,"life":.3,"behavior":"blast","pos":Vector2.ZERO,"radius":30.0,"damage":0.0,"values":{},"source":"","fired":false,"tick":0.0,"angle":0.0})
 	e.merge(data,true)
 	effects.append(e)
 func area_hit(pos: Vector2, radius: float, damage: float, values: Dictionary, source: String) -> int:
@@ -87,7 +101,11 @@ func attack_aura(id: String,v: Dictionary,_target: Dictionary) -> void:
 			world.model.heal(1)
 	add_effect({"behavior":"visual","pos":world.player.position,"radius":p.radius,"source":id,"values":p,"life":.22})
 func orbit(id: String,v: Dictionary,delta: float) -> void:
-	var p:=params(v)
+	var p:=params(modifiers.parameters(id,v))
+	mutation_clocks[id]=mutation_clocks.get(id,0.0)-delta
+	if mutation_clocks[id]<=0:
+		modifiers.attack(id,p,world.nearest(world.player.position))
+		mutation_clocks[id]=maxf(.12,p.cooldown*world.model.cooldown)
 	var radius: float=p.radius*(1+.12*(p.duration-3)/3)
 	for i in range(int(p.count)):
 		var pos: Vector2=world.player.position+Vector2.RIGHT.rotated(elapsed*p.rotation+TAU*i/p.count)*radius
@@ -150,7 +168,7 @@ func update_beam(e: Dictionary,delta: float) -> void:
 	var end: Vector2=e.pos+Vector2.RIGHT.rotated(e.angle)*e.radius
 	# Broadphase circle, followed by exact closest-point-to-segment test.
 	for enemy in world.grid.query((e.pos+end)*.5,e.radius*.5+15):
-		if enemy.pos.distance_to(Geometry2D.get_closest_point_to_segment(enemy.pos,e.pos,end))<enemy.radius+10:
+		if enemy.pos.distance_to(Geometry2D.get_closest_point_to_segment(enemy.pos,e.pos,end))<enemy.radius+e.values.get("hit_width",10):
 			world.hit(enemy,e.damage,e.values,e.source)
 func attack_zone(id: String,v: Dictionary,target: Dictionary) -> void:
 	if target.is_empty(): return
@@ -160,11 +178,14 @@ func attack_zone(id: String,v: Dictionary,target: Dictionary) -> void:
 func update_zone(e: Dictionary,delta: float) -> void:
 	if e.values.get("pull",0)>0:
 		for enemy in world.grid.query(e.pos,e.radius):
-			if not enemy.boss: enemy.pos=enemy.pos.move_toward(e.pos,30*delta)
+			if not enemy.boss: enemy.pos=enemy.pos.move_toward(e.pos,30*delta*e.values.get("pull_strength",1.0))
 	e.tick-=delta
 	if e.tick<=0:
 		e.tick=maxf(.12,e.values.tick)
-		area_hit(e.pos,e.radius,e.damage,e.values,e.source)
+		e.ticks=e.get("ticks",0)+1
+		var values: Dictionary=e.values.duplicate()
+		values.impact_token=e.serial*100000+e.ticks
+		area_hit(e.pos,e.radius,e.damage,values,e.source)
 
 func attack_ricochet(id: String,v: Dictionary,target: Dictionary) -> void:
 	if target.is_empty(): return
@@ -182,8 +203,10 @@ func update_mine(e: Dictionary) -> void:
 	e.fired=true
 	e.life=e.age+.25
 	for enemy in world.grid.query(e.pos,e.radius):
-		if not enemy.boss: enemy.pos=enemy.pos.move_toward(e.pos,55)
-		world.hit(enemy,e.damage,{"slow":1},e.source)
+		if not enemy.boss: enemy.pos=enemy.pos.move_toward(e.pos,55*e.values.get("pull_strength",1.0))
+		var values: Dictionary=e.values.duplicate(true)
+		values.slow=1
+		world.hit(enemy,e.damage,values,e.source,values.get("mutation_secondary",false))
 func attack_execution(id: String,v: Dictionary,_target: Dictionary) -> void:
 	var targets: Array=world.visible_enemies()
 	if targets.is_empty(): return

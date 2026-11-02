@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_venom_thorns"
+display_name = "Venom Thorns"
+description = "Hits poison for 3 s."
+values = {"weapon": "thorn_halo", "effect": "poison", "interval": 0, "value": 3}

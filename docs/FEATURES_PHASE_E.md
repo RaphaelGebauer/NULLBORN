@@ -11,9 +11,11 @@ Specification: `NULLBORN_CODEX_ERWEITERUNG_PHASE_E.md` (preserved verbatim).
 - `scripts/rift_instability.gd`: deterministic clamping, peak, reversible bands and copied band modifiers. Owned by each run, but intentionally not advanced or applied to gameplay until E3 supplies the complete director/node/UI integration.
 - Run-local mutation map and constellation snapshot establish the existing model's integration points. They do not claim implemented mutation effects or talent bonuses.
 
-## Remaining delivery
+## E2 — implemented
 
-E2: all 45 mutation definitions/effects, mandatory level-4 modal inserted before pending level-ups, inherited imprints for all 15 evolutions and both 100%/50% fusions, bounded secondary hooks and tests.
+All 45 definitions and processors; mandatory paused Lv4 choice; normal/evolved effect tests for all 45; inheritance for all 15 normal evolutions and both primary/echo fusions. Shared proc budget, deterministic echo cadence, genuine projectiles/mines/secondary damage, timed zones, hit/cast/expiry counters, real contact retaliation and healing cap. No extra slots, no changed evolution gates and no recipe spoilers. English pause/build imprint display and three-resolution graphical captures. Existing full-run and stress fixtures now exercise real mutated/evolved loadouts.
+
+## Remaining delivery
 
 E3: activate instability with HUD/director/gold integration, four proximity-only interactive rift nodes, seven elite affixes with bounded director and rewards, distinct HP boss phases and specified telegraphs.
 
@@ -23,4 +25,4 @@ E5: 18 constellation nodes, persistent Starlight awards capped at eight, rollbac
 
 E6: subtle feedback, detailed statistics/result UI, spoiler-safe Build Details, graphical smoke captures, stress/full-run validation, documentation synchronization.
 
-Do not describe E2–E6 as delivered. Do not change `resources/pacing.tres`, weapon IDs, 6+6 slots, Lv5/Lv5 evolution gates, historical chest eligibility or completed-recipe privacy.
+Do not describe E3–E6 as delivered. Do not change `resources/pacing.tres`, weapon IDs, 6+6 slots, Lv5/Lv5 evolution gates, historical chest eligibility or completed-recipe privacy.

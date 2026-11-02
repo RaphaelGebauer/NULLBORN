@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_aurora_pulse"
+display_name = "Aurora Pulse"
+description = "A small pulse every 4 s deals 25% weapon damage."
+values = {"weapon": "spark_orbit", "effect": "periodic", "interval": 4, "value": 0.25}

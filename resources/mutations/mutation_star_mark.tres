@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_star_mark"
+display_name = "Star Mark"
+description = "Mark hits for 3 s; marked targets take +8% damage. Stronger marks replace this bonus."
+values = {"weapon": "arcane_needle", "effect": "mark", "interval": 0, "value": 0.08}

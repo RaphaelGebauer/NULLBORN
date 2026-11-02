@@ -82,4 +82,14 @@ Automatic combat, minute waves, three upgrade choices, 6+6 slots and chest evolu
 
 ## Phase E work in progress
 
-E1 adds tested save/runtime/statistics foundations. E2–E6 gameplay extensions are not delivered yet. See `docs/FEATURES_PHASE_E.md` and `STATUS.md` for the exact continuation point.
+E1 provides tested save/runtime/statistics foundations; E2 implements all 45 weapon mutations and evolution/fusion inheritance. E3–E6 remain pending. See `docs/FEATURES_PHASE_E.md` and `STATUS.md` for the exact continuation point.
+
+## Level-4 weapon mutations (Phase E2)
+
+Every base weapon offers **exactly three specializations when it first reaches Lv4**. Choose one for free; there is no equipment-slot cost. Selection is mandatory, pauses the world, and is separate from normal upgrade cards and reroll/skip/banish tools. Choose with 1/2/3, mouse or controller focus.
+
+Mutations carry into normal evolutions at full strength. Fusions inherit both bases' imprints: the first recipe base is **Primary 100%**, the second **Echo 50%**. Quantized echoes trigger every other eligible attack/hit instead of losing fractional projectiles. The pause build shows the names and inherited status; choosing a mutation never reveals a secret evolution recipe. Lv5+/Lv5 and eligible boss-chest requirements remain unchanged.
+
+All 45 definitions live in `resources/mutations/`; `tools/generate_mutations.py` regenerates only this separate catalog. Runtime effects use the existing Combat/World pipeline through `scripts/mutation_effects.gd`, including a shared secondary budget and proc protection. Debug F11 requests missing mutations for its high-level setup.
+
+E3–E6 (active instability/rifts/elites/new boss phases, elemental reactions, Star Map and detailed result/build overlays) are still pending. Charged Air currently applies a visible electric state; its elemental reaction integration belongs to E4.

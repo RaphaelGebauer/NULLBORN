@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_soul_chain"
+display_name = "Soul Chain"
+description = "Every fourth direct kill hits another nearby enemy for 35% damage."
+values = {"weapon": "reaper_gaze", "effect": "kill_chain", "interval": 4, "value": 0.35}

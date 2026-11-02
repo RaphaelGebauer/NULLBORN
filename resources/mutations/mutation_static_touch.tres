@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_static_touch"
+display_name = "Static Touch"
+description = "Every fifth hit shocks a second nearby target for 35% damage."
+values = {"weapon": "spark_orbit", "effect": "chain_hit", "interval": 5, "value": 0.35}

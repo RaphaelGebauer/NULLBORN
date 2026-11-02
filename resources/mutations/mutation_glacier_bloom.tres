@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_glacier_bloom"
+display_name = "Glacier Bloom"
+description = "Frozen targets release a 45 px pulse for 35% damage; 2 s cooldown."
+values = {"weapon": "frost_shard", "effect": "frozen_blast", "interval": 2, "value": 0.35}

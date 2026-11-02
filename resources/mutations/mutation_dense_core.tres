@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_dense_core"
+display_name = "Dense Core"
+description = "20% stronger pull against normal enemies."
+values = {"weapon": "gravity_mine", "effect": "pull", "interval": 0, "value": 0.2}

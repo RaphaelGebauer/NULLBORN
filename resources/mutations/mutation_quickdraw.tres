@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_quickdraw"
+display_name = "Quickdraw"
+description = "12% shorter weapon cooldown."
+values = {"weapon": "ash_bow", "effect": "cooldown", "interval": 0, "value": -0.12}

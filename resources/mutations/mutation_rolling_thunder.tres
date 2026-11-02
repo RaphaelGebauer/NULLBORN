@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_rolling_thunder"
+display_name = "Rolling Thunder"
+description = "15% larger effect radius."
+values = {"weapon": "storm_bomb", "effect": "radius", "interval": 0, "value": 0.15}

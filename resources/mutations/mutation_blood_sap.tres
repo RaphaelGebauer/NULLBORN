@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_blood_sap"
+display_name = "Blood Sap"
+description = "Heal 1 HP every 25 hits, at most 3 HP per minute."
+values = {"weapon": "thorn_halo", "effect": "heal_hits", "interval": 25, "value": 1}

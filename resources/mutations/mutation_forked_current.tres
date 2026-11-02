@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_forked_current"
+display_name = "Forked Current"
+description = "One additional chain target, capped at four additional targets."
+values = {"weapon": "lightning_call", "effect": "chain", "interval": 0, "value": 1}

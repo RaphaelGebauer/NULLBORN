@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_soul_snare"
+display_name = "Soul Snare"
+description = "Brief hit slow; at most one refresh per target per second."
+values = {"weapon": "soul_well", "effect": "snare", "interval": 1, "value": 1}

@@ -1,4 +1,5 @@
 extends RefCounted
+signal mutation_requested(weapon: String)
 signal xp_changed
 signal health_changed
 signal level_changed
@@ -14,6 +15,7 @@ signal ended(victory: bool)
 var rng := RandomNumberGenerator.new()
 var statistics: RefCounted=preload("res://scripts/run_statistics.gd").new()
 var weapon_mutations: Dictionary={}
+var pending_mutations: Array[String]=[]
 var constellation_nodes: Array=[]
 var run_delta: float=0
 var rift_state: RefCounted=preload("res://scripts/rift_instability.gd").new()
@@ -169,6 +171,7 @@ func upgrade(id: String) -> void:
 			if not id in legal(): return
 			var owned: Dictionary=weapons if registry.catalogs.weapon.has(id) else passives
 			owned[id]=owned.get(id,0)+1
+			if owned==weapons: ensure_mutations()
 			recalculate()
 			inventory_changed.emit()
 	changed.emit()
@@ -252,7 +255,17 @@ func evolution(eligible: bool) -> String:
 		for base in recipe.values.bases:
 			if weapons.get(base,0)<recipe.values.get("weapon_level",5): valid=false
 		if not valid: continue
-		for base in recipe.values.bases: weapons.erase(base)
+		var inherited: Array=[]
+		for i in range(recipe.values.bases.size()):
+			var base: String=recipe.values.bases[i]
+			for imprint in weapon_mutations.get(base,[]):
+				var copy: Dictionary=imprint.duplicate(true)
+				copy.strength*=1.0 if i==0 else .5
+				inherited.append(copy)
+			weapon_mutations.erase(base)
+			pending_mutations.erase(base)
+			weapons.erase(base)
+		if not inherited.is_empty(): weapon_mutations[recipe.id]=inherited
 		weapons[recipe.id]=1
 		evolutions.append(recipe.id)
 		inventory_changed.emit()
@@ -271,3 +284,25 @@ func kill() -> void:
 		heal(3)
 		blood_healed+=3
 	kills_changed.emit()
+
+func ensure_mutations() -> void:
+	for id in weapons:
+		if registry.catalogs.weapon.has(id) and weapons[id]>=4 and not weapon_mutations.has(id) and not id in pending_mutations:
+			pending_mutations.append(id)
+			mutation_requested.emit(id)
+func select_mutation(weapon: String, id: String) -> bool:
+	if not weapon in pending_mutations or not weapons.has(weapon) or weapon_mutations.has(weapon): return false
+	var definition: Resource=registry.get_def(id)
+	if definition==null or not registry.catalogs.mutation.has(id) or definition.values.weapon!=weapon: return false
+	weapon_mutations[weapon]=[{"id":id,"strength":1.0}]
+	pending_mutations.erase(weapon)
+	inventory_changed.emit()
+	return true
+func imprint_text(weapon: String) -> String:
+	var names: Array[String]=[]
+	var evolved: bool=registry.catalogs.evolution.has(weapon)
+	var fusion: bool=evolved and registry.catalogs.evolution[weapon].values.bases.size()>1
+	for imprint in weapon_mutations.get(weapon,[]):
+		names.append(registry.get_def(imprint.id).display_name+(" · Echo 50%" if imprint.strength<1 else " · Primary" if fusion else ""))
+	var prefix: String="Fusion · " if fusion else "Evolved · Mutation inherited: " if evolved else "Mutation: "
+	return prefix+", ".join(names)

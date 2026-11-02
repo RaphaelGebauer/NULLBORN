@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_crystal_burst"
+display_name = "Crystal Burst"
+description = "Every third projectile/effect expiry releases a 35% pulse."
+values = {"weapon": "prism_disc", "effect": "expiry", "interval": 3, "value": 0.35}

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_crescent_chill"
+display_name = "Crescent Chill"
+description = "20% chance to briefly slow a target."
+values = {"weapon": "moon_blade", "effect": "slow_chance", "interval": 0, "value": 0.2}

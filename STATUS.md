@@ -2,7 +2,24 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
-## Phase E1 — completed foundation; E2–E6 not yet implemented
+## Phase E2 — implemented; E3–E6 remain open
+
+- 45 typed mutation definitions in resources/mutations, separate reproducible tools/generate_mutations.py, validated in the existing Registry.
+- Model owns pending choices and runtime imprints; Lv4 requests exactly once, app inserts mandatory three-card choices before pending modals. Debug F11 requests missing mutations. No additional inventory slots or alteration of normal offers/charges.
+- Shared Combat mutation helper implements parameter/attack/hit/periodic/contact/expiry processors, real bounded secondary hits/projectiles/mines/zones, per-impact/tick counters, status durations, deterministic Echo cadence and recursion protection.
+- All 15 normal evolutions retain full imprints; both fusions retain primary 100% and secondary 50%. Old owners removed, catalysts and slot behavior preserved. Recipe spoilers remain hidden until actual evolution.
+- Pause/build displays mutated, evolved/inherited and fusion Primary/Echo identities. Renderer inspected at 1280×720, 1600×900 and 1920×1080. HUD keeps its compact layout.
+- Pacing resource unchanged. Charged Air applies a visible electric status; actual reactions await E4.
+
+Validation: Godot 4.7.2 via tools/check.sh; 179 existing/E1 checks plus 404 mutation checks = **583 PASS, zero FAIL**, no script errors/leak reports. Mutation suite tests all 45 base/evolved effects, full inheritance, both fusions with neither/one/both imprints, integer Echo cadence, AoE-event debouncing, immutable resources and the mandatory modal queue.
+
+Full-run fixture uses six mutations inherited through real evolutions: 30:00, one victory, three runes, 23,862 kills, 82.835 s wall time. Stress fixture likewise uses inherited mutations: 180 simulated seconds, 380 enemies / 261 projectiles / 300 pickups, 11,356 kills, 43.232 s wall time. These are CPU simulations with immunity/automatic choices, not human balance or rendered FPS claims.
+
+Graphical E2 smoke: actual selection at 1280×720, inherited evolution at 1600×900, both fusion imprints at 1920×1080. Screenshots inspected; only known software-driver VSync warning. No physical controller/hardware FPS claim.
+
+Next concrete phase: E3. Activate existing rift_state with run_delta, HUD and cumulative director/contact/reward factors. Add four proximity-only timed rift slots with F/gamepad interaction through the same modal queue. Add bounded elite director with seven affixes and genuine eligible rewards. Give each existing boss a separate boss_hp_phase and independent attack-pattern state with the exact telegraphs from the specification. Do not implement E4/E5 before E3 is tested/committed/pushed.
+
+## Phase E1 — completed foundation
 
 The uploaded Phase E specification is preserved as NULLBORN_CODEX_ERWEITERUNG_PHASE_E.md. Full scope and exact continuation ledger: docs/FEATURES_PHASE_E.md.
 
@@ -14,9 +31,9 @@ Validation: Godot 4.7.2 Stable via tools/check.sh, 179 PASS / 0 FAIL, clean impo
 
 Full-run regression with E1: 30:00, one victory, three runes, 23,923 kills, 76.527 s wall time, no script errors/leak reports. See test-results/full-run.log.
 
-Next concrete task: E2. Add the 45 exact mutation definitions from the uploaded table; implement shared bounded hooks and inheritance before exposing mutation UI. Mutation choices must be inserted immediately after the level-up that reached Lv4; do not append behind already queued level-ups. Ordinary evolutions inherit 100%; fusion bases[0]/bases[1] inherit 100%/50%, with deterministic every-other-trigger handling for quantized echoes. Do not leak undiscovered recipes.
+At the E1 checkpoint the next task was E2 (now completed above). Add the 45 exact mutation definitions from the uploaded table; implement shared bounded hooks and inheritance before exposing mutation UI. Mutation choices must be inserted immediately after the level-up that reached Lv4; do not append behind already queued level-ups. Ordinary evolutions inherit 100%; fusion bases[0]/bases[1] inherit 100%/50%, with deterministic every-other-trigger handling for quantized echoes. Do not leak undiscovered recipes.
 
-Not delivered yet: mutation gameplay/UI, active instability/director/rift nodes, affix elites, new boss phases, reactions, Star Map purchases/bonuses/currency awards, expanded result/build UI and requested new graphical captures. No false completion claim for the expansion.
+Still pending after E2: active instability/director/rift nodes, affix elites, new boss phases, reactions, Star Map purchases/bonuses/currency awards, expanded result/build UI and E3–E6 graphical captures. E2 mutation/evolution/fusion captures are complete. No full expansion completion claim.
 
 ## Latest overall pacing update
 

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_lunar_momentum"
+display_name = "Lunar Momentum"
+description = "10% faster weapon movement and rotation."
+values = {"weapon": "moon_blade", "effect": "motion", "interval": 0, "value": 0.1}

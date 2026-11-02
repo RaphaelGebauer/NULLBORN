@@ -18,4 +18,10 @@ Validation uses isolated functional tests, a sustained CPU load fixture, a full 
 
 ## Phase E work in progress
 
-E1 adds tested save/runtime/statistics foundations. E2–E6 gameplay extensions are not delivered yet. See `docs/FEATURES_PHASE_E.md` and `STATUS.md` for the exact continuation point.
+E1 provides tested save/runtime/statistics foundations; E2 implements all 45 weapon mutations and evolution/fusion inheritance. E3–E6 remain pending. See `docs/FEATURES_PHASE_E.md` and `STATUS.md` for the exact continuation point.
+
+## E2 mutation integration
+
+`mutation_effects.gd` is a helper owned by the existing Combat object, not a second combat engine. Shared parameter, attack, hit, contact, periodic and expiry hooks cover normal/evolved/fused behaviors. For altered attack types, additional projectiles map to bounded pulses. Runtime owners change at evolution; immutable Resources and inventory slot counts do not change.
+
+Model mutation requests are independent of normal level offers. App inserts pending mutation modals before already queued level/chest/rune events, preserves FIFO among mutation requests and never exposes a cancel/skip path. High-level debug setup explicitly calls `ensure_mutations`. Unrevealed recipe privacy remains based solely on successful evolutions saved in `evolved_recipes`.

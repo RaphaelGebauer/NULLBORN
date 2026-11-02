@@ -10,6 +10,9 @@ var events: Array = []
 var state: String = "MENU"
 var cards: Array = []
 var banishing: bool = false
+var mutation_weapon: String=""
+var mutation_notice: String=""
+var mutation_notice_until: float=0
 var selected_hero: String = "lyra"
 var selected_stage: String = "mist"
 var selected_fast: bool = false
@@ -129,6 +132,7 @@ func start_run() -> void:
 	model.initialize_meta()
 	save.mark_seen(selected_hero)
 	model.recalculate()
+	model.mutation_requested.connect(queue_mutation)
 	model.inventory_changed.connect(record_inventory)
 	model.kills_changed.connect(check_unlocks)
 	model.rune_changed.connect(record_inventory)
@@ -179,7 +183,7 @@ func resume() -> void:
 	boss_label.modulate=Color("ffb1a5")
 	ui.add_child(boss_label)
 	get_tree().paused=false
-func build_text() -> String:
+func build_text(include_imprints: bool=true) -> String:
 	var rows: Array=[]
 	for pair in [["Weapons",model.weapons],["Passives",model.passives]]:
 		var names: Array=[]
@@ -189,6 +193,8 @@ func build_text() -> String:
 	var names: Array=[]
 	for id in model.runes: names.append(model.title(id))
 	rows.append("Runes: "+" · ".join(names))
+	for id in model.weapons:
+		if include_imprints and model.weapon_mutations.has(id): rows.append(model.title(id)+" · "+model.imprint_text(id))
 	return "\n".join(rows)
 func _process(_delta: float) -> void:
 	if is_instance_valid(preview) and preview.is_inside_tree():
@@ -200,20 +206,34 @@ func _process(_delta: float) -> void:
 		hp_bar.value=model.hp
 		xp_bar.max_value=model.required_xp()
 		xp_bar.value=model.xp
-		build_label.text=build_text()
+		build_label.text=build_text(false)
 		boss_label.text=""
 		for e in world.enemies:
 			save.mark_seen(e.kind)
 			if e.boss: boss_label.text+="%s   %d / %d HP\n" % [model.title(e.kind),maxi(0,int(e.hp)),int(e.max_hp)]
+		if model.time<mutation_notice_until: boss_label.text+="\n"+mutation_notice
 		var seconds: int=int(model.time)%60
 		if seconds>=50 and int(model.time)/60 in [4,9,14,19,24,28]: boss_label.text+="⚠ Boss arrives in %d seconds" % (60-seconds)
 		if seconds<3: boss_label.text+="\n"+catalog.get_def("wave_%02d" % mini(29,int(model.time)/60)).display_name
 		if not events.is_empty(): show_event()
 func show_event() -> void:
-	if model.finished: return
+	if model.finished or events.is_empty(): return
 	state=events.pop_front()
 	get_tree().paused=true
 	banishing=false
+	if state.begins_with("MUTATION:"):
+		mutation_weapon=state.get_slice(":",1)
+		if not mutation_weapon in model.pending_mutations:
+			if not events.is_empty(): show_event()
+			else: resume()
+			return
+		state="MUTATION"
+		cards=catalog.mutation_choices(mutation_weapon).map(func(d):return d.id)
+		box("MUTATION AWAKENED · "+model.title(mutation_weapon),"Choose one specialization · Carries into Evolution")
+		for i in range(3):
+			var d: Resource=catalog.get_def(cards[i])
+			button("%d · %s\n%s" % [i+1,d.display_name,d.description],choose_mutation.bind(i))
+		return
 	match state:
 		"LEVELUP":
 			cards=model.offers()
@@ -269,7 +289,8 @@ func choose(index: int) -> void:
 	state="TRANSITION"
 	model.upgrade(cards[index])
 	world.player.invulnerable=maxf(world.player.invulnerable,0.3)
-	resume()
+	if not events.is_empty() and str(events[0]).begins_with("MUTATION:"): show_event()
+	else: resume()
 func result(victory: bool) -> void:
 	var added: Array=save.finish_run(model,victory)
 	state="VICTORY" if victory else "DEFEAT"
@@ -289,6 +310,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			model.weapons={"arcane_needle":8,"ash_bow":8,"frost_shard":8}
 			model.passives={"power_core":5,"runner_boots":5}
 			model.recalculate()
+			model.ensure_mutations()
 		if event.keycode==KEY_F12:
 			world.drop(world.player.position,1,"chest",true)
 			model.gold+=500
@@ -302,6 +324,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			button("Resume",resume)
 			button("Settings",func(): return_to_pause=true; settings())
 			button("End Run",confirm_end)
+	if event is InputEventKey and event.pressed and not event.echo and state=="MUTATION":
+		if event.keycode in [KEY_1,KEY_2,KEY_3]: choose_mutation(event.keycode-KEY_1)
 	if event is InputEventKey and event.pressed and not event.echo and state=="RUNE":
 		if event.keycode in [KEY_1,KEY_2,KEY_3]: choose_rune(event.keycode-KEY_1)
 	if event is InputEventKey and event.pressed and not event.echo and state=="LEVELUP":
@@ -389,7 +413,8 @@ func collection() -> void:
 	text.fit_content=true
 	var lines: String=""
 	for kind in catalog.catalogs:
-		lines+="\n"+{"weapon":"WEAPONS","passive":"PASSIVES","enemy":"BESTIARY","character":"HEROES","wave":"WAVES","evolution":"RECIPES","rune":"RUNES","stage":"ARENAS"}[kind]+"\n"
+		if kind=="mutation": continue
+		lines+="\n"+{"weapon":"WEAPONS","passive":"PASSIVES","enemy":"BESTIARY","character":"HEROES","wave":"WAVES","evolution":"RECIPES","rune":"RUNES","stage":"ARENAS","mutation":"MUTATIONS"}[kind]+"\n"
 		for d in catalog.catalogs[kind].values():
 			var discovered: bool=save.discovered(d.id,kind)
 			lines+=(d.display_name+" · "+d.description if discovered else "??? · Not yet discovered")+"\n"
@@ -559,3 +584,18 @@ func reset_all_progress() -> void:
 	model=null
 	menu()
 	apply_settings()
+
+func queue_mutation(weapon: String) -> void:
+	var index: int=0
+	while index<events.size() and str(events[index]).begins_with("MUTATION:"): index+=1
+	events.insert(index,"MUTATION:"+weapon)
+func choose_mutation(index: int) -> void:
+	if state!="MUTATION" or index<0 or index>=cards.size(): return
+	if not model.select_mutation(mutation_weapon,cards[index]): return
+	state="TRANSITION"
+	mutation_notice="Mutation Awakened: "+catalog.get_def(cards[index]).display_name
+	mutation_notice_until=model.time+3
+	audio.play("choose")
+	world.combat.add_effect({"behavior":"visual","pos":world.player.position,"radius":25.0,"life":.25})
+	if not events.is_empty(): show_event()
+	else: resume()

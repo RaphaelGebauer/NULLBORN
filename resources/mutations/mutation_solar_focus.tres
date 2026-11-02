@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/data/mutation_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "mutation_solar_focus"
+display_name = "Solar Focus"
+description = "12% wider beam or effective hit radius."
+values = {"weapon": "sun_beam", "effect": "width", "interval": 0, "value": 0.12}

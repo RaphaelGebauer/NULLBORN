@@ -1,0 +1,407 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS 45 valid unique mutation definitions
+PASS Three choices for arcane_needle
+PASS Lv4 queues once: mutation_hunter_thread
+PASS Select mutation_hunter_thread
+PASS No repeat or slot cost: mutation_hunter_thread
+PASS Functional base effect: mutation_hunter_thread
+PASS Ineligible chest still blocked: mutation_hunter_thread
+PASS Evolve and remove old imprint owner: mutation_hunter_thread
+PASS Full inherited imprint: mutation_hunter_thread
+PASS Functional evolved effect: mutation_hunter_thread
+PASS Lv4 queues once: mutation_split_filament
+PASS Select mutation_split_filament
+PASS No repeat or slot cost: mutation_split_filament
+PASS Functional base effect: mutation_split_filament
+PASS Ineligible chest still blocked: mutation_split_filament
+PASS Evolve and remove old imprint owner: mutation_split_filament
+PASS Full inherited imprint: mutation_split_filament
+PASS Functional evolved effect: mutation_split_filament
+PASS Lv4 queues once: mutation_star_mark
+PASS Select mutation_star_mark
+PASS No repeat or slot cost: mutation_star_mark
+PASS Functional base effect: mutation_star_mark
+PASS Ineligible chest still blocked: mutation_star_mark
+PASS Evolve and remove old imprint owner: mutation_star_mark
+PASS Full inherited imprint: mutation_star_mark
+PASS Functional evolved effect: mutation_star_mark
+PASS Three choices for ash_bow
+PASS Lv4 queues once: mutation_cinder_trail
+PASS Select mutation_cinder_trail
+PASS No repeat or slot cost: mutation_cinder_trail
+PASS Functional base effect: mutation_cinder_trail
+PASS Ineligible chest still blocked: mutation_cinder_trail
+PASS Evolve and remove old imprint owner: mutation_cinder_trail
+PASS Full inherited imprint: mutation_cinder_trail
+PASS Functional evolved effect: mutation_cinder_trail
+PASS Lv4 queues once: mutation_piercing_embers
+PASS Select mutation_piercing_embers
+PASS No repeat or slot cost: mutation_piercing_embers
+PASS Functional base effect: mutation_piercing_embers
+PASS Ineligible chest still blocked: mutation_piercing_embers
+PASS Evolve and remove old imprint owner: mutation_piercing_embers
+PASS Full inherited imprint: mutation_piercing_embers
+PASS Functional evolved effect: mutation_piercing_embers
+PASS Lv4 queues once: mutation_quickdraw
+PASS Select mutation_quickdraw
+PASS No repeat or slot cost: mutation_quickdraw
+PASS Functional base effect: mutation_quickdraw
+PASS Ineligible chest still blocked: mutation_quickdraw
+PASS Evolve and remove old imprint owner: mutation_quickdraw
+PASS Full inherited imprint: mutation_quickdraw
+PASS Functional evolved effect: mutation_quickdraw
+PASS Three choices for frost_shard
+PASS Lv4 queues once: mutation_glacier_bloom
+PASS Select mutation_glacier_bloom
+PASS No repeat or slot cost: mutation_glacier_bloom
+PASS Functional base effect: mutation_glacier_bloom
+PASS Ineligible chest still blocked: mutation_glacier_bloom
+PASS Evolve and remove old imprint owner: mutation_glacier_bloom
+PASS Full inherited imprint: mutation_glacier_bloom
+PASS Functional evolved effect: mutation_glacier_bloom
+PASS Lv4 queues once: mutation_shardsplit
+PASS Select mutation_shardsplit
+PASS No repeat or slot cost: mutation_shardsplit
+PASS Functional base effect: mutation_shardsplit
+PASS Ineligible chest still blocked: mutation_shardsplit
+PASS Evolve and remove old imprint owner: mutation_shardsplit
+PASS Full inherited imprint: mutation_shardsplit
+PASS Functional evolved effect: mutation_shardsplit
+PASS Lv4 queues once: mutation_whiteout
+PASS Select mutation_whiteout
+PASS No repeat or slot cost: mutation_whiteout
+PASS Functional base effect: mutation_whiteout
+PASS Ineligible chest still blocked: mutation_whiteout
+PASS Evolve and remove old imprint owner: mutation_whiteout
+PASS Full inherited imprint: mutation_whiteout
+PASS Functional evolved effect: mutation_whiteout
+PASS Three choices for gravity_mine
+PASS Lv4 queues once: mutation_dense_core
+PASS Select mutation_dense_core
+PASS No repeat or slot cost: mutation_dense_core
+PASS Functional base effect: mutation_dense_core
+PASS Ineligible chest still blocked: mutation_dense_core
+PASS Evolve and remove old imprint owner: mutation_dense_core
+PASS Full inherited imprint: mutation_dense_core
+PASS Functional evolved effect: mutation_dense_core
+PASS Lv4 queues once: mutation_residual_gravity
+PASS Select mutation_residual_gravity
+PASS No repeat or slot cost: mutation_residual_gravity
+PASS Functional base effect: mutation_residual_gravity
+PASS Ineligible chest still blocked: mutation_residual_gravity
+PASS Evolve and remove old imprint owner: mutation_residual_gravity
+PASS Full inherited imprint: mutation_residual_gravity
+PASS Functional evolved effect: mutation_residual_gravity
+PASS Lv4 queues once: mutation_twin_charges
+PASS Select mutation_twin_charges
+PASS No repeat or slot cost: mutation_twin_charges
+PASS Functional base effect: mutation_twin_charges
+PASS Ineligible chest still blocked: mutation_twin_charges
+PASS Evolve and remove old imprint owner: mutation_twin_charges
+PASS Full inherited imprint: mutation_twin_charges
+PASS Functional evolved effect: mutation_twin_charges
+PASS Three choices for lightning_call
+PASS Lv4 queues once: mutation_conductor
+PASS Select mutation_conductor
+PASS No repeat or slot cost: mutation_conductor
+PASS Functional base effect: mutation_conductor
+PASS Ineligible chest still blocked: mutation_conductor
+PASS Evolve and remove old imprint owner: mutation_conductor
+PASS Full inherited imprint: mutation_conductor
+PASS Functional evolved effect: mutation_conductor
+PASS Lv4 queues once: mutation_forked_current
+PASS Select mutation_forked_current
+PASS No repeat or slot cost: mutation_forked_current
+PASS Functional base effect: mutation_forked_current
+PASS Ineligible chest still blocked: mutation_forked_current
+PASS Evolve and remove old imprint owner: mutation_forked_current
+PASS Full inherited imprint: mutation_forked_current
+PASS Functional evolved effect: mutation_forked_current
+PASS Lv4 queues once: mutation_thunder_bind
+PASS Select mutation_thunder_bind
+PASS No repeat or slot cost: mutation_thunder_bind
+PASS Functional base effect: mutation_thunder_bind
+PASS Ineligible chest still blocked: mutation_thunder_bind
+PASS Evolve and remove old imprint owner: mutation_thunder_bind
+PASS Full inherited imprint: mutation_thunder_bind
+PASS Functional evolved effect: mutation_thunder_bind
+PASS Three choices for meteor_rain
+PASS Lv4 queues once: mutation_afterglow
+PASS Select mutation_afterglow
+PASS No repeat or slot cost: mutation_afterglow
+PASS Functional base effect: mutation_afterglow
+PASS Ineligible chest still blocked: mutation_afterglow
+PASS Evolve and remove old imprint owner: mutation_afterglow
+PASS Full inherited imprint: mutation_afterglow
+PASS Functional evolved effect: mutation_afterglow
+PASS Lv4 queues once: mutation_comet_shards
+PASS Select mutation_comet_shards
+PASS No repeat or slot cost: mutation_comet_shards
+PASS Functional base effect: mutation_comet_shards
+PASS Ineligible chest still blocked: mutation_comet_shards
+PASS Evolve and remove old imprint owner: mutation_comet_shards
+PASS Full inherited imprint: mutation_comet_shards
+PASS Functional evolved effect: mutation_comet_shards
+PASS Lv4 queues once: mutation_impact_wave
+PASS Select mutation_impact_wave
+PASS No repeat or slot cost: mutation_impact_wave
+PASS Functional base effect: mutation_impact_wave
+PASS Ineligible chest still blocked: mutation_impact_wave
+PASS Evolve and remove old imprint owner: mutation_impact_wave
+PASS Full inherited imprint: mutation_impact_wave
+PASS Functional evolved effect: mutation_impact_wave
+PASS Three choices for moon_blade
+PASS Lv4 queues once: mutation_crescent_chill
+PASS Select mutation_crescent_chill
+PASS No repeat or slot cost: mutation_crescent_chill
+PASS Functional base effect: mutation_crescent_chill
+PASS Ineligible chest still blocked: mutation_crescent_chill
+PASS Evolve and remove old imprint owner: mutation_crescent_chill
+PASS Full inherited imprint: mutation_crescent_chill
+PASS Functional evolved effect: mutation_crescent_chill
+PASS Lv4 queues once: mutation_lunar_momentum
+PASS Select mutation_lunar_momentum
+PASS No repeat or slot cost: mutation_lunar_momentum
+PASS Functional base effect: mutation_lunar_momentum
+PASS Ineligible chest still blocked: mutation_lunar_momentum
+PASS Evolve and remove old imprint owner: mutation_lunar_momentum
+PASS Full inherited imprint: mutation_lunar_momentum
+PASS Functional evolved effect: mutation_lunar_momentum
+PASS Lv4 queues once: mutation_twin_moon
+PASS Select mutation_twin_moon
+PASS No repeat or slot cost: mutation_twin_moon
+PASS Functional base effect: mutation_twin_moon
+PASS Ineligible chest still blocked: mutation_twin_moon
+PASS Evolve and remove old imprint owner: mutation_twin_moon
+PASS Full inherited imprint: mutation_twin_moon
+PASS Functional evolved effect: mutation_twin_moon
+PASS Three choices for prism_disc
+PASS Lv4 queues once: mutation_crystal_burst
+PASS Select mutation_crystal_burst
+PASS No repeat or slot cost: mutation_crystal_burst
+PASS Functional base effect: mutation_crystal_burst
+PASS Ineligible chest still blocked: mutation_crystal_burst
+PASS Evolve and remove old imprint owner: mutation_crystal_burst
+PASS Full inherited imprint: mutation_crystal_burst
+PASS Functional evolved effect: mutation_crystal_burst
+PASS Lv4 queues once: mutation_extra_facet
+PASS Select mutation_extra_facet
+PASS No repeat or slot cost: mutation_extra_facet
+PASS Functional base effect: mutation_extra_facet
+PASS Ineligible chest still blocked: mutation_extra_facet
+PASS Evolve and remove old imprint owner: mutation_extra_facet
+PASS Full inherited imprint: mutation_extra_facet
+PASS Functional evolved effect: mutation_extra_facet
+PASS Lv4 queues once: mutation_reflective_edge
+PASS Select mutation_reflective_edge
+PASS No repeat or slot cost: mutation_reflective_edge
+PASS Functional base effect: mutation_reflective_edge
+PASS Ineligible chest still blocked: mutation_reflective_edge
+PASS Evolve and remove old imprint owner: mutation_reflective_edge
+PASS Full inherited imprint: mutation_reflective_edge
+PASS Functional evolved effect: mutation_reflective_edge
+PASS Three choices for reaper_gaze
+PASS Lv4 queues once: mutation_last_judgment
+PASS Select mutation_last_judgment
+PASS No repeat or slot cost: mutation_last_judgment
+PASS Functional base effect: mutation_last_judgment
+PASS Ineligible chest still blocked: mutation_last_judgment
+PASS Evolve and remove old imprint owner: mutation_last_judgment
+PASS Full inherited imprint: mutation_last_judgment
+PASS Functional evolved effect: mutation_last_judgment
+PASS Lv4 queues once: mutation_long_stare
+PASS Select mutation_long_stare
+PASS No repeat or slot cost: mutation_long_stare
+PASS Functional base effect: mutation_long_stare
+PASS Ineligible chest still blocked: mutation_long_stare
+PASS Evolve and remove old imprint owner: mutation_long_stare
+PASS Full inherited imprint: mutation_long_stare
+PASS Functional evolved effect: mutation_long_stare
+PASS Lv4 queues once: mutation_soul_chain
+PASS Select mutation_soul_chain
+PASS No repeat or slot cost: mutation_soul_chain
+PASS Functional base effect: mutation_soul_chain
+PASS Ineligible chest still blocked: mutation_soul_chain
+PASS Evolve and remove old imprint owner: mutation_soul_chain
+PASS Full inherited imprint: mutation_soul_chain
+PASS Functional evolved effect: mutation_soul_chain
+PASS Three choices for shadow_fan
+PASS Lv4 queues once: mutation_dark_reach
+PASS Select mutation_dark_reach
+PASS No repeat or slot cost: mutation_dark_reach
+PASS Functional base effect: mutation_dark_reach
+PASS Ineligible chest still blocked: mutation_dark_reach
+PASS Evolve and remove old imprint owner: mutation_dark_reach
+PASS Full inherited imprint: mutation_dark_reach
+PASS Functional evolved effect: mutation_dark_reach
+PASS Lv4 queues once: mutation_night_volley
+PASS Select mutation_night_volley
+PASS No repeat or slot cost: mutation_night_volley
+PASS Functional base effect: mutation_night_volley
+PASS Ineligible chest still blocked: mutation_night_volley
+PASS Evolve and remove old imprint owner: mutation_night_volley
+PASS Full inherited imprint: mutation_night_volley
+PASS Functional evolved effect: mutation_night_volley
+PASS Lv4 queues once: mutation_withering_cut
+PASS Select mutation_withering_cut
+PASS No repeat or slot cost: mutation_withering_cut
+PASS Functional base effect: mutation_withering_cut
+PASS Ineligible chest still blocked: mutation_withering_cut
+PASS Evolve and remove old imprint owner: mutation_withering_cut
+PASS Full inherited imprint: mutation_withering_cut
+PASS Functional evolved effect: mutation_withering_cut
+PASS Three choices for soul_well
+PASS Lv4 queues once: mutation_echo_well
+PASS Select mutation_echo_well
+PASS No repeat or slot cost: mutation_echo_well
+PASS Functional base effect: mutation_echo_well
+PASS Ineligible chest still blocked: mutation_echo_well
+PASS Evolve and remove old imprint owner: mutation_echo_well
+PASS Full inherited imprint: mutation_echo_well
+PASS Functional evolved effect: mutation_echo_well
+PASS Lv4 queues once: mutation_lingering_well
+PASS Select mutation_lingering_well
+PASS No repeat or slot cost: mutation_lingering_well
+PASS Functional base effect: mutation_lingering_well
+PASS Ineligible chest still blocked: mutation_lingering_well
+PASS Evolve and remove old imprint owner: mutation_lingering_well
+PASS Full inherited imprint: mutation_lingering_well
+PASS Functional evolved effect: mutation_lingering_well
+PASS Lv4 queues once: mutation_soul_snare
+PASS Select mutation_soul_snare
+PASS No repeat or slot cost: mutation_soul_snare
+PASS Functional base effect: mutation_soul_snare
+PASS Ineligible chest still blocked: mutation_soul_snare
+PASS Evolve and remove old imprint owner: mutation_soul_snare
+PASS Full inherited imprint: mutation_soul_snare
+PASS Functional evolved effect: mutation_soul_snare
+PASS Three choices for spark_orbit
+PASS Lv4 queues once: mutation_aurora_pulse
+PASS Select mutation_aurora_pulse
+PASS No repeat or slot cost: mutation_aurora_pulse
+PASS Functional base effect: mutation_aurora_pulse
+PASS Ineligible chest still blocked: mutation_aurora_pulse
+PASS Evolve and remove old imprint owner: mutation_aurora_pulse
+PASS Full inherited imprint: mutation_aurora_pulse
+PASS Functional evolved effect: mutation_aurora_pulse
+PASS Lv4 queues once: mutation_outer_orbit
+PASS Select mutation_outer_orbit
+PASS No repeat or slot cost: mutation_outer_orbit
+PASS Functional base effect: mutation_outer_orbit
+PASS Ineligible chest still blocked: mutation_outer_orbit
+PASS Evolve and remove old imprint owner: mutation_outer_orbit
+PASS Full inherited imprint: mutation_outer_orbit
+PASS Functional evolved effect: mutation_outer_orbit
+PASS Lv4 queues once: mutation_static_touch
+PASS Select mutation_static_touch
+PASS No repeat or slot cost: mutation_static_touch
+PASS Functional base effect: mutation_static_touch
+PASS Ineligible chest still blocked: mutation_static_touch
+PASS Evolve and remove old imprint owner: mutation_static_touch
+PASS Full inherited imprint: mutation_static_touch
+PASS Functional evolved effect: mutation_static_touch
+PASS Three choices for storm_bomb
+PASS Lv4 queues once: mutation_charged_air
+PASS Select mutation_charged_air
+PASS No repeat or slot cost: mutation_charged_air
+PASS Functional base effect: mutation_charged_air
+PASS Ineligible chest still blocked: mutation_charged_air
+PASS Evolve and remove old imprint owner: mutation_charged_air
+PASS Full inherited imprint: mutation_charged_air
+PASS Functional evolved effect: mutation_charged_air
+PASS Lv4 queues once: mutation_rolling_thunder
+PASS Select mutation_rolling_thunder
+PASS No repeat or slot cost: mutation_rolling_thunder
+PASS Functional base effect: mutation_rolling_thunder
+PASS Ineligible chest still blocked: mutation_rolling_thunder
+PASS Evolve and remove old imprint owner: mutation_rolling_thunder
+PASS Full inherited imprint: mutation_rolling_thunder
+PASS Functional evolved effect: mutation_rolling_thunder
+PASS Lv4 queues once: mutation_second_impact
+PASS Select mutation_second_impact
+PASS No repeat or slot cost: mutation_second_impact
+PASS Functional base effect: mutation_second_impact
+PASS Ineligible chest still blocked: mutation_second_impact
+PASS Evolve and remove old imprint owner: mutation_second_impact
+PASS Full inherited imprint: mutation_second_impact
+PASS Functional evolved effect: mutation_second_impact
+PASS Three choices for sun_beam
+PASS Lv4 queues once: mutation_prism_ray
+PASS Select mutation_prism_ray
+PASS No repeat or slot cost: mutation_prism_ray
+PASS Functional base effect: mutation_prism_ray
+PASS Ineligible chest still blocked: mutation_prism_ray
+PASS Evolve and remove old imprint owner: mutation_prism_ray
+PASS Full inherited imprint: mutation_prism_ray
+PASS Functional evolved effect: mutation_prism_ray
+PASS Lv4 queues once: mutation_solar_focus
+PASS Select mutation_solar_focus
+PASS No repeat or slot cost: mutation_solar_focus
+PASS Functional base effect: mutation_solar_focus
+PASS Ineligible chest still blocked: mutation_solar_focus
+PASS Evolve and remove old imprint owner: mutation_solar_focus
+PASS Full inherited imprint: mutation_solar_focus
+PASS Functional evolved effect: mutation_solar_focus
+PASS Lv4 queues once: mutation_sunburn
+PASS Select mutation_sunburn
+PASS No repeat or slot cost: mutation_sunburn
+PASS Functional base effect: mutation_sunburn
+PASS Ineligible chest still blocked: mutation_sunburn
+PASS Evolve and remove old imprint owner: mutation_sunburn
+PASS Full inherited imprint: mutation_sunburn
+PASS Functional evolved effect: mutation_sunburn
+PASS Three choices for thorn_halo
+PASS Lv4 queues once: mutation_blood_sap
+PASS Select mutation_blood_sap
+PASS No repeat or slot cost: mutation_blood_sap
+PASS Functional base effect: mutation_blood_sap
+PASS Ineligible chest still blocked: mutation_blood_sap
+PASS Evolve and remove old imprint owner: mutation_blood_sap
+PASS Full inherited imprint: mutation_blood_sap
+PASS Functional evolved effect: mutation_blood_sap
+PASS Lv4 queues once: mutation_briar_guard
+PASS Select mutation_briar_guard
+PASS No repeat or slot cost: mutation_briar_guard
+PASS Functional base effect: mutation_briar_guard
+PASS Ineligible chest still blocked: mutation_briar_guard
+PASS Evolve and remove old imprint owner: mutation_briar_guard
+PASS Full inherited imprint: mutation_briar_guard
+PASS Functional evolved effect: mutation_briar_guard
+PASS Lv4 queues once: mutation_venom_thorns
+PASS Select mutation_venom_thorns
+PASS No repeat or slot cost: mutation_venom_thorns
+PASS Functional base effect: mutation_venom_thorns
+PASS Ineligible chest still blocked: mutation_venom_thorns
+PASS Evolve and remove old imprint owner: mutation_venom_thorns
+PASS Full inherited imprint: mutation_venom_thorns
+PASS Functional evolved effect: mutation_venom_thorns
+PASS Combat leaves shared weapon definitions immutable
+PASS Fusion priority and slots dusk_storm0
+PASS No missing/phantom fusion imprint dusk_storm0
+PASS Fusion priority and slots dusk_storm1
+PASS No missing/phantom fusion imprint dusk_storm1
+PASS Fusion priority and slots dusk_storm2
+PASS No missing/phantom fusion imprint dusk_storm2
+PASS Secondary fusion imprint is Echo 50%
+PASS Fusion priority and slots dusk_storm3
+PASS No missing/phantom fusion imprint dusk_storm3
+PASS Secondary fusion imprint is Echo 50%
+PASS Fusion priority and slots day_night0
+PASS No missing/phantom fusion imprint day_night0
+PASS Fusion priority and slots day_night1
+PASS No missing/phantom fusion imprint day_night1
+PASS Fusion priority and slots day_night2
+PASS No missing/phantom fusion imprint day_night2
+PASS Secondary fusion imprint is Echo 50%
+PASS Fusion priority and slots day_night3
+PASS No missing/phantom fusion imprint day_night3
+PASS Secondary fusion imprint is Echo 50%
+PASS Echo quantization fires every sixth eligible attack
+PASS One AoE impact cannot count twenty times
+PASS Fourth distinct impact triggers Comet Shards exactly once
+PASS Mutation immediately precedes pending modals
+PASS Back cannot escape mandatory mutation
+PASS Mutation continues existing FIFO without unpausing
+PASS Mutation never reveals secret evolution
+Mutation checks: 404 PASS / 0 FAIL

@@ -1,0 +1,2 @@
+extends "res://scripts/data/definition.gd"
+const EFFECTS: Array[String]=["extra_attack","primary","mark","burn_chance","pierce","cooldown","periodic","radius","chain_hit","poison","retaliate","heal_hits","chain","slowed_damage","slow_chance","motion","frozen_blast","slow_duration","delayed_attack","charged","marked_damage","reach","sunburn","width","duration","snare","bonus_hit","comet_hits","afterglow","knockback","bounce","bounce_damage","expiry","pull","residual","execute_damage","kill_chain"]

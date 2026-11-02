@@ -32,6 +32,7 @@ func _ready() -> void:
 	player.tint=[Color("8df5eb"),Color("f5b679"),Color("c7a1f6"),Color("8acffa")][player.shape_id]
 	add_child(player)
 	combat.world=self
+	combat.modifiers.world=self
 func ring_position() -> Vector2:
 	# Camera viewport may resize; use actual world-space visible extent and a 100px margin.
 	var half: Vector2=get_viewport_rect().size*.5
@@ -107,23 +108,30 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 	var damage: float=value
 	var critical: bool=false
 	if not proc:
+		damage=combat.modifiers.damage(source,e,damage,values)
 		if e.hp/e.max_hp<=.35: damage*=1+.08*model.passives.get("execution_seal",0)
 		if model.rng.randf()<model.crit:
 			damage*=model.crit_factor
 			critical=true
 		if e.statuses.has("mark"): damage*=1.15
+		elif e.statuses.has("imprint_mark"): damage*=1+e.get("imprint_mark_bonus",.08)
 		if e.kind=="shield" and ((player.position if incoming_origin==Vector2.INF else incoming_origin)-e.pos).normalized().dot(e.velocity.normalized())>.4: damage*=.65
 	var final_damage: float=maxf(1,round(damage))
 	model.statistics.record_damage(source,final_damage,e.hp,critical,model.time)
 	e.hp-=final_damage
+	if proc and e.hp<=0: e.no_death_proc=true
 	e.flash=.12
 	if damage_texts and texts.size()<70: texts.append({"pos":e.pos,"text":str(roundi(damage)),"life":.6})
+	var mutation_slow_base: float=2.0 if values.get("slow",0)>0 else 0.0
 	for status in ["burn","poison","slow","mark"]:
 		if values.get(status,0)>0: e.statuses[status]=3.0 if status in ["burn","mark"] else 4.0 if status=="poison" else 2.0
-	if values.get("slow_chance",0)>model.rng.randf(): e.statuses.slow=1.5
+	if values.get("slow_chance",0)>model.rng.randf():
+		e.statuses.slow=1.5
+		mutation_slow_base=1.5
 	if values.get("freeze_chance",0)>model.rng.randf(): e.statuses.freeze=.4 if e.boss else .5
 	if values.get("death_fire",0)>0: e.statuses.death_fire=4.0
-	if e.hp<=0: e.leech_source=source if values.has("leech_kills") else ""
+	if e.hp<=0: e.leech_source=source if values.has("leech_kills") and not proc else ""
+	if not proc: combat.modifiers.on_hit(source,e,final_damage,values,e.hp<=0,mutation_slow_base)
 	if not e.boss and e.kind not in ["guardian","shield","elite_hunter"]:
 		e.pos+=player.position.direction_to(e.pos)*3
 	if not proc:
@@ -143,6 +151,7 @@ func hurt_player(value: float) -> void:
 		player.invulnerable=.2
 		return
 	model.hurt(value)
+	combat.modifiers.contact()
 	player.invulnerable=.65
 	var attacker: Dictionary=nearest(player.position)
 	if not attacker.is_empty(): player.position+=attacker.pos.direction_to(player.position)*10
@@ -307,7 +316,7 @@ func update_shots(delta: float) -> void:
 				if e.pos.distance_to(Geometry2D.get_closest_point_to_segment(e.pos,old,s.pos))>e.radius+6: continue
 				if s.hits.get(e.id,-10.0)>s.age: continue
 				s.hits[e.id]=s.age+.4 if s.values.get("boomerang",false) else 100.0
-				hit(e,s.damage,s.values,s.source,false,old)
+				hit(e,s.damage,s.values,s.source,s.values.get("mutation_secondary",false),old)
 				if s.values.get("split",0)>0:
 					var child: Dictionary=s.values.duplicate()
 					child.split=0
@@ -320,6 +329,8 @@ func update_shots(delta: float) -> void:
 						if is_equal_approx(a.pos.distance_squared_to(e.pos),b.pos.distance_squared_to(e.pos)): return a.id<b.id
 						return a.pos.distance_squared_to(e.pos)<b.pos.distance_squared_to(e.pos))
 					if not candidates.is_empty():
+						s.values=s.values.duplicate(true)
+						s.values.bounce_index=s.values.get("bounce_index",0)+1
 						s.velocity=e.pos.direction_to(candidates[0].pos)*s.values.speed
 						s.pos=e.pos
 						s.bounces-=1
@@ -334,6 +345,7 @@ func update_shots(delta: float) -> void:
 					lantern.hp-=s.damage
 					s.life=0
 		if s.life<=0:
+			if not s.hostile and not s.values.get("mutation_secondary",false): combat.modifiers.expiry(s.source,s.pos,s.values)
 			shots.erase(s)
 			shot_pool.append(s)
 func kill_enemy(e: Dictionary) -> void:
@@ -353,7 +365,7 @@ func kill_enemy(e: Dictionary) -> void:
 	if e.kind=="splitter" and not e.child:
 		for i in range(2): spawn_enemy("mite",e.pos+Vector2(i*20-10,0),true)
 	if e.kind=="bomber": hazard(e.pos,65,.8,12)
-	if e.statuses.has("death_fire"):
+	if e.statuses.has("death_fire") and not e.get("no_death_proc",false):
 		combat.add_effect({"pos":e.pos,"radius":60.0,"damage":16.0,"life":.35,"values":{"burn":1},"source":"fire_death"})
 	if e.leech_source!="":
 		zone_kills+=1
@@ -458,13 +470,16 @@ func _draw() -> void:
 		var c:=Color.from_hsv(model.registry.get_def(e.kind).values.color,.5,.85)
 		if e.flash>0 and not reduce_flash: c=Color.WHITE
 		if e.statuses.has("slow"): c=Color("87d8ff")
-		if e.statuses.has("burn"): c=c.lerp(Color.ORANGE,.5)
+		if e.statuses.has("burn") or e.statuses.has("imprint_glow"): c=c.lerp(Color.ORANGE,.5)
 		draw_circle(e.pos+Vector2(0,7),e.radius+2,Color(0,0,0,.4))
 		var points:=PackedVector2Array()
 		var sides: int=3+int(model.registry.catalogs.enemy.keys().find(e.kind))%5
 		for i in range(sides): points.append(e.pos+Vector2.RIGHT.rotated(TAU*i/sides+e.age*.15)*e.radius)
 		draw_colored_polygon(points,c)
 		draw_circle(e.pos+Vector2(-4,-3),2,Color.WHITE)
+		if e.statuses.has("charged"): draw_arc(e.pos,e.radius+4,0,TAU*.75,12,Color("b8c9ff"),1.5)
+		if e.statuses.has("imprint_mark"):
+			draw_line(e.pos+Vector2(-4,-e.radius-6),e.pos+Vector2(4,-e.radius-6),Color("d6c2f7"),2)
 		if e.kind=="shield": draw_arc(e.pos,e.radius+3,e.velocity.angle()-.9,e.velocity.angle()+.9,8,Color("d8e8ed"),4)
 		if e.kind=="healer": draw_arc(e.pos,30,0,TAU,16,Color(0.3,1,.5,.4),2)
 		if e.kind in ["charger","astral_guardian"] and e.phase==1: draw_line(e.pos,e.pos+e.charge*150,Color("ff696b"),3)
@@ -480,14 +495,14 @@ func _draw() -> void:
 	for id in model.weapons:
 		var v: Dictionary=model.registry.weapon_values(id,model.weapons[id])
 		if v.behavior=="orbit":
-			var p: Dictionary=combat.params(v)
+			var p: Dictionary=combat.params(combat.modifiers.parameters(id,v,false))
 			for i in range(int(p.count)):
 				var pos: Vector2=player.position+Vector2.RIGHT.rotated(combat.elapsed*p.rotation+TAU*i/p.count)*p.radius*(1+.12*(p.duration-3)/3)
 				draw_circle(pos,11*model.area,Color("ffdf8d"))
 	for e in combat.effects:
 		var c:=Color.from_hsv(e.values.get("color",.13),.6,1,.7)
 		if e.behavior=="beam":
-			draw_line(player.position,player.position+Vector2.RIGHT.rotated(e.angle)*e.radius,c,12)
+			draw_line(player.position,player.position+Vector2.RIGHT.rotated(e.angle)*e.radius,c,e.values.get("hit_width",10.0)*1.2)
 		elif e.delay>0:
 			draw_arc(e.pos,e.radius,0,TAU,24,Color(c,.55),2)
 			if e.has("launch"):

@@ -2,6 +2,16 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## Maintenance M1 — implemented and tested; M2–M5 next
+
+Fixed discovery test isolation without changing gameplay randomness: the modal fixture has a controlled optional STERNENBRUCH_TEST_SEED, and discovery assertions use their own fresh SaveManager. Five isolated unit runs (seeds 1, 42, 115, 72047, 115) each passed all 179 checks.
+
+SaveManager now handles open/write/rename failure centrally, restores purchase/reset/finish snapshots consistently, and keeps already-earned discovery/settings changes explicitly pending in memory until a successful retry. Meta buy no longer reports success on failed storage. Atomic file replacement, version 1 and all data fields are preserved. App avoids duplicate inventory writes and exposes errors/retry in menu/shop/settings/pause/stage selection plus a calm gameplay notice. Pending retry receives focus; it never advances/resumes a paused run.
+
+Validation: 976 preserved functional checks pass plus 22 new maintenance checks = **998 PASS / 0 FAIL**. Real file-open obstruction and nonempty-directory rename failure are exercised, including preservation of the old file, rollback, retry/reload and UI focus. No script errors/leaks. Logs: test-results/maintenance-m1.log. Code/resources/pacing/weapon/boss numbers unchanged.
+
+Next: M2 extract exactly Collection/Bestiary with explicit read/callback interfaces; M3 pure definitions and safe generator checks; M4 bounded rendering-only extraction if safe; M5 complete long/Quick/stress/graphical acceptance. Each phase must be tested and published separately. Earlier architecture findings below are historical; M1 discovery/meta-save issues are now fixed.
+
 ## Maintenance documentation — AGENTS and architecture review
 
 Code baseline: `26b5b4e` (E1–E6). Added root AGENTS.md as the concise Codex entry point and docs/ARCHITECTURE_REVIEW.md with incremental recommendations. README/DESIGN link them; SMOKE_TEST removes one obsolete “pending E2–E6” sentence. Only Markdown changes: no runtime/test/generator/resource changes, balance adjustments, refactors or removed features.

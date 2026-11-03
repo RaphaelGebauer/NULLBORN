@@ -20,8 +20,9 @@ func run() -> void:
 	model.heal(1000)
 	check(model.hp==100,"Heilungsdeckel")
 	var scene=load("res://scenes/main_menu.tscn").instantiate()
-	root.add_child(scene)
+	scene.save.path="user://unit_scene_fixture.json"
 	scene.save.persistent=false
+	root.add_child(scene)
 	scene.start_run()
 	var e: Dictionary=scene.world.spawn_enemy("wisp",Vector2(80,0))
 	for i in range(100):
@@ -112,6 +113,7 @@ func run() -> void:
 	winner.finish(true)
 	winner.hurt(999)
 	check(results==[true],"Sieg bei 30:00 und genau ein Endereignis")
+	scene.model.rng.seed=int(OS.get_environment("STERNENBRUCH_TEST_SEED")) if not OS.get_environment("STERNENBRUCH_TEST_SEED").is_empty() else 72047
 	scene.events=["LEVELUP","CHEST","RUNE"]
 	scene.show_event()
 	check(scene.state=="LEVELUP" and paused,"Level-Modal pausiert SceneTree")
@@ -232,9 +234,11 @@ func run() -> void:
 	pace.passives={"momentum_feather":2,"recovery_moss":4}
 	pace.recalculate()
 	check(pace.speed>165*1.04 and pace.regeneration==1,"Momentum Feather and Recovery Moss have real effects")
-	check(not scene.save.discovered("prism_disc","weapon") and not scene.save.discovered("brann","character"),"Unselected equipment and characters stay hidden")
-	scene.save.mark_seen("prism_disc")
-	check(scene.save.discovered("prism_disc","weapon"),"Selecting equipment reveals its collection entry")
+	var discovery_fixture=load("res://scripts/save_manager.gd").new()
+	discovery_fixture.persistent=false
+	check(not discovery_fixture.discovered("prism_disc","weapon") and not discovery_fixture.discovered("brann","character"),"Unselected equipment and characters stay hidden")
+	discovery_fixture.mark_seen("prism_disc")
+	check(discovery_fixture.discovered("prism_disc","weapon"),"Selecting equipment reveals its collection entry")
 	var paid_tools=load("res://scripts/run_model.gd").new()
 	paid_tools.meta={"rerolls":2,"skips":1,"banishes":1}
 	paid_tools.initialize_meta()

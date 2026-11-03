@@ -1,5 +1,8 @@
 extends Node
 const Report=preload("res://scripts/run_report.gd")
+var save_feedback_label: Label
+var save_retry_button: Button
+var save_notice: Label
 var detail_scroll: ScrollContainer
 var detail_actions: HBoxContainer
 const Model = preload("res://scripts/run_model.gd")
@@ -103,7 +106,7 @@ func label(text: String, size: int=20) -> Label:
 	node.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
 	panel.add_child(node)
 	return node
-func button(text: String, action: Callable) -> Button:
+func button(text: String, action: Callable,take_focus: bool=true) -> Button:
 	var node:=Button.new()
 	node.text=text
 	node.custom_minimum_size.y=52
@@ -111,7 +114,7 @@ func button(text: String, action: Callable) -> Button:
 	node.pressed.connect(func(): audio.play("choose"); action.call())
 	style_button(node)
 	panel.add_child(node)
-	if panel.get_child_count()<=3: focus_button.call_deferred(node)
+	if take_focus and not panel.get_children().any(func(child):return child is Button and child!=node and child.visible and not child.disabled): focus_button.call_deferred(node)
 	return node
 func menu() -> void:
 	get_tree().paused=false
@@ -128,7 +131,7 @@ func menu() -> void:
 	button("Meta-Upgrades · %d Gold" % save.data.total_gold,shop)
 	button("Star Map · %d Starlight" % save.data.starlight,star_map)
 	button("Settings",func(): return_to_pause=false; settings())
-	if save.warning!="": label(save.warning,14)
+	save_feedback(menu)
 	button("Quit",func(): get_tree().quit())
 func start_run() -> void:
 	model=Model.new()
@@ -199,6 +202,11 @@ func resume() -> void:
 	instability_label.position=Vector2(970,42)
 	instability_label.add_theme_font_size_override("font_size",16)
 	ui.add_child(instability_label)
+	save_notice=Label.new()
+	save_notice.position=Vector2(20,675)
+	save_notice.add_theme_font_size_override("font_size",14)
+	save_notice.modulate=Color("f0bc82")
+	ui.add_child(save_notice)
 	get_tree().paused=false
 func build_text(include_imprints: bool=true) -> String:
 	var rows: Array=[]
@@ -214,6 +222,13 @@ func build_text(include_imprints: bool=true) -> String:
 		if include_imprints and model.weapon_mutations.has(id): rows.append(model.title(id)+" · "+model.imprint_text(id))
 	return "\n".join(rows)
 func _process(_delta: float) -> void:
+	if is_instance_valid(save_feedback_label) and save_feedback_label.is_inside_tree():
+		save_feedback_label.text=save.warning
+		save_feedback_label.visible=not save.warning.is_empty()
+		save_retry_button.visible=save.pending_write
+	if save.pending_write: focus_button.call_deferred(save_retry_button)
+	if state=="RUNNING" and is_instance_valid(save_notice):
+		save_notice.text="Progress not saved. Pause to retry saving." if save.pending_write else ""
 	if is_instance_valid(preview) and preview.is_inside_tree():
 		preview_time+=_delta
 		preview.queue_redraw()
@@ -388,6 +403,7 @@ func pause_game() -> void:
 	box("PAUSE",build_text())
 	label(pause_recipe_text(),14)
 	label(instability_details(),15)
+	save_feedback(pause_game)
 	button("Resume",resume)
 	button("Build Details",build_details)
 	button("Settings",func(): return_to_pause=true; settings())
@@ -448,7 +464,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode==KEY_B: toggle_banish()
 
 func focus_button(node: Button) -> void:
-	if is_instance_valid(node) and node.is_inside_tree(): node.grab_focus()
+	if is_instance_valid(node) and node.is_inside_tree() and node.is_visible_in_tree() and not node.disabled: node.grab_focus()
 
 func redraw_cards() -> void:
 	box("BANISH: Select a card" if banishing else "STAR ASCENT · Level %d" % model.level,"Choose an upgrade. The world is paused.")
@@ -498,6 +514,7 @@ func select_hero(id: String) -> void:
 	stage_select()
 func stage_select() -> void:
 	box("AT THE EDGE OF THE RIFT","Choose your arena, pace and optional curse.")
+	save_feedback(stage_select)
 	for id in catalog.catalogs.stage:
 		button(("◆ " if selected_stage==id else "◇ ")+catalog.get_def(id).display_name+(" · Locked: first victory" if not id in save.data.unlocked_stages else ""),func(): selected_stage=id; stage_select()).disabled=not id in save.data.unlocked_stages
 	button("Mode: "+("Quick · 15 minutes" if selected_fast else "Normal · 30 minutes"),func(): selected_fast=not selected_fast; stage_select())
@@ -543,15 +560,16 @@ func record_inventory() -> void:
 	for owned in [model.weapons.keys(),model.passives.keys(),model.runes]:
 		for id in owned: save.mark_seen(id)
 	for id in model.evolutions: save.mark_evolved(id)
+	check_unlocks(false)
 	save.save()
-	check_unlocks()
-func check_unlocks() -> void:
+func check_unlocks(persist: bool=true) -> void:
 	var added: Array=save.unlocks(model.kills,model.bosses,model.time,false,model.evolutions,model.passives)
 	for id in added:
 		if not id in model.unlocked_this_run: model.unlocked_this_run.append(id)
-	if not added.is_empty(): save.save()
+	if persist and not added.is_empty(): save.save()
 func shop() -> void:
 	box("STAR FORGE · %d Gold" % save.data.total_gold,"Permanent upgrades. Take effect on your next run.")
+	save_feedback(shop)
 	var scroll:=ScrollContainer.new()
 	scroll.custom_minimum_size=Vector2(800,430)
 	panel.add_child(scroll)
@@ -587,6 +605,7 @@ func set_setting(key: String,value: Variant) -> void:
 	if key=="fullscreen": settings()
 func settings() -> void:
 	box("SETTINGS")
+	save_feedback(settings)
 	var scroll:=ScrollContainer.new()
 	scroll.custom_minimum_size=Vector2(780,460)
 	panel.add_child(scroll)
@@ -755,3 +774,11 @@ func star_map() -> void:
 	map.save=save
 	panel.add_child(map)
 	button("Back to Main Menu",menu)
+
+func save_feedback(redraw: Callable) -> void:
+	save_feedback_label=label(save.warning,14)
+	save_feedback_label.visible=not save.warning.is_empty()
+	save_retry_button=button("Retry Saving Progress",func():
+		if save.save(): redraw.call(),false)
+	save_retry_button.visible=save.pending_write
+	if save.pending_write: focus_button.call_deferred(save_retry_button)

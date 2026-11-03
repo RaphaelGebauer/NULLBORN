@@ -4,6 +4,7 @@ var path: String="user://savegame.json"
 var persistent: bool=true
 var data: Dictionary={}
 var warning: String=""
+var pending_write: bool=false
 const META: Dictionary={
 	"max_hp":{"name":"Vitality","effect":"+5 % Max-HP","cost":50,"max":5},
 	"might":{"name":"Star Power","effect":"+3 % Damage","cost":75,"max":5},
@@ -83,38 +84,51 @@ func valid(value: Variant) -> bool:
 		for entry in value.get(key,[]):
 			if not entry is String: return false
 	return true
+func write_failed() -> bool:
+	pending_write=true
+	warning="Could not save progress. Changes remain pending in this session; retry saving."
+	return false
 func save() -> bool:
-	if not persistent: return true
+	if not persistent:
+		pending_write=false
+		warning=""
+		return true
 	var file:=FileAccess.open(path+".tmp",FileAccess.WRITE)
-	if file==null: return false
+	if file==null: return write_failed()
 	file.store_string(JSON.stringify(data,"\t"))
 	file.flush()
 	var write_error: Error=file.get_error()
 	file.close()
-	if write_error!=OK: return false
-	return DirAccess.rename_absolute(path+".tmp",path)==OK
+	if write_error!=OK: return write_failed()
+	if DirAccess.rename_absolute(path+".tmp",path)!=OK: return write_failed()
+	pending_write=false
+	warning=""
+	return true
+func commit_or_restore(before: Dictionary,was_pending: bool,message: String) -> bool:
+	if save(): return true
+	data=before
+	pending_write=was_pending
+	warning=message
+	return false
 func price(id: String) -> int:
 	return META[id].cost*int(pow(data.meta_powerups.get(id,0)+1,2))
 func buy(id: String) -> bool:
 	if not META.has(id): return false
 	var rank: int=data.meta_powerups.get(id,0)
 	if rank>=META[id].max or data.total_gold<price(id): return false
+	var before: Dictionary=data.duplicate(true)
+	var was_pending: bool=pending_write
 	data.total_gold-=price(id)
 	data.meta_powerups[id]=rank+1
-	save()
-	return true
+	return commit_or_restore(before,was_pending,"Could not save this upgrade. Your gold and upgrade ranks have been kept.")
 func discovered(id: String, kind: String) -> bool:
 	if kind=="evolution": return id in data.evolved_recipes
 	return kind=="stage" or id in data.seen
 func reset_all() -> bool:
-	var previous: Dictionary=data
+	var previous: Dictionary=data.duplicate(true)
+	var was_pending: bool=pending_write
 	data=defaults()
-	if not save():
-		data=previous
-		warning="Could not reset the save file. Your progress has been kept."
-		return false
-	warning=""
-	return true
+	return commit_or_restore(previous,was_pending,"Could not reset the save file. Your progress has been kept.")
 func mark_evolved(id: String) -> void:
 	if not id in data.evolved_recipes: data.evolved_recipes.append(id)
 	mark_seen(id)
@@ -142,6 +156,7 @@ func unlocks(kills: int,bosses: int,time: float,won: bool,evolutions: Array,pass
 func finish_run(model: RefCounted,victory: bool) -> Array:
 	if model.banked: return []
 	var before: Dictionary=data.duplicate(true)
+	var was_pending: bool=pending_write
 	model.starlight_earned=Stars.reward(model,victory)
 	data.starlight+=model.starlight_earned
 	for id in model.evolutions: mark_evolved(id)
@@ -157,10 +172,7 @@ func finish_run(model: RefCounted,victory: bool) -> Array:
 	var key: String=model.stage+("_fast" if model.fast else "_normal")
 	var previous: Dictionary=data.best_run_records.get(key,{"time":0,"kills":0})
 	if model.time>=previous.time: data.best_run_records[key]={"time":model.time,"kills":model.kills,"level":model.level}
-	if not save():
-		data=before
-		warning="Could not save run rewards. Reopen the result screen to retry."
-		return []
+	if not commit_or_restore(before,was_pending,"Could not save run rewards. Use Retry Saving to keep your rewards."): return []
 	warning=""
 	model.banked=true
 	for id in added:
@@ -176,11 +188,7 @@ func buy_star(id: String) -> bool:
 		warning="Already owned, missing prerequisite, or not enough Starlight."
 		return false
 	var previous: Dictionary=data.duplicate(true)
+	var was_pending: bool=pending_write
 	data.starlight-=Stars.NODES[id].rank
 	data.constellation_nodes.append(id)
-	if not save():
-		data=previous
-		warning="Could not save this purchase. Your Starlight and progress have been kept."
-		return false
-	warning=""
-	return true
+	return commit_or_restore(previous,was_pending,"Could not save this purchase. Your Starlight and progress have been kept.")

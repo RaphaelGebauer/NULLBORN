@@ -34,3 +34,7 @@ Die bestehende Suite prüft echte Angriffsalgorithmen, Vererbung, Speicherfehler
 4. Größere Typisierungs-/Stat-Extrakte erst mit konkretem Nutzen und unveränderten Regressionsergebnissen planen.
 
 Keine dieser Empfehlungen wird durch diese Dokumentationsänderung umgesetzt oder automatisch autorisiert. Aktuelle Tests/Prüfumfang dieser Änderung stehen im neuesten STATUS-Abschnitt.
+
+## Maintenance outcome M1
+
+The recommendations above describe the original checkpoint. M1 now fixes the discovery isolation and unchecked meta transaction. New real open/rename-failure tests cover rollback, pending discovery preservation, recovery/reload and UI retry/focus. Gameplay RNG and balance are unchanged. Remaining structural recommendations are M2–M4 work, not silently completed.

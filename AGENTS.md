@@ -45,7 +45,7 @@
 ## Saves and compatibility
 
 - Keep valid `user://savegame.json` data. Add defaults/migrations without dropping gold, meta ranks, unlocks, settings, discoveries, completed recipes, records, achievements or Starlight/nodes. Do not bump/reject the save version without a lossless migration; preserve corrupt-save backup behavior.
-- Permanent bonuses are snapshots for the next run. Keep idempotent finish banking and atomic writes. New purchase/reward operations must handle save failure, restore in-memory balances/state and expose retry/error feedback; do not copy the legacy unchecked meta `buy()` path (see review). Reset must cover new persistent fields.
+- Permanent bonuses are snapshots for the next run. Keep idempotent finish banking and atomic writes. New purchase/reward operations must handle save failure, restore in-memory balances/state and expose retry/error feedback; use the existing transaction helper; do not reintroduce unchecked writes. Reset must cover new persistent fields.
 - Tests use isolated XDG paths/save filenames or `persistent=false`; never reset a player's real save. Never store credentials/tokens or generated `.godot/` caches in Git; preserve tracked `.gd.uid` files.
 
 ## Verification and publication
@@ -65,7 +65,7 @@ DISPLAY=:99 GODOT_BIN=/path/to/Godot_v4.7.2-stable_linux.x86_64 ./tools/graphica
 DISPLAY=:99 GODOT_BIN=/path/to/Godot_v4.7.2-stable_linux.x86_64 ./tools/graphical_check.sh --wid "${STERNENBRUCH_HOST_WINDOW_ID:?Set the real decimal X11 host ID}"
 ```
 
-- Known test-isolation issue: an earlier randomized `choose(0)` can acquire Prism Disc before a later assertion expects it hidden (`tests/test_runner.gd`). See the architecture review before treating that failure as a gameplay regression; do not weaken the assertion.
+- Discovery assertions use an isolated save fixture; modal tests use STERNENBRUCH_TEST_SEED (default 72047). Preserve isolation and exercise multiple seeds including 115; do not weaken hidden-content assertions.
 - Cloud engine: `/workspace/tools/godot-4.7.2/Godot_v4.7.2-stable_linux.x86_64`; system `godot` may be older. Both check scripts verify the version. Optional `STERNENBRUCH_LOG_DIR` isolates logs. See [smoke checks](docs/SMOKE_TEST.md) for targeted runners and Quick-mode simulation.
 - Add meaningful coverage for changed contracts; preserve old checks. Intentional new content requires updated count expectations **and** functional coverage, not disabled tests. A zero engine exit code is insufficient: reject `SCRIPT ERROR`, `ERROR:`, `FAIL` and leaked-instance reports in logs. Inspect relevant graphical captures.
 - Documentation-only changes: check paths/links, command accuracy and `git diff --check`; no gameplay refactor or new tests merely mirroring prose. Do not present previous stress/graphical results as newly executed. Simulations use explicit immunity/automatic choices and do not prove human balance, physical-controller behavior or GPU FPS.

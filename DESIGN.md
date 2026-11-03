@@ -49,3 +49,7 @@ Feedback never consumes gameplay RNG: short desaturated local flashes, capped cr
 ## Maintenance guidance
 
 [AGENTS.md](AGENTS.md) is the concise Codex entry point. The [architecture review](docs/ARCHITECTURE_REVIEW.md) records responsibility hotspots, dependency risks and a proposed incremental order; it does not authorize or perform refactoring.
+
+## M1 persistence maintenance
+
+SaveManager centralizes write failures and commit/rollback for meta/star purchases, reset and run finish. Earned discovery/settings changes remain pending in RAM on failure, with explicit UI feedback and retry; transactional failures restore both prior data and prior pending status. Retry clears errors only after successful storage. Inventory/unlock recording shares one write where possible. Test fixture randomness is controlled independently of normal randomized gameplay.

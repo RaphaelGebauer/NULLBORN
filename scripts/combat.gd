@@ -68,7 +68,7 @@ func add_effect(data: Dictionary) -> void:
 func area_hit(pos: Vector2, radius: float, damage: float, values: Dictionary, source: String) -> int:
 	var count: int=0
 	for e in world.grid.query(pos,radius):
-		world.hit(e,damage,values,source)
+		world.hit(e,damage,values,source,values.get("mutation_secondary",false))
 		count+=1
 	return count
 func attack_needle(id: String,v: Dictionary,target: Dictionary) -> void:

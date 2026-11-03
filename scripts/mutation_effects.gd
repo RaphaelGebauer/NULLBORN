@@ -47,18 +47,18 @@ func parameters(source: String,values: Dictionary,advance_quantized: bool=true) 
 				if p.behavior=="ricochet" and (entry.strength>=1 or (advance_quantized and every(source,entry,"bounce",1))): p.bounces=p.get("bounces",0)+int(d.value)
 			"pull": p.pull_strength=p.get("pull_strength",1.0)*(1+amount)
 	return p
-func secondary(source: String,pos: Vector2,radius: float,damage: float,delay: float=0,limit: int=8,excluded: int=-1) -> void:
+func secondary(source: String,pos: Vector2,radius: float,damage: float,delay: float=0,limit: int=8,excluded: int=-1,target_factor: float=1.0) -> void:
 	if budget<=0: return
 	budget-=1
 	# Deferred pulses share the existing capped FX pool and carry their source.
-	world.combat.add_effect({"behavior":"mutation_pulse","pos":pos,"radius":radius,"damage":damage,"source":source,"delay":delay,"life":delay+.22,"limit":limit,"excluded":excluded})
+	world.combat.add_effect({"behavior":"mutation_pulse","pos":pos,"radius":radius,"damage":damage,"source":source,"delay":delay,"life":delay+.22,"limit":limit,"excluded":excluded,"target_factor":target_factor})
 func fire_pulse(effect: Dictionary) -> void:
 	if effect.fired: return
 	effect.fired=true
 	var count: int=0
 	for enemy in world.grid.query(effect.pos,effect.radius):
 		if enemy.id==effect.excluded: continue
-		world.hit(enemy,effect.damage,{},effect.source,true)
+		world.hit(enemy,effect.damage,{},effect.source,true,Vector2.INF,effect.get("target_factor",1.0))
 		count+=1
 		if count>=effect.limit: break
 func attack(source: String,values: Dictionary,target: Dictionary) -> void:
@@ -122,6 +122,7 @@ func new_impact(source: String,entry: Dictionary,suffix: String,values: Dictiona
 	return true
 func on_hit(source: String,enemy: Dictionary,damage_value: float,values: Dictionary,killed: bool,slow_base: float=0) -> Array:
 	var applied_elements: Array=[]
+	var target_factor: float=world.target_star_factor(enemy)
 	for entry in entries(source):
 		var d: Dictionary=definition(entry).values
 		match d.effect:
@@ -162,29 +163,29 @@ func on_hit(source: String,enemy: Dictionary,damage_value: float,values: Diction
 					world.model.heal(1)
 					healed+=1
 			"chain_hit":
-				if every(source,entry,"hit",d.interval): secondary(source,enemy.pos,120,damage_value*d.value,0,1,enemy.id)
+				if every(source,entry,"hit",d.interval): secondary(source,enemy.pos,120,damage_value*d.value,0,1,enemy.id,target_factor)
 			"frozen_blast":
-				if enemy.statuses.has("freeze") and ready(source,entry,"frozen",d.interval): secondary(source,enemy.pos,45,damage_value*d.value)
+				if enemy.statuses.has("freeze") and ready(source,entry,"frozen",d.interval): secondary(source,enemy.pos,45,damage_value*d.value,0,8,-1,target_factor)
 			"bonus_hit":
 				if new_impact(source,entry,"last_tick",values) and every(source,entry,"hit",d.interval) and budget>0 and enemy.hp>0:
 					budget-=1
-					world.hit(enemy,damage_value*d.value,{},source,true)
+					world.hit(enemy,damage_value*d.value,{},source,true,Vector2.INF,target_factor)
 			"comet_hits":
-				if new_impact(source,entry,"last_comet",values) and every(source,entry,"impact",d.interval): secondary(source,enemy.pos,100,damage_value*d.value,0,2,enemy.id)
+				if new_impact(source,entry,"last_comet",values) and every(source,entry,"impact",d.interval): secondary(source,enemy.pos,100,damage_value*d.value,0,2,enemy.id,target_factor)
 			"afterglow":
-				if (new_impact(source,entry,"last_glow",values) if values.has("impact_token") else ready(source,entry,"afterglow",1)): lingering(source,enemy.pos,55,damage_value*d.value,1,false)
+				if (new_impact(source,entry,"last_glow",values) if values.has("impact_token") else ready(source,entry,"afterglow",1)): lingering(source,enemy.pos,55,damage_value*d.value,1,false,target_factor)
 			"knockback":
 				if not enemy.boss: enemy.pos=enemy.pos.move_toward(world.player.position,-d.value*entry.strength)
 				else: world.combat.add_effect({"behavior":"visual","pos":enemy.pos,"radius":12.0,"life":.1})
 			"residual":
-				if ready(source,entry,"residual",d.interval): lingering(source,enemy.pos,70,damage_value*d.value,d.interval,true)
+				if ready(source,entry,"residual",d.interval): lingering(source,enemy.pos,70,damage_value*d.value,d.interval,true,target_factor)
 			"kill_chain":
-				if killed and every(source,entry,"kill",d.interval): secondary(source,enemy.pos,150,damage_value*d.value,0,1,enemy.id)
+				if killed and every(source,entry,"kill",d.interval): secondary(source,enemy.pos,150,damage_value*d.value,0,1,enemy.id,target_factor)
 	return applied_elements
-func lingering(source: String,pos: Vector2,radius: float,damage_value: float,duration: float,slow: bool) -> void:
+func lingering(source: String,pos: Vector2,radius: float,damage_value: float,duration: float,slow: bool,target_factor: float=1.0) -> void:
 	if budget<=0: return
 	budget-=1
-	world.combat.add_effect({"behavior":"mutation_zone","source":source,"pos":pos,"radius":radius,"damage":damage_value/4,"life":duration,"interval":duration/4,"remaining_ticks":4,"slow":slow,"tick":0.0})
+	world.combat.add_effect({"behavior":"mutation_zone","source":source,"pos":pos,"radius":radius,"damage":damage_value/4,"life":duration,"interval":duration/4,"remaining_ticks":4,"slow":slow,"tick":0.0,"target_factor":target_factor})
 func zone(effect: Dictionary,delta: float) -> void:
 	effect.tick-=delta
 	if effect.tick>0 or effect.remaining_ticks<=0: return
@@ -193,7 +194,7 @@ func zone(effect: Dictionary,delta: float) -> void:
 	for enemy in world.grid.query(effect.pos,effect.radius).slice(0,8):
 		if effect.slow: enemy.statuses.slow=.5
 		else: enemy.statuses.imprint_glow=.2
-		world.hit(enemy,effect.damage,{},effect.source,true)
+		world.hit(enemy,effect.damage,{},effect.source,true,Vector2.INF,effect.get("target_factor",1.0))
 func expiry(source: String,pos: Vector2,values: Dictionary) -> void:
 	for entry in entries(source):
 		var d: Dictionary=definition(entry).values

@@ -26,9 +26,17 @@ var minute: int=-1
 var freeze_time: float=0
 var gold_collected: int=0
 var shake: float=0
+var shake_duration: float=.1
+var shake_amplitude: float=0
+var impact_cooldown: float=0
 var damage_texts: bool=true
 var reduce_flash: bool=false
-var screen_shake: bool=true
+var screen_shake: bool=true:
+	set(value):
+		screen_shake=value
+		if not value:
+			shake=0
+			if is_instance_valid(player) and player.has_node("Camera2D"): player.get_node("Camera2D").offset=Vector2.ZERO
 signal sound_requested(kind: String)
 func _ready() -> void:
 	player=preload("res://scenes/player.tscn").instantiate()
@@ -60,7 +68,7 @@ func spawn_enemy(id: String="wisp",pos: Vector2=Vector2.INF,child: bool=false) -
 	var hp_scale: float=(1+.055*m+.0025*m*m)*(1+.006*maxi(model.level-1,0))*(1+.10*floori(m/5.0))*(1+model.curse)
 	var e: Dictionary={} if enemy_pool.is_empty() else enemy_pool.pop_back()
 	e.clear()
-	e.merge({"id":serial,"kind":id,"pos":pos,"hp":v.hp*hp_scale,"max_hp":v.hp*hp_scale,"speed":v.speed*minf(1.35,1+.012*m)*(1+.35*model.curse),"damage":v.damage*(1+.035*m),"xp":v.xp,"radius":float(v.radius),"velocity":Vector2.ZERO,"boss":boss,"timer":2.0,"phase":0,"charge":Vector2.ZERO,"age":0.0,"hits":{},"statuses":{},"dot":0.0,"child":child,"spawn_minute":m,"flash":0.0,"leech_source":""})
+	e.merge({"id":serial,"kind":id,"pos":pos,"hp":v.hp*hp_scale,"max_hp":v.hp*hp_scale,"speed":v.speed*minf(1.35,1+.012*m)*(1+.35*model.curse),"damage":v.damage*(1+.035*m),"xp":v.xp,"radius":float(v.radius),"velocity":Vector2.ZERO,"boss":boss,"timer":2.0,"phase":0,"charge":Vector2.ZERO,"age":0.0,"hits":{},"statuses":{},"dot":0.0,"child":child,"spawn_minute":m,"flash":0.0,"leech_source":"","death_fire_source":""})
 	elite_director.prepare(e)
 	bosses.prepare(e)
 	reactions.prepare(e)
@@ -114,13 +122,11 @@ func drop(pos: Vector2,value: float,kind: String="xp",eligible: bool=false) -> v
 	p.clear()
 	p.merge({"pos":pos,"value":value,"kind":kind,"eligible":eligible,"speed":60.0,"collected":false})
 	pickups.append(p)
-func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc: bool=false,incoming_origin: Vector2=Vector2.INF) -> void:
+func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc: bool=false,incoming_origin: Vector2=Vector2.INF,inherited_target_factor: float=1.0) -> void:
 	if e.is_empty() or e.hp<=0: return
-	var damage: float=value
+	var damage: float=value*target_star_factor(e)/maxf(.001,inherited_target_factor)
 	var critical: bool=false
 	if not proc:
-		if e.elite and model.has_star("hunters_star"): damage*=1.03
-		if e.boss and model.instability>=75 and model.has_star("fracture_mastery"): damage*=1.03
 		damage=combat.modifiers.damage(source,e,damage,values)
 		if e.hp/e.max_hp<=.35: damage*=1+.08*model.passives.get("execution_seal",0)
 		if model.rng.randf()<model.crit:
@@ -131,11 +137,14 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 		if e.kind=="shield" and ((player.position if incoming_origin==Vector2.INF else incoming_origin)-e.pos).normalized().dot(e.velocity.normalized())>.4: damage*=.65
 	if e.elite and e.affixes.has("armored") and not values.get("reaction",false): damage*=.8
 	var final_damage: float=maxf(1,round(damage))
-	model.statistics.record_damage(source,final_damage,e.hp,critical,model.time)
+	model.statistics.record_damage(source,final_damage,e.hp,critical,model.statistics.combat_seconds)
 	e.hp-=final_damage
 	if proc and e.hp<=0: e.no_death_proc=true
-	e.flash=.12
-	if damage_texts and texts.size()<70: texts.append({"pos":e.pos,"text":str(roundi(damage)),"life":.6})
+	e.flash=0 if reduce_flash else .06
+	if damage_texts and texts.size()<70: texts.append({"pos":e.pos,"text":str(roundi(final_damage))+("!" if critical else ""),"life":.6,"critical":critical})
+	if critical and impact_cooldown<=0:
+		impact_cooldown=.08
+		combat.add_effect({"behavior":"impact","pos":e.pos,"radius":8.0,"life":.12})
 	var mutation_slow_base: float=2.0 if values.get("slow",0)>0 else 0.0
 	for status in ["burn","poison","slow","mark"]:
 		if values.get(status,0)>0:
@@ -149,7 +158,9 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 	if values.get("freeze_chance",0)>model.rng.randf():
 		e.statuses.freeze=.4 if e.boss else .5
 		applied_elements.append("frost")
-	if values.get("death_fire",0)>0: e.statuses.death_fire=4.0
+	if values.get("death_fire",0)>0:
+		e.statuses.death_fire=4.0
+		e.death_fire_source=source
 	if e.hp<=0: e.leech_source=source if values.has("leech_kills") and not proc else ""
 	if not proc:
 		if "ice_crown" in model.runes and model.rng.randf()<.08:
@@ -171,25 +182,26 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 					break
 	for lantern in lanterns:
 		if lantern.hp>0 and lantern.pos.distance_to(e.pos)<35: lantern.hp-=value
-func hurt_player(value: float) -> bool:
+func hurt_player(value: float,boss_hit: bool=false) -> bool:
 	if player.invulnerable>0 or model.finished: return false
 	if "shield_sign" in model.runes and model.rng.randf()<.1:
 		combat.add_effect({"behavior":"visual","pos":player.position,"radius":35.0,"life":.4})
 		player.invulnerable=.2
 		return false
-	var previous_hp: float=model.hp
+	var previous_damage: float=model.statistics.damage_taken
 	model.hurt(value)
 	combat.modifiers.contact()
 	player.invulnerable=.65
 	var attacker: Dictionary=nearest(player.position)
 	if not attacker.is_empty(): player.position+=attacker.pos.direction_to(player.position)*10
-	shake=.15
+	player.hit_flash=0 if reduce_flash else .07
+	if boss_hit and value>=15: request_shake(1.5,.07)
 	sound_requested.emit("hurt")
 	if model.passives.get("frost_thorns",0)>0:
 		combat.area_hit(player.position,100,5*model.passives.frost_thorns,{"slow":1},"frost_thorns")
 	if model.weapons.has("blood_thorns"):
-		combat.area_hit(player.position,70,20,{},"reflect")
-	return model.hp<previous_hp
+		combat.area_hit(player.position,70,20,{"mutation_secondary":true},"blood_thorns")
+	return model.statistics.damage_taken>previous_damage
 func _physics_process(delta: float) -> void:
 	model.tick(delta)
 	if model.finished: return
@@ -236,9 +248,8 @@ func _physics_process(delta: float) -> void:
 		text.life-=delta
 		text.pos.y-=30*delta
 	texts=texts.filter(func(t):return t.life>0)
-	shake=maxf(0,shake-delta)
-	var camera: Camera2D=player.get_node("Camera2D")
-	camera.offset=Vector2(model.rng.randf_range(-3,3),model.rng.randf_range(-3,3)) if screen_shake and shake>0 else Vector2.ZERO
+	impact_cooldown=maxf(0,impact_cooldown-delta)
+	update_feedback(delta)
 	queue_redraw()
 func update_enemy(e: Dictionary,delta: float) -> void:
 	if e.hp<=0: return
@@ -303,7 +314,7 @@ func update_enemy(e: Dictionary,delta: float) -> void:
 	e.pos+=e.velocity*delta
 	if e.boss and distance>1500 and e.transition_left<=0 and e.dash_state==0: e.pos=player.position-direction*650
 	if e.pos.distance_to(player.position)<e.radius+13 and not (e.boss and e.transition_left>0):
-		elite_director.contact(e,hurt_player(e.damage*model.rift_state.MODIFIERS[model.rift_state.band()].contact))
+		elite_director.contact(e,hurt_player(e.damage*model.rift_state.MODIFIERS[model.rift_state.band()].contact,e.boss))
 func boss_behavior(e: Dictionary,direction: Vector2,delta: float) -> Vector2:
 	return bosses.update(e,direction,delta)
 func update_shots(delta: float) -> void:
@@ -323,7 +334,7 @@ func update_shots(delta: float) -> void:
 		s.pos+=s.velocity*delta
 		if s.hostile:
 			if player.position.distance_to(Geometry2D.get_closest_point_to_segment(player.position,old,s.pos))<18:
-				hurt_player(s.damage*(.97 if s.values.get("boss",false) and model.has_star("guarded_orbit") else 1))
+				hurt_player(s.damage*(.97 if s.values.get("boss",false) and model.has_star("guarded_orbit") else 1),s.values.get("boss",false))
 				s.life=0
 		else:
 			var middle: Vector2=(old+s.pos)*.5
@@ -373,6 +384,8 @@ func kill_enemy(e: Dictionary) -> void:
 		model.rift_state.change(4)
 		model.bosses+=1
 		model.boss_killed()
+		request_shake(2,.1)
+		combat.add_effect({"behavior":"impact","pos":e.pos,"radius":75.0,"life":.3})
 		model.boss_changed.emit()
 		drop(e.pos,1,"chest",e.spawn_minute>=10)
 		drop(e.pos+Vector2(24,0),roundi(model.rng.randi_range(20,50)*(1+model.rift_state.modifiers().reward_gold)),"gold")
@@ -384,7 +397,7 @@ func kill_enemy(e: Dictionary) -> void:
 		for i in range(2): spawn_enemy("mite",e.pos+Vector2(i*20-10,0),true)
 	if e.kind=="bomber": hazard(e.pos,65,.8,12)
 	if e.statuses.has("death_fire") and not e.get("no_death_proc",false):
-		combat.add_effect({"pos":e.pos,"radius":60.0,"damage":16.0,"life":.35,"values":{"burn":1},"source":"fire_death"})
+		combat.add_effect({"pos":e.pos,"radius":60.0,"damage":16.0,"life":.35,"values":{"burn":1,"mutation_secondary":true},"source":e.death_fire_source if not e.death_fire_source.is_empty() else "fire_death"})
 	if e.leech_source!="":
 		zone_kills+=1
 		if zone_kills%20==0: model.heal(1)
@@ -408,6 +421,7 @@ func collect(p: Dictionary) -> void:
 			var value: int=maxi(1,roundi(p.value*model.greed))
 			model.gold+=value
 			gold_collected+=value
+			model.statistics.gold_from_pickups+=value
 			model.gold_changed.emit()
 		"heal": model.heal(30*p.value)
 		"small_heal": model.heal(10*p.value)
@@ -502,7 +516,7 @@ func _draw() -> void:
 		draw_string(ThemeDB.fallback_font,effect.pos+Vector2(-24,-20),effect.name,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("bed4db"))
 	for e in enemies:
 		var c:=Color.from_hsv(model.registry.get_def(e.kind).values.color,.5,.85)
-		if e.flash>0 and not reduce_flash: c=Color.WHITE
+		if e.flash>0 and not reduce_flash: c=c.lerp(Color("c2cdd1"),.35*e.flash/.06)
 		if e.statuses.has("slow"): c=Color("87d8ff")
 		if e.statuses.has("burn") or e.statuses.has("imprint_glow"): c=c.lerp(Color.ORANGE,.5)
 		draw_circle(e.pos+Vector2(0,7),e.radius+2,Color(0,0,0,.4))
@@ -542,8 +556,11 @@ func _draw() -> void:
 				var pos: Vector2=player.position+Vector2.RIGHT.rotated(combat.elapsed*p.rotation+TAU*i/p.count)*p.radius*(1+.12*(p.duration-3)/3)
 				draw_circle(pos,11*model.area,Color("ffdf8d"))
 	for e in combat.effects:
-		var c:=Color.from_hsv(e.values.get("color",.13),.6,1,.7)
-		if e.behavior=="beam":
+		var c:=Color.from_hsv(e.values.get("color",.13),.6,1,.3 if reduce_flash else .7)
+		if e.behavior=="impact":
+			var progress: float=clampf(e.age/e.life,0,1)
+			draw_arc(e.pos,e.radius*(.4+progress*.6),0,TAU,16,Color(.8,.8,.65,(.15 if reduce_flash else .5)*(1-progress)),1)
+		elif e.behavior=="beam":
 			draw_line(player.position,player.position+Vector2.RIGHT.rotated(e.angle)*e.radius,c,e.values.get("hit_width",10.0)*1.2)
 		elif e.delay>0:
 			draw_arc(e.pos,e.radius,0,TAU,24,Color(c,.55),2)
@@ -552,7 +569,7 @@ func _draw() -> void:
 				var pos: Vector2=e.launch.lerp(e.pos,t)-Vector2(0,sin(t*PI)*90)
 				draw_circle(pos,8,c)
 		else:
-			draw_circle(e.pos,e.radius,Color(c,.12))
+			draw_circle(e.pos,e.radius,Color(c,.03 if reduce_flash else .12))
 			draw_arc(e.pos,e.radius,0,TAU,24,c,3)
 	for h in hazards:
 		var c:=Color(1,.7,.3,.7) if h.delay>0 else Color(1,.3,.3,.6 if reduce_flash else .9)
@@ -561,9 +578,25 @@ func _draw() -> void:
 		elif h.has("end"): draw_line(h.pos,h.end,c,3 if h.delay>0 else h.radius*2)
 		else: draw_arc(h.pos,h.radius,0,TAU,24,c,2 if h.delay>0 else 8)
 	if damage_texts:
-		for t in texts: draw_string(ThemeDB.fallback_font,t.pos,t.text,HORIZONTAL_ALIGNMENT_LEFT,-1,15,Color(1,1,.8,t.life/.6))
+		for t in texts: draw_string(ThemeDB.fallback_font,t.pos,t.text,HORIZONTAL_ALIGNMENT_LEFT,-1,17 if t.get("critical",false) else 15,Color(1,.76,.35,t.life/.6) if t.get("critical",false) else Color(.85,.92,.9,t.life/.6))
 
 func hit_dot(e: Dictionary,status: String,damage: float) -> void:
 	var source: String=e.dot_sources.get(status,status)
 	var reaction: bool=source==reactions.SOURCE
 	hit(e,damage*(.5 if reaction and e.boss else 1),{"reaction":reaction,"dot_element":"fire" if status=="burn" else "toxin"},source,true)
+
+func request_shake(amplitude: float,duration: float) -> void:
+	if not screen_shake: return
+	shake_amplitude=minf(2,maxf(shake_amplitude if shake>0 else 0,amplitude))
+	shake_duration=minf(.1,maxf(duration,.001))
+	shake=shake_duration
+func update_feedback(delta: float) -> void:
+	shake=maxf(0,shake-delta)
+	var camera: Camera2D=player.get_node("Camera2D")
+	# Deterministic, length-bounded and decaying; never consume gameplay RNG for feedback.
+	camera.offset=Vector2(sin((1-shake/shake_duration)*PI*2),0)*shake_amplitude*(shake/shake_duration) if screen_shake and shake>0 else Vector2.ZERO
+
+func target_star_factor(enemy: Dictionary) -> float:
+	if enemy.elite and model.has_star("hunters_star"): return 1.03
+	if enemy.boss and model.instability>=75 and model.has_star("fracture_mastery"): return 1.03
+	return 1.0

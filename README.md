@@ -81,9 +81,9 @@ Only in debug builds and while playing: F6/F7/F8/F9 jump to 09:50/10:00/20:00/29
 
 Automatic combat, minute waves, three upgrade choices, 6+6 slots and chest evolutions are genre inspirations. Names, graphics, audio, world and balance are original. `CODEX_MASTERPROMPT.md` preserves the original German brief; later user-requested changes documented here supersede its original language/balance requirements.
 
-## Phase E work in progress
+## Phase E — complete
 
-E1 provides tested save/runtime/statistics foundations; E2 implements all 45 weapon mutations and evolution/fusion inheritance. E3–E6 remain pending. See `docs/FEATURES_PHASE_E.md` and `STATUS.md` for the exact continuation point.
+E1–E6 are implemented and tested: mutations/inheritance, active rifts and phased bosses, elemental reactions, permanent Star Map, measured results and spoiler-safe Build Details. See `docs/FINAL_REPORT_PHASE_E.md` for complete regression evidence and remaining hardware/manual checks.
 
 ## Level-4 weapon mutations (Phase E2)
 
@@ -93,7 +93,7 @@ Mutations carry into normal evolutions at full strength. Fusions inherit both ba
 
 All 45 definitions live in `resources/mutations/`; `tools/generate_mutations.py` regenerates only this separate catalog. Runtime effects use the existing Combat/World pipeline through `scripts/mutation_effects.gd`, including a shared secondary budget and proc protection. Debug F11 requests missing mutations for its high-level setup.
 
-E3–E6 (active instability/rifts/elites/new boss phases, elemental reactions, Star Map and detailed result/build overlays) are still pending. Charged Air currently applies a visible electric state; its elemental reaction integration belongs to E4.
+E3–E6 are complete. Charged Air participates in real reactions; all eighteen constellation nodes and detailed result/build overlays are active.
 
 ## Rift pressure and bosses (E3)
 
@@ -112,3 +112,13 @@ Short names/rings identify reactions in combat; Pause includes a general legend 
 ## Star Map
 
 Open **Star Map** in the main menu to inspect three connected constellations with eighteen stars. Each path costs 1/2/3/4/5/6 Starlight in order (63 total). Boss kills (up to three), victory (+3), twenty minutes (+1) and peak instability 75+ (+1) award up to eight per run, including earned defeat rewards. Purchases persist immediately and apply from the next run. Hover or focus a star to see effects/prerequisites, then select Unlock. Arrow keys/D-pad navigate the map; Back returns to the menu.
+
+## Build Details and measured results
+
+Pause → **Build Details** shows all six weapon/passive slots, levels, inherited mutations and fusion Primary/Echo, character/rune/meta/Star Map bonuses, current stats, temporary durations, elements and discovered recipes. Unknown recipes stay unnamed until actually evolved. Up/Down or the mouse wheel scrolls; Left/Right selects the fixed Back/Resume actions.
+
+Victory and defeat show actual damage, sorted per-source damage/shares/DPS, highest critical hit, damage taken/healing, XP/gold, upgrades/mutations/evolutions/fusions, instability, rifts, achievements and Starlight. Damage excludes overkill. DPS uses active combat seconds (900 combat seconds for a complete Quick run, 1800 in normal mode), separate from the run clock. Try Again/Main Menu remain visible while scrolling.
+
+Normal hits do not move the camera. Boss hits/deaths have optional capped, decaying movement; Reduce Flashes suppresses hit flashes and dims impacts/explosions. Damage Numbers can be disabled. Existing settings persist.
+
+Full verification: `./tools/check.sh --long`. Graphical checks on an existing X11 display: `DISPLAY=:99 ./tools/graphical_check.sh`; a native host window can be supplied with `--wid <decimal-window-id>`. Both scripts verify Godot 4.7.2. [Final report](docs/FINAL_REPORT_PHASE_E.md).

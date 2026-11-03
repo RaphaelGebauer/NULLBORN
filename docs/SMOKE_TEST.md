@@ -30,3 +30,17 @@ E3 automated: `tests/rift_runner.gd` covers all seven actual affixes, rewards, i
 Manual E3: verify F/Y proximity, readable 0.3-second blink destination, Volatile warning, Guardian dash escape, Queen slow recovery, Storm ring safe gap, controller focus and new-run difficulty on target hardware. CPU simulations do not prove human balance or rendered frame rate.
 
 E4 automated: `tests/reaction_runner.gd` tests all four pairs both ways, primary/secondary damage and radii, 3.0/1.5-second edges, table priority, neutral/same-element/fusion tags, boss dampening, per-second cap, label cap, secondary recursion guard, crit/execute/armor-once accounting, death-proc suppression, DoT ownership, mutation integration, fire regeneration lock and pool reuse. `tests/reaction_visual_runner.gd` captures all four real effects plus the real result entry at 1280×720; screenshots inspected in `docs/screenshots/element-reactions.png` and `reaction-result.png`. The general pause legend does not expose hidden evolution names.
+
+E5/E6 final automated coverage:
+
+- `tests/constellation_runner.gd`: 90 checks of all eighteen real bonuses, costs/chains, persistence, failed-write rollback/retry, finish rewards, reset and focus/snapshot isolation.
+- `tests/polish_runner.gd`: 40 checks of actual statistics/overkill/healing/XP/source rows, normal/Quick DPS, critical numbers, flash/shake settings and bounds, secondary retaliation attribution, real Build/Result state transitions, recipe privacy, event counts, victory/defeat, mid-run achievements and controller-accessible save retry.
+- `tests/catalog_runner.gd`: 49 actual attacks/AI/pipeline checks covering all 15 base weapons, all 15 normal evolutions, both fusions, all 15 enemy types and both arenas.
+- `tools/graphical_check.sh`: standalone native resize/audio regression, original fifteen menu/input states, mutation/rift/reaction captures, three-resolution Star Map and Build/Result, UI scale 1.2. `--wid <decimal-X11-host-id>` verifies true embedding, controller-action focus, audio/display protection and embedded Build/Result screens.
+- `tests/full_run_runner.gd`: every step of thirty run minutes with all eighteen stars, six inherited mutation loadouts, real boss transitions/elites/rift choices/reactions, measured source reconciliation and once-only capped rewards. `STERNENBRUCH_QUICK_TEST=1` exercises the same schedule in 900 combat seconds.
+
+Inspected screenshots: `star-map-1280.png`, `star-map-scaled.png`, `build-details-1280.png`, `build-paths-1280.png`, `run-result-1280.png`, `embedded-build.png`; corresponding 1600/1920 captures and embedded-result captures are retained. The scripted screenshot fixture is distinct from the full per-step simulation.
+
+Remaining manual checks listed above are still open: physical devices, real desktop editor/window-manager/DPI behavior, audible balancing, actual GPU frame pacing, release exports and human thirty-minute difficulty. No such manual/hardware claim is inferred from automation. See FINAL_REPORT_PHASE_E.md.
+
+The final five constellation cases explicitly cover fresh secondary bonuses, inherited target-factor normalization, no bonus leakage to normal enemies, reaction-chain recipients and pooled mutation pulses.

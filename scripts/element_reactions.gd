@@ -61,19 +61,20 @@ func on_hit(enemy: Dictionary,source: String,damage: float,values: Dictionary,ex
 	enemy.reaction_ready_at=now+COOLDOWN
 	var pos: Vector2=enemy.pos
 	if selected.id=="void_shatter" and enemy.hp>0: enemy.statuses.slow=maxf(enemy.statuses.get("slow",0),.35 if enemy.boss else .75)
+	var target_factor: float=world.target_star_factor(enemy)
 	var bonus: float=selected.bonus
-	if bonus>0 and enemy.hp>0: reaction_hit(enemy,damage*bonus,selected.id,source)
+	if bonus>0 and enemy.hp>0: reaction_hit(enemy,damage*bonus,selected.id,source,target_factor)
 	var remaining: int=selected.targets-(1 if selected.id=="blightburst" else 0)
 	if remaining>0:
 		# Bounded spatial query, stable nearest-target ordering; never a scan of all enemies.
 		var candidates: Array=world.grid.query(pos,selected.radius).filter(func(e):return e.hp>0 and e.id!=enemy.id and e.pos.distance_squared_to(pos)<=selected.radius*selected.radius)
 		candidates.sort_custom(func(a,b):return a.pos.distance_squared_to(pos)<b.pos.distance_squared_to(pos))
-		for other in candidates.slice(0,remaining): reaction_hit(other,damage*selected.secondary,selected.id,source)
+		for other in candidates.slice(0,remaining): reaction_hit(other,damage*selected.secondary,selected.id,source,target_factor)
 	if visuals.size()<6 and not visuals.any(func(effect):return effect.pos.distance_squared_to(pos)<6400): visuals.append({"pos":pos,"name":selected.name,"life":.45,"radius":18.0})
-func reaction_hit(enemy: Dictionary,damage: float,id: String,trigger: String) -> void:
+func reaction_hit(enemy: Dictionary,damage: float,id: String,trigger: String,inherited_target_factor: float=1.0) -> void:
 	var values: Dictionary={"reaction":true,"reaction_id":id,"trigger_weapon":trigger}
 	if id=="blightburst": values.burn=1
-	world.hit(enemy,damage*(.5 if enemy.boss else 1),values,SOURCE,true)
+	world.hit(enemy,damage*(.5 if enemy.boss else 1),values,SOURCE,true,Vector2.INF,inherited_target_factor)
 func update(delta: float) -> void:
 	for effect in visuals: effect.life-=delta
 	visuals=visuals.filter(func(effect):return effect.life>0)

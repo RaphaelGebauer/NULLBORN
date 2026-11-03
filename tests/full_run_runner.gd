@@ -3,6 +3,8 @@ func _initialize() -> void:
 	call_deferred("run")
 func run() -> void:
 	var model=load("res://scripts/run_model.gd").new()
+	model.constellation_nodes=preload("res://scripts/data/constellations.gd").NODES.keys()
+	model.fast=OS.get_environment("STERNENBRUCH_QUICK_TEST")=="1"
 	var evolved: Dictionary={}
 	var imprints: Dictionary={}
 	for id in ["star_piercer","solar_orbit","blood_thorns","zenith_beam","night_storm","ghost_well"]:
@@ -55,10 +57,18 @@ func run() -> void:
 			counts.append([world.enemies.size(),world.shots.size(),world.pickups.size()])
 			print("RUN ",int(model.time)," s · ",counts[-1]," · Kills ",model.kills)
 		if model.finished: break
-	var valid: bool=model.finished and outcomes==[true] and world.minute==29 and model.runes.size()==3 and model.weapon_mutations.size()==6 and model.rifts_stabilized==2 and model.rifts_overcharged==2 and model.elite_kills>0 and not phase_changes.is_empty() and world.reactions.events_total>0
+
+	var saver=load("res://scripts/save_manager.gd").new()
+	saver.persistent=false
+	saver.finish_run(model,true)
+	saver.finish_run(model,true)
+	var measured_sum: float=0
+	for row in preload("res://scripts/run_report.gd").damage_rows(model): measured_sum+=row.damage
+	var valid: bool=is_equal_approx(model.statistics.combat_seconds,900 if model.fast else 1800) and saver.data.starlight==8 and saver.data.stats.runs==1 and is_equal_approx(measured_sum,model.statistics.total_damage) and model.finished and outcomes==[true] and world.minute==29 and model.runes.size()==3 and model.weapon_mutations.size()==6 and model.rifts_stabilized==2 and model.rifts_overcharged==2 and model.elite_kills>0 and not phase_changes.is_empty() and world.reactions.events_total>0
 	print("PASS" if valid else "FAIL"," voller 30-Minuten-Run; Zeit ",model.time,"; Ergebnis ",outcomes,"; Runen ",model.runes.size(),"; Laufzeit ",(Time.get_ticks_msec()-start)/1000.0," s; Kills ",model.kills)
 	print("E3: boss phase transitions ",phase_changes,"; elites ",model.elite_kills,"; affixes ",model.affixes_seen,"; rifts ",model.rifts_stabilized,"/",model.rifts_overcharged,"; peak/final instability ",model.rift_state.peak,"/",model.instability)
 	print("E4: reactions ",world.reactions.events_total,"; by kind ",world.reactions.counts,"; damage ",model.statistics.damage_by_source.get("Elemental Reactions",0))
+	print("E5/E6: stars earned ",model.starlight_earned,"; active nodes ",model.constellation_nodes.size(),"; measured damage ",model.statistics.total_damage,"; measured XP ",model.statistics.xp_gained,"; average DPS ",model.statistics.total_damage/model.statistics.combat_seconds,"; highest critical ",model.statistics.highest_critical_hit,"; upgrades/mutations/evolutions/fusions ",[model.statistics.upgrades,model.statistics.mutations,model.statistics.evolutions,model.statistics.fusions])
 	world.queue_free()
 	await process_frame
 	await process_frame

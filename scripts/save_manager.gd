@@ -163,7 +163,8 @@ func finish_run(model: RefCounted,victory: bool) -> Array:
 		return []
 	warning=""
 	model.banked=true
-	model.unlocked_this_run=added.duplicate()
+	for id in added:
+		if not id in model.unlocked_this_run: model.unlocked_this_run.append(id)
 	return added
 
 func star_available(id: String) -> bool:

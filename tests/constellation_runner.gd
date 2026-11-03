@@ -162,6 +162,34 @@ func run() -> void:
 	world.projectile(world.player.position,Vector2.ZERO,{"damage":100,"boss":true},"boss",0,true)
 	world.update_shots(.01)
 	check(hp-model.hp==97,"Guarded Orbit mitigates actual boss projectile")
+
+	model.instability=75
+	var proc_target: Dictionary=world.spawn_enemy("astral_guardian",Vector2(600,0))
+	hp=proc_target.hp
+	world.hit(proc_target,100,{},"prism_disc",true)
+	check(hp-proc_target.hp==103,"Fracture Mastery affects fresh secondary hits")
+	hp=proc_target.hp
+	world.hit(proc_target,103,{},"prism_disc",true,Vector2.INF,1.03)
+	check(hp-proc_target.hp==103,"Derived secondary cannot double-apply the target bonus")
+	var ordinary: Dictionary=world.spawn_enemy("guardian",Vector2(700,0))
+	ordinary.hp=1000
+	world.hit(ordinary,103,{},"prism_disc",true,Vector2.INF,1.03)
+	check(ordinary.hp==900,"Derived elite/boss damage bonus cannot leak to normal secondary recipients")
+	world.enemies.clear()
+	world.combat.effects.clear()
+	model.instability=75
+	var primary: Dictionary=world.spawn_enemy("astral_guardian",Vector2(100,0))
+	primary.hp=10000
+	var neighbor: Dictionary=world.spawn_enemy("guardian",Vector2(120,0))
+	neighbor.hp=10000
+	world.grid.rebuild(world.enemies)
+	world.hit(primary,100,{},"frost_shard")
+	var bonus_before: float=model.statistics.damage_by_source.get("Elemental Reactions",0)
+	world.hit(primary,100,{},"lightning_call")
+	check(model.statistics.damage_by_source.get("Elemental Reactions",0)-bonus_before==48 and neighbor.hp==9970,"Reaction keeps boss primary bonus once and removes it from normal chain target")
+	world.combat.modifiers.secondary("prism_disc",neighbor.pos,15,103,0,1,primary.id,1.03)
+	world.combat.update(.01)
+	check(neighbor.hp==9870,"Mutation pulse forwards inherited target factor through pooled effect")
 	world.queue_free()
 	await process_frame
 	await process_frame

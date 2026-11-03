@@ -1,4 +1,7 @@
 extends Node
+const Report=preload("res://scripts/run_report.gd")
+var detail_scroll: ScrollContainer
+var detail_actions: HBoxContainer
 const Model = preload("res://scripts/run_model.gd")
 const World = preload("res://scripts/world.gd")
 var model: RefCounted
@@ -279,7 +282,9 @@ func open_chest(eligible: bool) -> void:
 	var evolution: String=model.evolution(eligible)
 	var reward: int=model.rng.randi_range(60,140)
 	var lines: String=""
-	if evolution!="": lines="New Evolution!\n"+model.title(evolution)+"\n"+catalog.get_def(evolution).description
+	if evolution!="":
+		lines="New Evolution!\n"+model.title(evolution)+"\n"+catalog.get_def(evolution).description
+		world.combat.add_effect({"behavior":"impact","pos":world.player.position,"radius":65.0,"life":.3})
 	else:
 		var owned: Array=[]
 		for id in model.legal():
@@ -317,18 +322,102 @@ func choose(index: int) -> void:
 	if not events.is_empty() and str(events[0]).begins_with("MUTATION:"): show_event()
 	else: resume()
 func result(victory: bool) -> void:
-	var added: Array=save.finish_run(model,victory)
+	save.finish_run(model,victory)
 	state="VICTORY" if victory else "DEFEAT"
 	get_tree().paused=true
-	box("THE RIFT IS SEALED" if victory else "YOUR STAR FADES","Level %d · %d Kills · %02d:%02d" % [model.level,model.kills,int(model.time)/60,int(model.time)%60])
-	label("%d Gold earned (curse bonus included) · %d Bosses\n%s\nUnlocked: %s" % [roundi(model.gold*(1+model.curse)),model.bosses,build_text(),", ".join(added) if not added.is_empty() else "—"],16)
-	label("Peak Instability %.1f · Final %.1f\nRifts Stabilized %d · Overcharged %d · Elites Defeated %d\nAffixes encountered: %s" % [model.rift_state.peak,model.instability,model.rifts_stabilized,model.rifts_overcharged,model.elite_kills,affix_summary()],15)
-	label("Elemental Reactions: %.0f damage · %d events" % [model.statistics.damage_by_source.get("Elemental Reactions",0),world.reactions.events_total],15)
-	label("+%d Starlight · Bosses (up to 3), victory +3, twenty minutes +1, peak instability 75+ +1 · Cap 8" % model.starlight_earned,14)
-	if save.warning!="": label(save.warning,14)
-	button("Try Again",func(): menu(); start_run())
-	button("Main Menu",menu)
+	var subtitle: String="%s · %s · %02d:%02d · Level %d · %d kills · %d bosses · %d elites" % [model.title(model.hero),model.title(model.stage),int(model.time)/60,int(model.time)%60,model.level,model.kills,model.bosses,model.elite_kills]
+	var actions: Array=[["Try Again",func(): menu(); start_run()],["Main Menu",menu]]
+	if not model.banked: actions.push_front(["Retry Saving",result.bind(victory)])
+	detail_page("THE RIFT IS SEALED" if victory else "YOUR STAR FADES",subtitle,actions)
+	report_label("%s Gold: %d · %s Starlight +%d · Quick Mode: %s · Curse: %.0f%%" % ["Banked" if model.banked else "Pending",roundi(model.gold*(1+model.curse)),"Earned" if model.banked else "Pending",model.starlight_earned,"On" if model.fast else "Off",model.curse*100],21)
+	report_label("Starlight: first three bosses +1 each · Victory +3 · 20 minutes +1 · Peak instability 75+ +1 · Maximum 8",14)
+	if not model.banked:
+		report_label(save.warning,17)
+	report_label(Report.metrics(model),18)
+	label("Damage by Source",26)
+	report_label("Base and evolved damage remain separate. Mutation damage belongs to its weapon; reactions are counted separately.",14)
+	for row in Report.damage_rows(model):
+		report_label("%s · %s\n%.1f damage · %.1f%% · %.1f DPS" % [row.name,row.kind,row.damage,row.share,row.dps],18)
+		var bar:=ProgressBar.new()
+		bar.max_value=100
+		bar.value=row.share
+		bar.show_percentage=false
+		bar.custom_minimum_size.y=8
+		bar.add_theme_stylebox_override("fill",flat(Color("69bdbb")))
+		panel.add_child(bar)
+	report_label("Peak Instability %.1f · Final %.1f\nRifts Stabilized %d · Overcharged %d\nAffixes encountered: %s" % [model.rift_state.peak,model.instability,model.rifts_stabilized,model.rifts_overcharged,affix_summary()],17)
+	report_label("Mutations and final equipment\n"+build_text(),17)
+	report_label("Unlocked: "+(", ".join(model.unlocked_this_run.map(func(id):return Report.source_name(model,id))) if not model.unlocked_this_run.is_empty() else "None"),17)
+func detail_page(title: String,subtitle: String,actions: Array) -> void:
+	box(title,subtitle)
+	panel.custom_minimum_size.x=1050
+	panel.get_child(1).autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	detail_scroll=ui.get_child(1)
+	detail_scroll.offset_bottom=-90
+	detail_scroll.focus_mode=Control.FOCUS_ALL
+	detail_actions=HBoxContainer.new()
+	detail_actions.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	detail_actions.offset_left=70
+	detail_actions.offset_right=-70
+	detail_actions.offset_top=-78
+	detail_actions.offset_bottom=-14
+	detail_actions.add_theme_constant_override("separation",20)
+	ui.add_child(detail_actions)
+	for action in actions:
+		var node:=Button.new()
+		node.text=action[0]
+		node.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+		node.add_theme_font_size_override("font_size",20)
+		style_button(node)
+		node.pressed.connect(action[1])
+		detail_actions.add_child(node)
+	var first: Button=detail_actions.get_child(0)
+	var last: Button=detail_actions.get_child(-1)
+	first.focus_neighbor_left=first.get_path_to(last)
+	last.focus_neighbor_right=last.get_path_to(first)
+	focus_button.call_deferred(first)
+	report_label("Up/Down or mouse wheel: scroll · Left/Right: actions · A/Enter: confirm",14)
+func report_label(text: String,size: int=18) -> Label:
+	var node: Label=label(text,size)
+	node.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	node.horizontal_alignment=HORIZONTAL_ALIGNMENT_LEFT
+	return node
+func pause_game() -> void:
+	state="PAUSED"
+	get_tree().paused=true
+	box("PAUSE",build_text())
+	label(pause_recipe_text(),14)
+	label(instability_details(),15)
+	button("Resume",resume)
+	button("Build Details",build_details)
+	button("Settings",func(): return_to_pause=true; settings())
+	button("End Run",confirm_end)
+func build_details() -> void:
+	if model.finished: return
+	state="BUILD"
+	get_tree().paused=true
+	detail_page("BUILD DETAILS","Current values · No simulation advances while you inspect your build",[["Back to Pause",pause_game],["Resume",resume]])
+	for section in Report.build_sections(model,world):
+		label(section[0],25)
+		report_label(section[1],18)
+	label("Rift Instability",25)
+	report_label(instability_details(),17)
+	var runtime: Array[String]=[]
+	if world.player.slow_left>0: runtime.append("Null Zone Slow: movement ×0.8 · %.2f combat seconds remaining" % world.player.slow_left)
+	if world.freeze_time>0: runtime.append("Enemy Freeze: %.2f combat seconds remaining" % world.freeze_time)
+	if world.player.invulnerable>0: runtime.append("Invulnerable: %.2f combat seconds remaining" % world.player.invulnerable)
+	if not runtime.is_empty(): report_label("\n".join(runtime),17)
+	label("Evolution Paths",25)
+	report_label(pause_recipe_text(),17)
+func _input(event: InputEvent) -> void:
+	if state in ["BUILD","VICTORY","DEFEAT"] and is_instance_valid(detail_scroll):
+		if event.is_action_pressed("ui_down") or event.is_action_pressed("ui_up"):
+			detail_scroll.scroll_vertical+=65 if event.is_action_pressed("ui_down") else -65
+			get_viewport().set_input_as_handled()
 func _unhandled_input(event: InputEvent) -> void:
+	if state=="BUILD" and event.is_action_pressed("ui_cancel"):
+		pause_game()
+		return
 	if state=="RUNNING" and event.is_action_pressed("interact") and is_instance_valid(world):
 		if world.rifts.interact(): show_event()
 	if OS.is_debug_build() and event is InputEventKey and event.pressed and not event.echo and is_instance_valid(world) and state=="RUNNING":
@@ -347,16 +436,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			model.gold+=500
 	if event.is_action_pressed("ui_cancel") and state in ["RUNNING","PAUSED"]:
 		if state=="PAUSED": resume()
-		else:
-			state="PAUSED"
-			get_tree().paused=true
-			box("PAUSE",build_text())
-			label(pause_recipe_text(),14)
-			label(instability_details(),15)
-			label(preload("res://scripts/element_reactions.gd").legend(),14)
-			button("Resume",resume)
-			button("Settings",func(): return_to_pause=true; settings())
-			button("End Run",confirm_end)
+		else: pause_game()
 	if event is InputEventKey and event.pressed and not event.echo and state=="MUTATION":
 		if event.keycode in [KEY_1,KEY_2,KEY_3]: choose_mutation(event.keycode-KEY_1)
 	if event is InputEventKey and event.pressed and not event.echo and state=="RUNE":
@@ -455,7 +535,7 @@ func collection() -> void:
 	scroll.add_child(text)
 	button("Back",menu)
 func confirm_end() -> void:
-	box("END THIS RUN?","This ends the run as a defeat. Earned gold is kept.")
+	box("END THIS RUN?","This ends the run as a defeat. Earned gold and eligible Starlight are kept.")
 	button("Keep Playing",resume)
 	button("Finish Run",func(): model.finish(false))
 
@@ -467,6 +547,8 @@ func record_inventory() -> void:
 	check_unlocks()
 func check_unlocks() -> void:
 	var added: Array=save.unlocks(model.kills,model.bosses,model.time,false,model.evolutions,model.passives)
+	for id in added:
+		if not id in model.unlocked_this_run: model.unlocked_this_run.append(id)
 	if not added.is_empty(): save.save()
 func shop() -> void:
 	box("STAR FORGE · %d Gold" % save.data.total_gold,"Permanent upgrades. Take effect on your next run.")
@@ -587,7 +669,12 @@ func pause_recipe_text() -> String:
 			if model.weapons.has(base): relevant=true
 		if not relevant: continue
 		if save.discovered(recipe.id,"evolution"):
-			lines.append(recipe.display_name+": "+recipe.description)
+			var requirements: Array[String]=[]
+			for base in recipe.values.bases:
+				requirements.append("%s Lv5 · %s" % [model.title(base),"consumed by this evolution" if model.weapons.has(recipe.id) else "ready" if model.weapons.get(base,0)>=5 else "current Lv%d" % model.weapons.get(base,0)])
+			var catalyst: String=recipe.values.passive
+			requirements.append("%s Lv5 · %s" % [model.title(catalyst),"ready" if model.passives.get(catalyst,0)>=5 else "current Lv%d" % model.passives.get(catalyst,0)])
+			lines.append(recipe.display_name+": "+recipe.description+"\n"+" · ".join(requirements)+"\nRequires a chest from a boss spawned at 10:00 or later.")
 		else: unknown+=1
 	if unknown>0:
 		lines.append("Your current weapons connect to %d undiscovered evolution path%s.\nExperiment with equipment to uncover them." % [unknown,"s" if unknown!=1 else ""])
@@ -596,7 +683,7 @@ func pause_recipe_text() -> String:
 func confirm_reset() -> void:
 	if return_to_pause: return
 	state="RESET_CONFIRM"
-	box("RESET ALL DATA?","This permanently clears gold, meta upgrades, unlocks, discoveries,\nrecords, achievements and settings. This cannot be undone.")
+	box("RESET ALL DATA?","This permanently clears gold, Starlight, Star Map nodes,\nmeta upgrades, unlocks, discoveries, records, achievements and settings.\nThis cannot be undone.")
 	var cancel:=button("Cancel",func(): state="MENU"; settings())
 	button("Reset Everything",reset_all_progress)
 	focus_button.call_deferred(cancel)

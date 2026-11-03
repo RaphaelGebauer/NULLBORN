@@ -5,6 +5,14 @@ var total_damage: float=0
 var damage_taken: float=0
 var total_healing: float=0
 var critical_hits: int=0
+var highest_critical_hit: float=0
+var combat_seconds: float=0
+var xp_gained: float=0
+var gold_from_pickups: int=0
+var upgrades: int=0
+var mutations: int=0
+var evolutions: int=0
+var fusions: int=0
 var highest_hit: float=0
 var highest_ten_second_dps: float=0
 var bucket_seconds: PackedInt64Array=PackedInt64Array()
@@ -20,7 +28,9 @@ func record_damage(source: String, damage: float, remaining_hp: float, critical:
 	damage_by_source[key]=damage_by_source.get(key,0.0)+actual
 	total_damage+=actual
 	highest_hit=maxf(highest_hit,actual)
-	if critical: critical_hits+=1
+	if critical:
+		critical_hits+=1
+		highest_critical_hit=maxf(highest_critical_hit,actual)
 	var second: int=int(floor(game_time))
 	var slot: int=posmod(second,11)
 	if bucket_seconds[slot]!=second:

@@ -116,7 +116,9 @@ func initialize_meta() -> void:
 func required_xp() -> int:
 	return roundi(8+9*(level-1)+0.2*pow(level-1,2))
 func add_xp(value: float, apply_growth: bool = true) -> void:
-	xp += value * (growth if apply_growth else 1.0)
+	var earned: float=maxf(0,value)*(growth if apply_growth else 1.0)
+	xp += earned
+	statistics.xp_gained+=earned
 	xp_changed.emit()
 	while xp >= required_xp():
 		xp -= required_xp()
@@ -148,6 +150,7 @@ func finish(victory: bool) -> void:
 func tick(delta: float) -> void:
 	if finished: return
 	run_delta=minf(1800-time,maxf(0,delta)*(2 if fast else 1))
+	statistics.combat_seconds+=run_delta/(2 if fast else 1)
 	time+=run_delta
 	rift_state.advance(run_delta)
 	while still_heart_boundary<mini(6,int(time/300)):
@@ -207,6 +210,7 @@ func upgrade(id: String) -> void:
 			if owned==weapons: ensure_mutations()
 			recalculate()
 			inventory_changed.emit()
+	statistics.upgrades+=1
 	changed.emit()
 func recalculate() -> void:
 	var ratio: float=hp/max_hp
@@ -301,6 +305,8 @@ func evolution(eligible: bool) -> String:
 		if not inherited.is_empty(): weapon_mutations[recipe.id]=inherited
 		weapons[recipe.id]=1
 		evolutions.append(recipe.id)
+		if recipe.values.bases.size()>1: statistics.fusions+=1
+		else: statistics.evolutions+=1
 		inventory_changed.emit()
 		return recipe.id
 	return ""
@@ -329,6 +335,7 @@ func select_mutation(weapon: String, id: String) -> bool:
 	if definition==null or not registry.catalogs.mutation.has(id) or definition.values.weapon!=weapon: return false
 	weapon_mutations[weapon]=[{"id":id,"strength":1.0}]
 	pending_mutations.erase(weapon)
+	statistics.mutations+=1
 	inventory_changed.emit()
 	return true
 func imprint_text(weapon: String) -> String:

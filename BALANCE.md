@@ -57,9 +57,9 @@ Recipe fields `weapon_level=5` and `passive_level=5` define thresholds. Existing
 
 Caps remain: 6+6 equipment, 250 visible XP gems, 300 total pickups, 650 projectiles, 180 FX, 70 damage texts; 60% crit, area ×3, bonus amount +6, minimum cooldown 0.12 s. Max-HP changes preserve the current HP percentage. XP curve remains `round(8+9*(level-1)+0.2*(level-1)^2)`.
 
-## Phase E work in progress
+## Phase E — complete
 
-E1 provides tested save/runtime/statistics foundations; E2 implements all 45 weapon mutations and evolution/fusion inheritance. E3–E6 remain pending. See `docs/FEATURES_PHASE_E.md` and `STATUS.md` for the exact continuation point.
+E1–E6 are implemented and tested: mutations/inheritance, active rifts and phased bosses, elemental reactions, permanent Star Map, measured results and spoiler-safe Build Details. See `docs/FINAL_REPORT_PHASE_E.md` for complete regression evidence and remaining hardware/manual checks.
 
 ## E2 mutation tuning
 
@@ -106,4 +106,31 @@ World integration keeps all boss dashes free of crowd-separation drift. Blink wa
 
 ## E5 permanent constellations
 
-The exact eighteen effects live in scripts/data/constellations.gd. Three ordered six-star paths cost 21 each (63 total); no duplicate buys. Starlight is separate from gold and capped at eight per finish. Comet movement bonuses add to existing speed bonuses under the 500 px/s cap; Veil Seed adds three flat HP. Rush refreshes a single 20-run-second deadline, Still Heart uses six five-minute opportunities and Last Star cannot resurrect. Hunter/Fracture damage bonuses affect direct eligible hits once; reactions use the already-final damage, avoiding double amplification. Tainted Treasure multiplies only eligible elite gold by 1.05. Risk Seeker multiplies only rift XP by 1.05, never Growth.
+The exact eighteen effects live in scripts/data/constellations.gd. Three ordered six-star paths cost 21 each (63 total); no duplicate buys. Starlight is separate from gold and capped at eight per finish. Comet movement bonuses add to existing speed bonuses under the 500 px/s cap; Veil Seed adds three flat HP. Rush refreshes a single 20-run-second deadline, Still Heart uses six five-minute opportunities and Last Star cannot resurrect. Hunter/Fracture damage bonuses affect each eligible recipient once, including secondary damage. Derived hits carry their inherited target factor so it can be removed and the new recipient's factor applied, avoiding double amplification and leakage to normal enemies. Tainted Treasure multiplies only eligible elite gold by 1.05. Risk Seeker multiplies only rift XP by 1.05, never Growth.
+
+| Path | Star / cost | Effect |
+|---|---|---|
+| Comets | Comet Spark / 1 | +1% additive movement |
+| Comets | Gathering Tail / 2 | +6 px magnet |
+| Comets | Swift Orbit / 3 | +3% projectile speed |
+| Comets | Astral Insight / 4 | +2% Growth |
+| Comets | Rush of Stars / 5 | +2% movement for 20 run seconds after boss kill, refresh only |
+| Comets | Far Traveler / 6 | +6 px magnet and +1% movement |
+| Veil | Veil Seed / 1 | +3 flat maximum HP |
+| Veil | Quiet Pulse / 2 | +0.05 HP/s |
+| Veil | Guarded Orbit / 3 | Boss projectile damage ×0.97, existing minimum damage |
+| Veil | Second Breath / 4 | Stabilization heals +4 HP |
+| Veil | Still Heart / 5 | Heal 2 HP below half HP at each five-minute boundary, six opportunities |
+| Veil | Last Star / 6 | Once: heal 8 HP below 25%, only while alive |
+| Fractures | Rift Sense / 1 | Pause displays next instability threshold |
+| Fractures | Tainted Treasure / 2 | Elite gold ×1.05 at instability 50+ |
+| Fractures | Hunter's Star / 3 | Elite damage ×1.03 |
+| Fractures | Clear Horizon / 4 | Stabilization removes 23 instead of 20 instability |
+| Fractures | Risk Seeker / 5 | Rift XP ×1.05 (36.75% of current level requirement, no Growth) |
+| Fractures | Fracture Mastery / 6 | Boss damage ×1.03 at instability 75+ |
+
+## E6 feedback and statistics
+
+Enemy hitflash ≤0.06 s, desaturated local tint; hero hitflash ≤0.07 s. Reduce Flashes suppresses these and reduces explosion/impact opacity. Normal incoming hits never shake. Strong boss damage (15+ before armor) may request ≤1.5 px/0.07 s; boss death ≤2 px/0.10 s. Deterministic sine motion is bounded by vector length, decays to zero and consumes no gameplay RNG. Disabling shake clears any current offset immediately. Critical text uses 17 px vs normal 15, gold tint and an exclamation mark, under the unchanged 70-text cap. Critical impacts share a 0.08-s throttle and the existing 180-effect cap.
+
+Stats exclude overkill and overheal, separate base/evolved/fused sources, and record real crits/events. Average and peak ten-second DPS use active combat seconds; Quick Mode's run clock advances twice as fast, so a full Quick run has 900 combat seconds. Peak DPS uses eleven fixed buckets rather than unbounded hit history. UI fixtures may fast-forward the run clock for screenshots; real full-run tests integrate every simulation step and verify combat duration separately.

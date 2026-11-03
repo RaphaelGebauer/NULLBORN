@@ -7,18 +7,25 @@ var selected: String="comet_spark"
 var detail: Label
 var purchase: Button
 var wallet: Label
+var canvas: Control
+var map_scale: float=1
 func _ready() -> void:
-	custom_minimum_size=Vector2(1100,520)
+	map_scale=minf(1,(get_viewport_rect().size.x-40)/1100)
+	custom_minimum_size=Vector2(1100,520)*map_scale
+	canvas=Control.new()
+	canvas.size=Vector2(1100,520)
+	canvas.scale=Vector2.ONE*map_scale
+	add_child(canvas)
 	wallet=Label.new()
 	wallet.position=Vector2(15,0)
-	add_child(wallet)
+	canvas.add_child(wallet)
 	for path in range(3):
 		var heading:=Label.new()
 		heading.text=Stars.PATHS[path].trim_prefix("Constellation of ")
 		heading.position=Vector2(50+path*365,28)
 		heading.modulate=COLORS[path]
 		heading.add_theme_font_size_override("font_size",23)
-		add_child(heading)
+		canvas.add_child(heading)
 	for id in Stars.NODES:
 		var d: Dictionary=Stars.NODES[id]
 		var node:=Button.new()
@@ -40,14 +47,14 @@ func _ready() -> void:
 		node.focus_entered.connect(select.bind(id))
 		node.mouse_entered.connect(select.bind(id))
 		node.pressed.connect(select.bind(id))
-		add_child(node)
+		canvas.add_child(node)
 		nodes[id]=node
 	detail=Label.new()
 	detail.position=Vector2(20,420)
 	detail.size=Vector2(790,98)
 	detail.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	detail.add_theme_font_size_override("font_size",17)
-	add_child(detail)
+	canvas.add_child(detail)
 	purchase=Button.new()
 	purchase.position=Vector2(835,448)
 	purchase.size=Vector2(240,58)
@@ -60,7 +67,7 @@ func _ready() -> void:
 	purchase.add_theme_stylebox_override("normal",purchase_style)
 	purchase.add_theme_stylebox_override("focus",purchase_style)
 	purchase.pressed.connect(buy_selected)
-	add_child(purchase)
+	canvas.add_child(purchase)
 	for id in nodes:
 		var d: Dictionary=Stars.NODES[id]
 		for other in nodes:
@@ -95,6 +102,7 @@ func buy_selected() -> void:
 	if save.buy_star(selected): refresh()
 	else: detail.text=description(selected)+"\n"+save.warning
 func _draw() -> void:
+	draw_set_transform(Vector2.ZERO,0,Vector2.ONE*map_scale)
 	for i in range(50): draw_circle(Vector2(fposmod(i*173.7,1090),fposmod(i*i*31.2,480)),1,Color(.6,.8,.9,.2))
 	for id in nodes:
 		var previous: String=Stars.predecessor(id)

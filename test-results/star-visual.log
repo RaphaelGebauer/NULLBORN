@@ -6,3 +6,4 @@ OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Devi
 CAPTURE Star Map (1280, 720)
 CAPTURE Star Map (1600, 900)
 CAPTURE Star Map (1920, 1080)
+PASS All eighteen stars fit at UI scale 1.2

@@ -1,32 +1,17 @@
-# Phase E delivery ledger
+# Phase E — complete delivery ledger
 
-Specification: `NULLBORN_CODEX_ERWEITERUNG_PHASE_E.md` (preserved verbatim).
+The specification is preserved in `NULLBORN_CODEX_ERWEITERUNG_PHASE_E.md`. All E1–E6 systems are implemented in the existing project. Full validation and remaining manual/hardware limits: [Final Report](FINAL_REPORT_PHASE_E.md).
 
-## E1 — foundation implemented
+| Phase | Delivered functionality | Verification |
+|---|---|---|
+| E1 | Additive save migration, run clock, element definitions, measured statistics foundation | 179 base/E1 checks |
+| E2 | All 45 mutations, mandatory Lv4 choices, all 15 normal evolution inheritances, both fusion Primary 100% / Echo 50% imprints | 404 mutation checks, actual normal/evolved/fusion effects |
+| E3 | Five-band active instability, four proximity nodes, all seven affixes, bounded director/rewards, three distinct two-phase bosses and telegraphs | 103 rift/elite/boss checks; graphical captures; full-run/stress |
+| E4 | Four bidirectional reactions, actual tags, fixed priority, local cooldown/global budget, source attribution, boss dampening and bounded effects | 111 reaction checks; graphical captures; full-run/stress |
+| E5 | Connected three-branch eighteen-star map, costs/prerequisites/tooltips/focus, all real bonuses, persistent currency, transactions/rollback/reset and next-run snapshots | 90 constellation checks; three resolutions, scaled UI and embedded focus |
+| E6 | Subtle bounded configurable feedback, actual complete statistics/result table and fixed actions, spoiler-safe detailed Build view | 40 polish checks; graphical/resolution/embedding/input tests |
+| Whole catalog | Actual damage from all 15 base and 17 evolved/fused attack algorithms, all 15 enemy AIs and both arena pipelines | 49 catalog checks |
 
-- Additive version-1 save defaults for `starlight` and `constellation_nodes`, numeric/type/uniqueness validation, existing corruption handling and reset behavior preserved. No currency is awarded and no Star Map purchase UI exists yet.
-- `scripts/run_statistics.gd` is connected to actual `world.hit`, healing and damage taken. Damage excludes overkill; base/evolved weapon IDs remain separate; crits require an actual critical hit. Eleven fixed second buckets calculate peak ten-second average DPS. Display/complete secondary-source attribution are E6 work.
-- Explicit `run_delta` shares the wave clock's Quick Mode conversion and clamps to the remaining run duration.
-- `scripts/data/element_tags.gd`: existing weapon tags and recursive sorted set-union for evolutions/fusions. No reactions are enabled until E4.
-- `scripts/rift_instability.gd`: deterministic clamping, peak, reversible bands and copied band modifiers. Owned by each run, but intentionally not advanced or applied to gameplay until E3 supplies the complete director/node/UI integration.
-- Run-local mutation map and constellation snapshot establish the existing model's integration points. They do not claim implemented mutation effects or talent bonuses.
+Total: **976 functional PASS, zero FAIL**. Engine: Godot 4.7.2 Stable. Separate 30-minute normal/Quick simulations and 180-second stress fixture pass with all eighteen stars. UI fixtures deliberately script state for screenshots; their captures are not substituted for the complete per-step simulations.
 
-## E2 — implemented
-
-All 45 definitions and processors; mandatory paused Lv4 choice; normal/evolved effect tests for all 45; inheritance for all 15 normal evolutions and both primary/echo fusions. Shared proc budget, deterministic echo cadence, genuine projectiles/mines/secondary damage, timed zones, hit/cast/expiry counters, real contact retaliation and healing cap. No extra slots, no changed evolution gates and no recipe spoilers. English pause/build imprint display and three-resolution graphical captures. Existing full-run and stress fixtures now exercise real mutated/evolved loadouts.
-
-## E3 — implemented
-
-Active five-band instability/HUD/director/gold, four proximity-only paused risk/reward nodes, all seven bounded elite affixes, separate half-HP boss phases with real dashes, starfalls, curved bolts, capped summons/null zones and safe-gap rings/beams. See BALANCE.md and tests/rift_runner.gd.
-
-## E4 — implemented
-
-Four bidirectional reactions with final-hit attribution, cached base/evolution/fusion tags and successful mutation/status tags, fixed priority, per-target 3-second history/1.5-second cooldown, forty-events-per-combat-second budget, capped feedback, boss dampening, bounded chain/AoE, result damage entry and general pause legend. Real Burn/Poison ownership and no proc reentry; exhaustive functional, graphical, stress and full-run verification.
-
-## Remaining delivery
-
-E5: 18 constellation nodes, persistent Starlight awards capped at eight, rollback-safe purchases, actual next-run bonuses and Star Map UI.
-
-E6: subtle feedback, detailed statistics/result UI, spoiler-safe Build Details, graphical smoke captures, stress/full-run validation, documentation synchronization.
-
-E1–E4 are delivered; E5–E6 remain pending. Do not change `resources/pacing.tres`, weapon IDs, 6+6 slots, Lv5/Lv5 evolution gates, historical chest eligibility or completed-recipe privacy.
+Preserved: original project/history, 15 weapons/17 passives/15 normal evolutions/two fusions, four heroes/two arenas/thirty waves, 6+6 slots, all 20 meta upgrades, version-1 saves, acquired-entry collection hiding, completed-only recipe privacy, historical boss-spawn chest eligibility and unchanged eight-minute opening pacing.

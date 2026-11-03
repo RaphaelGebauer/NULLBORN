@@ -2,9 +2,37 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## Phase E6 — complete; E1–E6 final acceptance passed
+
+E5 implementation/publication: **5e474ca**. E6 implementation hash recorded after commit. Final detailed report: docs/FINAL_REPORT_PHASE_E.md. Older sections below are historical checkpoints; their continuation instructions are superseded by this section.
+
+All requested E1–E6 systems are implemented in the existing project. No recreation, removed catalog items, reset of valid saves, force-push or changes to resources/pacing.tres. English UI remains intact.
+
+E6 files: scripts/run_report.gd, run_statistics.gd, run_model.gd, app.gd, world.gd, player.gd, combat.gd; mutation_effects.gd/element_reactions.gd carry inherited target factors to keep situational stars exact across secondary recipients. SaveManager preserves mid-run unlocks and transactional finish behavior; Star Map scales its connected canvas at larger UI scale.
+
+- Complete real statistics: actual damage by source, shares, combat DPS, highest critical/single hit and ten-second DPS; damage taken/healing, XP/gold, actual upgrade/mutation/evolution/fusion events, bosses/elites, instability/rifts, achievements and Starlight. No overkill/overheal inflation or duplicated rewards.
+- Build Details: all six-plus-six slots, behaviors/levels, inherited mutation descriptions/Primary/Echo, hero/rune/meta/star bonuses, final values, temporary durations and elements/reactions. Only actually discovered evolution recipes expose names/requirements/readiness. Inspection never advances time, rolls cards or grants XP.
+- Fixed result/Build actions stay visible while scrolling. Save failure shows Pending rewards plus a fixed controller-accessible Retry Saving action. Both victory/defeat and Try Again are tested.
+- Calm feedback: enemy flash <=0.06 s, player <=0.07 s, no normal-hit shake, capped deterministic boss-hit/death motion <=1.5/2 px for <=0.07/0.10 s, immediate zero offset when disabled, readable capped critical numbers and bounded impact FX. No feedback RNG consumption.
+- Final math/regression fixes: actual damage still counts as a successful contact when Last Star heals above the preceding HP; weapon retaliation/death-fire retain attribution without secondary recursion; flat hero bonuses are displayed correctly; fresh/derived secondary star bonuses apply exactly once and cannot leak to ineligible recipients.
+
+Godot **4.7.2.stable.official.ed1daf0bf**. Final command: `STERNENBRUCH_LOG_DIR=/workspace/runtime/e6-correct-final ./tools/check.sh --long`. **179 existing/E1 + 404 mutations + 103 rift/elite/boss + 111 reactions + 90 constellations + 40 polish + 49 whole-catalog = 976 PASS / 0 FAIL**. Clean import, no script/runtime errors or leaked instances. test-results/ contains final logs.
+
+Normal simulation: every step through **30:00 / 1800 combat seconds**, one victory, three runes, 26,343 kills, 23 affixed elites, six boss Phase II transitions, two stabilizations/two overcharges, all eighteen stars, peak/final instability 91.2, 18,490 reactions across all four kinds. Eight Starlight banked exactly once; measured source rows reconcile. Total damage 10,861,180.39; average combat DPS 6,033.99; highest critical 132; **101.867 s CPU wall time**.
+
+Quick simulation on final code: **30:00 / 900 combat seconds**, one victory, three runes, 13,013 kills, 22 affixed elites, six transitions, two/two rifts, all eighteen stars, 8,809 reactions, eight Starlight once; **50.902 s CPU wall time**. Separate quick-run.log.
+
+Final stress: **180 simulated seconds / 5,400 steps**, three Phase II bosses, elites, inherited mutations and all stars; peaks **382 enemies / 261 projectiles / 300 pickups**; 12,585 kills, 7,186 bounded reactions; **50.294 s wall time**, no cap/runtime failures.
+
+Graphical: native 1280×720 / 1600×900 / 1920×1080, UI scale 1.2, original menus/input, all phase UI captures, four character starts, scrolling and fixed actions. Real --wid embedding: controller action navigates stars, Build/results work, audio/display settings produce no native resize requests or resize spam. **33 graphical/input PASS**, no failures; screenshots inspected. Only known llvmpipe VSync warning. UI screenshot fixtures are scripted state captures, distinct from per-step full simulations.
+
+Simulation harness immunity/automatic movement/choices are explicit test aids. Remaining manual/platform checks: physical controller, real editor/desktop focus/DPI/fullscreen, audible balancing, target GPU frame pacing, human fresh/progressed-save thirty-minute difficulty and native release exports. No such hardware/human claims are made. No known unresolved script/runtime/test failures remain.
+
+Continuation: no E phase remains to implement. Preserve this checkpoint; future work should address the manual/platform checks or new user requests. Reproduce tests using tools/check.sh --long; graphical checks via DISPLAY=:99 tools/graphical_check.sh and --wid <decimal-X11-host-ID>. All gameplay content/recipe gates/save compatibility remain protected by the regression suites.
+
 ## Phase E5 — complete and tested; E6 next
 
-Implementation hash recorded after commit. Data: scripts/data/constellations.gd; interactive connected three-branch Star Map: scripts/star_map.gd and app.gd. All eighteen specified nodes/costs/prerequisites and real combat/stat/rift/timed hooks are implemented. Total cost 63 Starlight; rewards capped at eight, booked exactly once at finish. Save failures roll back both purchases and finish rewards and expose a retry message. Existing version-1 saves/migration/reset retained; active runs use independent snapshots. No changes to opening pacing or mutation/evolution gates.
+Implementation commit: `5e474ca` (published and verified). Data: scripts/data/constellations.gd; interactive connected three-branch Star Map: scripts/star_map.gd and app.gd. All eighteen specified nodes/costs/prerequisites and real combat/stat/rift/timed hooks are implemented. Total cost 63 Starlight; rewards capped at eight, booked exactly once at finish. Save failures roll back both purchases and finish rewards and expose a retry message. Existing version-1 saves/migration/reset retained; active runs use independent snapshots. No changes to opening pacing or mutation/evolution gates.
 
 Godot 4.7.2 Stable, tools/check.sh: **797 preserved + 85 constellation tests = 882 PASS / 0 FAIL**, no script errors/leaks. Tests cover all nodes, costs, prerequisites, restart persistence, failed-write rollback/retry, capped/idempotent finish, every bonus, six Still Heart boundaries in both modes, no recalculation stacking, real rift/elite/boss/projectile integration, UI focus and snapshot isolation. Real graphical captures at 1280×720, 1600×900 and 1920×1080; 1280 capture inspected, all eighteen stars, inspector and Back visible. Known llvmpipe VSync warning only. Logs in test-results/constellations.log and star-visual.log.
 

@@ -5,7 +5,7 @@ func capture(name: String) -> void:
 	app.world.queue_redraw()
 	await process_frame
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png("/workspace/NULLBORN/docs/screenshots/"+name+".png")
+	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://docs/screenshots/")+name+".png")
 	print("CAPTURE ",name," ",root.size)
 func run() -> void:
 	app=load("res://scenes/main_menu.tscn").instantiate()

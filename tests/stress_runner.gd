@@ -4,6 +4,7 @@ func _initialize() -> void:
 func run() -> void:
 	var model=load("res://scripts/run_model.gd").new()
 	model.time=1200
+	model.constellation_nodes=preload("res://scripts/data/constellations.gd").NODES.keys()
 	var evolved: Dictionary={}
 	var imprints: Dictionary={}
 	for id in ["star_piercer","solar_orbit","blood_thorns","zenith_beam","night_storm","ghost_well"]:

@@ -79,10 +79,15 @@ PASS Tainted Treasure boosts actual elite gold at threshold
 PASS Fracture Mastery boosts boss at Unstable
 PASS Fracture Mastery has no global/low-instability bonus
 PASS Guarded Orbit mitigates actual boss projectile
+PASS Fracture Mastery affects fresh secondary hits
+PASS Derived secondary cannot double-apply the target bonus
+PASS Derived elite/boss damage bonus cannot leak to normal secondary recipients
+PASS Reaction keeps boss primary bonus once and removes it from normal chain target
+PASS Mutation pulse forwards inherited target factor through pooled effect
 PASS Real star map creates all nodes and descriptive tooltips
 PASS Star map purchase uses real save transaction
 PASS Keyboard/controller focus updates inspector
 PASS Run snapshot isolated from subsequent purchases
 PASS Next threshold hidden without Rift Sense
 PASS Rift Sense reveals next threshold
-Constellation checks: 85 PASS / 0 FAIL
+Constellation checks: 90 PASS / 0 FAIL

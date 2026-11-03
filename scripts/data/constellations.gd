@@ -15,10 +15,10 @@ const NODES: Dictionary={
 	"last_star":{"name":"Last Star","path":1,"rank":6,"effect":"Once per run, recover 8 HP when falling below 25% HP, while still alive."},
 	"rift_sense":{"name":"Rift Sense","path":2,"rank":1,"effect":"Pause reveals your current instability band and its next threshold."},
 	"tainted_treasure":{"name":"Tainted Treasure","path":2,"rank":2,"effect":"Elite gold +5% while instability is at least 50."},
-	"hunters_star":{"name":"Hunter's Star","path":2,"rank":3,"effect":"Deal 3% more direct damage to elites only."},
+	"hunters_star":{"name":"Hunter's Star","path":2,"rank":3,"effect":"Deal 3% more damage to elites only."},
 	"clear_horizon":{"name":"Clear Horizon","path":2,"rank":4,"effect":"Rift stabilization removes an additional 3 instability."},
 	"risk_seeker":{"name":"Risk Seeker","path":2,"rank":5,"effect":"Overcharging grants 5% more of its one-time XP reward."},
-	"fracture_mastery":{"name":"Fracture Mastery","path":2,"rank":6,"effect":"Deal 3% more direct damage to bosses while instability is at least 75."}}
+	"fracture_mastery":{"name":"Fracture Mastery","path":2,"rank":6,"effect":"Deal 3% more damage to bosses while instability is at least 75."}}
 static func predecessor(id: String) -> String:
 	if not NODES.has(id) or NODES[id].rank==1: return ""
 	for other in NODES:

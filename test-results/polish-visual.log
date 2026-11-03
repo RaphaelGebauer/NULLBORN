@@ -1,0 +1,36 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PASS Real character start brann
+PASS Real character start eira
+PASS Real character start lyra
+PASS Real character start noctis
+CAPTURE build-details-1280 (1280, 720)
+PASS Build fixed actions visible (1280, 720)
+CAPTURE build-paths-1280 (1280, 720)
+PASS Controller build scrolling keeps actions visible (1280, 720)
+CAPTURE build-details-1600 (1600, 900)
+PASS Build fixed actions visible (1600, 900)
+CAPTURE build-paths-1600 (1600, 900)
+PASS Controller build scrolling keeps actions visible (1600, 900)
+CAPTURE build-details-1920 (1920, 1080)
+PASS Build fixed actions visible (1920, 1080)
+CAPTURE build-paths-1920 (1920, 1080)
+PASS Controller build scrolling keeps actions visible (1920, 1080)
+CAPTURE run-result-1280 (1280, 720)
+PASS Result fixed actions visible (1280, 720)
+CAPTURE run-damage-1280 (1280, 720)
+PASS Result actions remain visible after scrolling (1280, 720)
+CAPTURE run-result-1600 (1600, 900)
+PASS Result fixed actions visible (1600, 900)
+CAPTURE run-damage-1600 (1600, 900)
+PASS Result actions remain visible after scrolling (1600, 900)
+CAPTURE run-result-1920 (1920, 1080)
+PASS Result fixed actions visible (1920, 1080)
+CAPTURE run-damage-1920 (1920, 1080)
+PASS Result actions remain visible after scrolling (1920, 1080)
+CAPTURE result-ui-scale (1280, 720)
+PASS Result fixed actions at UI scale 1.2
+Graphical polish checks: 0 failures

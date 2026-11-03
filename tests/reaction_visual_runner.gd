@@ -26,12 +26,12 @@ func run() -> void:
 	app.world.queue_redraw()
 	await process_frame
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png("/workspace/NULLBORN/docs/screenshots/element-reactions.png")
+	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://docs/screenshots/element-reactions.png"))
 	print("CAPTURE all four actual reactions at 1280x720; events ",app.world.reactions.events_total)
 	app.model.finish(false)
 	await process_frame
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png("/workspace/NULLBORN/docs/screenshots/reaction-result.png")
+	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://docs/screenshots/reaction-result.png"))
 	print("CAPTURE actual reaction damage result")
 	app.menu()
 	app.queue_free()

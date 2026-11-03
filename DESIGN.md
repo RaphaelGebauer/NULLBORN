@@ -16,9 +16,9 @@ Art is deliberately geometric and original. Stages use repeating coordinate-stab
 
 Validation uses isolated functional tests, a sustained CPU load fixture, a full accelerated 30-minute simulation and graphical smoke tests. Load fixtures give immunity and automated choices, so they do not prove human winability. Mesa software rendering and synthetic controller events do not establish target-hardware FPS or physical controller compatibility.
 
-## Phase E work in progress
+## Phase E — complete
 
-E1 provides tested save/runtime/statistics foundations; E2 implements all 45 weapon mutations and evolution/fusion inheritance. E3–E6 remain pending. See `docs/FEATURES_PHASE_E.md` and `STATUS.md` for the exact continuation point.
+E1–E6 are implemented and tested: mutations/inheritance, active rifts and phased bosses, elemental reactions, permanent Star Map, measured results and spoiler-safe Build Details. See `docs/FINAL_REPORT_PHASE_E.md` for complete regression evidence and remaining hardware/manual checks.
 
 ## E2 mutation integration
 
@@ -37,3 +37,11 @@ Model mutation requests are independent of normal level offers. App inserts pend
 ## E5 Star Map
 
 Constellations are separately maintained immutable data, validated by Registry and untouched by catalog generators. Star Map uses real focusable nodes, explicit directional links and drawn prerequisite connections. SaveManager transactions roll back on write failures; finish banking is set only after a successful atomic save. Model snapshots own purchased nodes; stats derive bonuses once, timed effects use run boundaries/deadlines and situational damage hooks stay in World.
+
+## E6 reports and feedback
+
+RunStatistics records actual capped damage, highest critical hit, XP credited, gold pickups and successful upgrade/mutation/evolution/fusion events. Its eleven second buckets use active combat time, preserving meaningful Quick Mode DPS. RunReport only projects current state/measured events; opening it never ticks, rolls offers or recalculates bonuses. Base/evolution/fusion IDs stay separate; secondary mutation hits retain weapon ownership, reaction/DoT damage stays in its own source. Death-fire and Blood Thorns retaliation retain correct weapon IDs and proc guards.
+
+App builds fixed-action detail pages outside the scroll area. Build Details uses the live model snapshot and explicit completed-recipe discovery, including known requirement readiness; it never infers secret recipes from component ownership. Mid-run unlock events are retained through finish. Failed reward saves roll back and expose a retry action; pending rewards are labeled honestly.
+
+Feedback never consumes gameplay RNG: short desaturated local flashes, capped critical impacts/text, deterministic length-bounded camera decay. Ordinary damage produces no shake. Screen Shake off clears camera offset immediately even during paused settings. New Star Map content scales inside its own canvas for the 1.2 UI-scale setting without losing constellation nodes.

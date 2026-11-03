@@ -75,4 +75,4 @@ func update(delta: float) -> void:
 	for effect in visuals: effect.life-=delta
 	visuals=visuals.filter(func(effect):return effect.life>0)
 static func legend() -> String:
-	return "Elements & Reactions\nFrost + Storm: Arc Freeze · Fire + Toxin: Blightburst\nFrost + Void: Void Shatter · Storm + Void: Rift Conduction\nDifferent elements within 3 seconds react; 1.5-second cooldown per enemy."
+	return "Frost + Storm: Arc Freeze · Fire + Toxin: Blightburst\nFrost + Void: Void Shatter · Storm + Void: Rift Conduction\nCombine elements within 3 s · 1.5 s cooldown per enemy"

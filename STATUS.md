@@ -2,6 +2,13 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+
+## UI text cleanup — complete (2026-11-03)
+
+Continued GitHub main `e058ab8`, preserving its newer navigation/recipe/balance corrections. English UI now uses shorter labels, one Star Map prerequisite, precise local purchase reasons and **Veil**. Characters/pre-run menus drop redundant introductions; Star Forge uses two-line upgrade entries. Pause keeps compact equipment/count/status rows; Build retains discovered recipes/chest eligibility, mutation details and instability factors. Results keep measured statistics and move calculation/attribution help to a tooltip. Rift F/Y help stays contextual. No gameplay, resource, ID or save-schema changes.
+
+Godot **4.7.2 Stable**: **1106 functional PASS / 0 FAIL**, seven Python safety tests, staged generators exact; separate seed 115 passes 179 unit checks. Native graphical **101 assertions**, actual embedded host **9 assertions**; all three requested resolutions and existing UI-scale/focus/input checks. New text coverage tests all eighteen star descriptions, retained information, contextual input and layout bounds. Final logs have no engine errors/leaks; known software VSync warning only. No new long simulations or physical hardware tests claimed. [Scope, commands and evidence](docs/UI_TEXT_REPORT.md). Publication hash is reported after remote verification.
+
 ## UI/navigation fixes and small balance adjustment — complete (2026-11-03)
 
 Continued verified GitHub main `7e37c94`; no replacement project or save-schema changes. Star Map now selects only on click/Enter/A, keeps a persistent constellation-colored border and separates local owned/prerequisite/currency reasons from global storage failures. Technical errors, transactional rollback and pending-progress retry remain intact. Pause/Build count matching equipment recipes separately from ready Lv5 recipes without revealing undiscovered names/ingredients; chest gate/fusion priority unchanged. Settings Back/Esc/B returns to Pause without advancing gameplay. Explicit A/B/D-pad/stick menu bindings repair missing built-in controller mappings.

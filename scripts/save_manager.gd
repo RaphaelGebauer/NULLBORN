@@ -6,26 +6,26 @@ var data: Dictionary={}
 var warning: String=""
 var pending_write: bool=false
 const META: Dictionary={
-	"max_hp":{"name":"Vitality","effect":"+5 % Max-HP","cost":50,"max":5},
-	"might":{"name":"Star Power","effect":"+3 % Damage","cost":75,"max":5},
+	"max_hp":{"name":"Vitality","effect":"+5% Max HP","cost":50,"max":5},
+	"might":{"name":"Star Power","effect":"+3% Damage","cost":75,"max":5},
 	"speed":{"name":"Fleet Foot","effect":"+5% movement speed","cost":40,"max":5},
 	"magnet":{"name":"Attraction","effect":"+10 px magnet radius","cost":50,"max":5},
-	"growth":{"name":"Insight","effect":"+4 % XP","cost":75,"max":5},
-	"greed":{"name":"Treasure Gleam","effect":"+5 % Gold","cost":75,"max":5},
+	"growth":{"name":"Insight","effect":"+4% XP","cost":75,"max":5},
+	"greed":{"name":"Treasure Gleam","effect":"+5% Gold","cost":75,"max":5},
 	"armor":{"name":"Star Armor","effect":"+1 armor every 2 ranks","cost":100,"max":5},
 	"rerolls":{"name":"New Paths","effect":"Unlock +1 reroll per run","cost":125,"max":3},
 	"skips":{"name":"Let Go","effect":"Unlock +1 skip per run","cost":100,"max":2},
 	"banishes":{"name":"Banishment","effect":"Unlock +1 banish per run","cost":150,"max":2},
-	"long_stride":{"name":"Long Stride","effect":"+1% speed per minute per rank, caps at 10 minutes","cost":100,"max":5},
-	"regeneration":{"name":"Renewal","effect":"+0.15 HP regeneration per second","cost":100,"max":5},
+	"long_stride":{"name":"Long Stride","effect":"+1% speed per run minute (max 10 minutes)","cost":100,"max":5},
+	"regeneration":{"name":"Renewal","effect":"+0.15 HP/s","cost":100,"max":5},
 	"crit":{"name":"Keen Eye","effect":"+2% critical chance","cost":100,"max":5},
 	"area":{"name":"Wide Reach","effect":"+4% weapon radius","cost":75,"max":5},
 	"duration":{"name":"Enduring Light","effect":"+5% effect duration","cost":75,"max":5},
 	"cooldown":{"name":"Quickening","effect":"-2% weapon cooldown","cost":125,"max":5},
 	"projectile_speed":{"name":"Swift Missiles","effect":"+6% projectile speed","cost":60,"max":5},
-	"battle_rhythm":{"name":"Battle Rhythm","effect":"-1% cooldown per minute per rank, caps at 10 minutes","cost":100,"max":5},
+	"battle_rhythm":{"name":"Battle Rhythm","effect":"−1% cooldown per run minute (max 10 minutes)","cost":100,"max":5},
 	"pickup_speed":{"name":"Gathering Flow","effect":"+12% pickup attraction speed","cost":50,"max":5},
-	"evasive_instinct":{"name":"Evasive Instinct","effect":"+3% movement per rank while below 50% HP","cost":75,"max":5}}
+	"evasive_instinct":{"name":"Evasive Instinct","effect":"+3% movement below 50% HP","cost":75,"max":5}}
 func _init() -> void:
 	data=defaults()
 func defaults() -> Dictionary:
@@ -181,12 +181,12 @@ func finish_run(model: RefCounted,victory: bool) -> Array:
 
 func star_purchase_error(id: String) -> String:
 	if not Stars.NODES.has(id): return "Unknown star."
-	if id in data.constellation_nodes: return "This star is already unlocked."
+	if id in data.constellation_nodes: return "Already unlocked."
 	var previous: String=Stars.predecessor(id)
 	if not previous.is_empty() and not previous in data.constellation_nodes:
-		return "Requires %s to be unlocked first." % Stars.NODES[previous].name
+		return "Requires: %s" % Stars.NODES[previous].name
 	if data.starlight<Stars.NODES[id].rank:
-		return "Not enough Starlight. Required: %d, Available: %d." % [Stars.NODES[id].rank,data.starlight]
+		return "Not enough Starlight (%d / %d)." % [data.starlight,Stars.NODES[id].rank]
 	return ""
 func star_available(id: String) -> bool:
 	return star_purchase_error(id).is_empty()

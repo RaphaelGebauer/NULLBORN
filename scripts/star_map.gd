@@ -69,13 +69,16 @@ func _ready() -> void:
 func description(id: String) -> String:
 	var d: Dictionary=Stars.NODES[id]
 	var previous: String=Stars.predecessor(id)
+	var lines: Array[String]=["%s · %d Starlight" % [d.name,d.rank],d.effect]
+	if not previous.is_empty(): lines.append("Requires: "+Stars.NODES[previous].name)
 	var reason: String=save.star_purchase_error(id)
-	return "%s · %d Starlight\n%s\nRequires: %s · %s" % [d.name,d.rank,d.effect,"None" if previous.is_empty() else Stars.NODES[previous].name,"Available" if reason.is_empty() else reason]
+	if not reason.is_empty() and not reason.begins_with("Requires:"): lines.append(reason)
+	return "\n".join(lines)
 func select(id: String) -> void:
 	selected=id
 	if is_instance_valid(detail):
 		detail.text=description(id)
-		purchase.text="Owned" if id in save.data.constellation_nodes else "Unlock · %d Starlight" % Stars.NODES[id].rank
+		purchase.text="Unlocked" if id in save.data.constellation_nodes else "Unlock · %d Starlight" % Stars.NODES[id].rank
 		purchase.disabled=id in save.data.constellation_nodes
 		purchase.tooltip_text=description(id)
 		for other in nodes: style_node(other)
@@ -103,7 +106,7 @@ func style_node(id: String) -> void:
 	focused.expand_margin_bottom=-5
 	nodes[id].add_theme_stylebox_override("focus",focused)
 func refresh() -> void:
-	wallet.text="%d Starlight · %d / 18 stars awakened · Bonuses begin next run" % [save.data.starlight,save.data.constellation_nodes.size()]
+	wallet.text="%d Starlight · %d / 18 unlocked" % [save.data.starlight,save.data.constellation_nodes.size()]
 	for id in nodes:
 		var d: Dictionary=Stars.NODES[id]
 		nodes[id].text=("✦ " if id in save.data.constellation_nodes else "◇ ")+d.name+" · "+str(d.rank)
@@ -118,7 +121,10 @@ func buy_selected() -> void:
 		detail.text=description(selected)
 		return
 	if save.buy_star(selected): refresh()
-	else: detail.text=description(selected)+"\n"+save.warning
+	else:
+		# Prerequisite/ownership/funds are already shown in the inspector.
+		detail.text=description(selected)
+		if save.warning!=save.star_purchase_error(selected): detail.text+="\n"+save.warning
 func _draw() -> void:
 	draw_set_transform(Vector2.ZERO,0,Vector2.ONE*map_scale)
 	for i in range(50): draw_circle(Vector2(fposmod(i*173.7,1090),fposmod(i*i*31.2,480)),1,Color(.6,.8,.9,.2))

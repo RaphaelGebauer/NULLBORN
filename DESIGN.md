@@ -79,3 +79,7 @@ RunModel.recipe_matches is the read-only equipped-component/level query shared b
 The separate pacing resource now stores player_speed=0.7125 and player_damage=0.93. RunModel applies damage through one raw-value helper, including Might; World only uses it when creating fixed raw effects, never when processing hit-derived secondary values. Details and rounded-damage limits are in BALANCE.md; current acceptance evidence is in docs/UI_BALANCE_REPORT.md.
 
 Day/Night’s legacy orbit-to-beam conversion retains its existing Might bonus formula. A damage_has_global_factor marker excludes the new global factor from the second parameterization, so the fusion receives exactly one 0.93 reduction. Raw Blood Thorns reflection and pickup Nova use the same Model helper as other fixed sources.
+
+## UI text style
+
+English UI uses short labels and contextual help. Pause keeps equipment, recipe counts and rift status; Build Details retains discovered recipe requirements, chest eligibility, mutation effects and instability modifiers. Results retain measured statistics, with damage attribution details in the Damage by Source tooltip. Star Map shows each prerequisite once and uses local purchase reasons; storage failures and retry remain separate. Display names may change (Veil); persistent IDs and gameplay values do not.

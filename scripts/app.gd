@@ -140,7 +140,7 @@ func menu() -> void:
 	button("New Run",character_select)
 	button("Characters",character_overview)
 	button("Collection / Bestiary",collection)
-	button("Meta-Upgrades · %d Gold" % save.data.total_gold,shop)
+	button("Star Forge · %d Gold" % save.data.total_gold,shop)
 	button("Star Map · %d Starlight" % save.data.starlight,star_map)
 	button("Settings",func(): return_to_pause=false; settings())
 	save_feedback(menu)
@@ -220,13 +220,15 @@ func resume() -> void:
 	save_notice.modulate=Color("f0bc82")
 	ui.add_child(save_notice)
 	get_tree().paused=false
-func build_text(include_imprints: bool=true) -> String:
+func build_text(include_imprints: bool=true,columns: int=0) -> String:
 	var rows: Array=[]
 	for pair in [["Weapons",model.weapons],["Passives",model.passives]]:
 		var names: Array=[]
-		for id in pair[1]: names.append("◆ %s %d" % [model.title(id),pair[1][id]])
+		for id in pair[1]: names.append("◆ %s Lv%d" % [model.title(id),pair[1][id]])
 		for i in range(6-pair[1].size()): names.append("◇")
-		rows.append(pair[0]+": "+"  ·  ".join(names))
+		if columns>0:
+			for first in range(0,names.size(),columns): rows.append((pair[0]+": " if first==0 else "    ")+"  ·  ".join(names.slice(first,first+columns)))
+		else: rows.append(pair[0]+": "+"  ·  ".join(names))
 	var names: Array=[]
 	for id in model.runes: names.append(model.title(id))
 	rows.append("Runes: "+" · ".join(names))
@@ -252,7 +254,7 @@ func _process(_delta: float) -> void:
 		xp_bar.value=model.xp
 		instability_label.text="Rift Instability %.1f\n%s" % [model.instability,model.rift_state.NAMES[model.rift_state.band()]]
 		instability_label.modulate=Color("8ce0cf").lerp(Color("f4a07b"),model.instability/100)
-		if not world.rifts.node.is_empty() and world.rifts.node.pos.distance_to(world.player.position)<=90: instability_label.text+="\n[F / Y] Interact with Rift"
+		if not world.rifts.node.is_empty() and world.rifts.node.pos.distance_to(world.player.position)<=90: instability_label.text+="\n[F / Y] Rift Node"
 		build_label.text=build_text(false)
 		boss_label.text=""
 		for e in world.enemies:
@@ -287,7 +289,7 @@ func show_event() -> void:
 				if not events.is_empty(): show_event()
 				else: resume()
 				return
-			box("RIFT NODE","Choose stability or claim a dangerous reward. This node can be used once.")
+			box("RIFT NODE","One use")
 			button("Stabilize Rift\n-%d Instability · Heal 10%% maximum HP%s" % [23 if model.has_star("clear_horizon") else 20," +4 HP" if model.has_star("second_breath") else ""],choose_rift.bind(false))
 			button("Overcharge Rift\n+20 Instability · +%d Gold · +%.2f%% next-level XP" % [roundi(120*(1+model.time/1800)),36.75 if model.has_star("risk_seeker") else 35],choose_rift.bind(true))
 		"LEVELUP":
@@ -297,7 +299,7 @@ func show_event() -> void:
 			var pool: Array=catalog.catalogs.rune.keys().filter(func(id):return not id in model.runes)
 			cards=[]
 			while cards.size()<3 and not pool.is_empty(): cards.append(pool.pop_at(model.rng.randi_range(0,pool.size()-1)))
-			box("RUNE BLESSING","Choose a blessing for this run. No equipment slot required.")
+			box("RUNE BLESSING","Run blessing · No slot required")
 			for i in range(cards.size()): button("%d · %s\n%s" % [i+1,model.title(cards[i]),catalog.get_def(cards[i]).description],choose_rune.bind(i))
 		"CHEST","CHEST_EVOLUTION": open_chest(state=="CHEST_EVOLUTION")
 func choose_rune(index: int) -> void:
@@ -357,13 +359,15 @@ func result(victory: bool) -> void:
 	if not model.banked: actions.push_front(["Retry Saving",result.bind(victory)])
 	detail_page("THE RIFT IS SEALED" if victory else "YOUR STAR FADES",subtitle,actions)
 	report_label("%s Gold: %d · %s Starlight +%d · Quick Mode: %s · Curse: %.0f%%" % ["Banked" if model.banked else "Pending",roundi(model.gold*(1+model.curse)),"Earned" if model.banked else "Pending",model.starlight_earned,"On" if model.fast else "Off",model.curse*100],21)
-	report_label("Starlight: first three bosses +1 each · Victory +3 · 20 minutes +1 · Peak instability 75+ +1 · Maximum 8",14)
+	report_label("Starlight · Bosses +1 each (max 3) · Victory +3\n20 run minutes +1 · Peak instability 75+ +1 · Max 8",14)
 	if not model.banked:
 		report_label(save.warning,17)
-		report_label("Rewards remain pending. Retry saving before returning to the menu or starting another run.",15)
+		report_label("Save rewards to continue.",15)
 	report_label(Report.metrics(model),18)
 	label("Damage by Source",26)
-	report_label("Base and evolved damage remain separate. Mutation damage belongs to its weapon; reactions are counted separately.",14)
+	var damage_help: Label=report_label("Damage · Share · DPS",14)
+	damage_help.mouse_filter=Control.MOUSE_FILTER_PASS
+	damage_help.tooltip_text="Mutations count toward their weapon. Evolutions and reactions have separate totals. DPS uses active combat time; overkill is excluded."
 	for row in Report.damage_rows(model):
 		report_label("%s · %s\n%.1f damage · %.1f%% · %.1f DPS" % [row.name,row.kind,row.damage,row.share,row.dps],18)
 		var bar:=ProgressBar.new()
@@ -404,7 +408,7 @@ func detail_page(title: String,subtitle: String,actions: Array) -> void:
 	first.focus_neighbor_left=first.get_path_to(last)
 	last.focus_neighbor_right=last.get_path_to(first)
 	focus_button.call_deferred(first)
-	report_label("Up/Down or mouse wheel: scroll · Left/Right: actions · A/Enter: confirm",14)
+	report_label("↑/↓ Scroll · ←/→ Actions · A/Enter Confirm",14)
 func report_label(text: String,size: int=18) -> Label:
 	var node: Label=label(text,size)
 	node.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
@@ -413,8 +417,10 @@ func report_label(text: String,size: int=18) -> Label:
 func pause_game() -> void:
 	state="PAUSED"
 	get_tree().paused=true
-	box("PAUSE",build_text())
-	label(pause_recipe_text(),14)
+	box("PAUSE")
+	panel.custom_minimum_size.x=1000
+	report_label(build_text(false,3),17)
+	label(pause_recipe_text(false),15)
 	label(instability_details(),15)
 	save_feedback(pause_game)
 	button("Resume",resume)
@@ -425,16 +431,16 @@ func build_details() -> void:
 	if model.finished: return
 	state="BUILD"
 	get_tree().paused=true
-	detail_page("BUILD DETAILS","Current values · No simulation advances while you inspect your build",[["Back to Pause",pause_game],["Resume",resume]])
+	detail_page("BUILD DETAILS","Equipment, bonuses & stats",[["Back to Pause",pause_game],["Resume",resume]])
 	for section in Report.build_sections(model,world):
 		label(section[0],25)
 		report_label(section[1],18)
 	label("Rift Instability",25)
-	report_label(instability_details(),17)
+	report_label(instability_details(true),17)
 	var runtime: Array[String]=[]
-	if world.player.slow_left>0: runtime.append("Null Zone Slow: movement ×0.8 · %.2f combat seconds remaining" % world.player.slow_left)
-	if world.freeze_time>0: runtime.append("Enemy Freeze: %.2f combat seconds remaining" % world.freeze_time)
-	if world.player.invulnerable>0: runtime.append("Invulnerable: %.2f combat seconds remaining" % world.player.invulnerable)
+	if world.player.slow_left>0: runtime.append("Null Zone: movement −20%% · %.2f s" % world.player.slow_left)
+	if world.freeze_time>0: runtime.append("Enemy Freeze: %.2f s" % world.freeze_time)
+	if world.player.invulnerable>0: runtime.append("Invulnerable: %.2f s" % world.player.invulnerable)
 	if not runtime.is_empty(): report_label("\n".join(runtime),17)
 	label("Evolution Paths",25)
 	report_label(pause_recipe_text(),17)
@@ -486,7 +492,7 @@ func focus_button(node: Button) -> void:
 	if is_instance_valid(node) and node.is_inside_tree() and node.is_visible_in_tree() and not node.disabled: node.grab_focus()
 
 func redraw_cards() -> void:
-	box("BANISH: Select a card" if banishing else "STAR ASCENT · Level %d" % model.level,"Choose an upgrade. The world is paused.")
+	box("BANISH · CHOOSE A CARD" if banishing else "STAR ASCENT · Level %d" % model.level)
 	for i in range(3): button("%d  ·  %s\n%s" % [i+1,model.title(cards[i]),model.describe(cards[i])],choose.bind(i))
 	button("Reroll [R] · %d" % model.rerolls,reroll_cards).disabled=model.rerolls<=0
 	panel.get_child(-1).visible=model.meta.get("rerolls",0)>0
@@ -512,7 +518,7 @@ func toggle_banish() -> void:
 
 func character_select() -> void:
 	state="MENU"
-	box("CHOOSE YOUR STAR","Each hero starts with a unique weapon.")
+	box("CHOOSE YOUR STAR")
 	for id in catalog.catalogs.character:
 		var d: Resource=catalog.get_def(id)
 		var locked: bool=not id in save.data.unlocked_characters
@@ -532,7 +538,7 @@ func select_hero(id: String) -> void:
 	selected_hero=id
 	stage_select()
 func stage_select() -> void:
-	box("AT THE EDGE OF THE RIFT","Choose your arena, pace and optional curse.")
+	box("AT THE EDGE OF THE RIFT")
 	save_feedback(stage_select)
 	for id in catalog.catalogs.stage:
 		button(("◆ " if selected_stage==id else "◇ ")+catalog.get_def(id).display_name+(" · Locked: first victory" if not id in save.data.unlocked_stages else ""),func(): selected_stage=id; stage_select()).disabled=not id in save.data.unlocked_stages
@@ -540,7 +546,7 @@ func stage_select() -> void:
 	var row:=HBoxContainer.new()
 	panel.add_child(row)
 	var text:=Label.new()
-	text.text="Curse: +%d %% enemies / bonus gold" % roundi(selected_curse*100)
+	text.text="Curse: +%d%% enemies & gold" % roundi(selected_curse*100)
 	row.add_child(text)
 	var slider:=HSlider.new()
 	slider.min_value=0
@@ -548,7 +554,7 @@ func stage_select() -> void:
 	slider.step=.1
 	slider.value=selected_curse
 	slider.custom_minimum_size.x=300
-	slider.value_changed.connect(func(v): selected_curse=v; text.text="Curse: +%d %% enemies / bonus gold" % roundi(v*100))
+	slider.value_changed.connect(func(v): selected_curse=v; text.text="Curse: +%d%% enemies & gold" % roundi(v*100))
 	row.add_child(slider)
 	button("Enter the Rift",start_run)
 	button("Back",character_select)
@@ -576,7 +582,7 @@ func check_unlocks(persist: bool=true) -> void:
 		if not id in model.unlocked_this_run: model.unlocked_this_run.append(id)
 	if persist and not added.is_empty(): save.save()
 func shop() -> void:
-	box("STAR FORGE · %d Gold" % save.data.total_gold,"Permanent upgrades. Take effect on your next run.")
+	box("STAR FORGE · %d Gold" % save.data.total_gold,"Bonuses per rank · Applies next run")
 	save_feedback(shop)
 	var scroll:=ScrollContainer.new()
 	scroll.custom_minimum_size=Vector2(800,430)
@@ -588,7 +594,7 @@ func shop() -> void:
 		var d: Dictionary=save.META[id]
 		var rank: int=save.data.meta_powerups.get(id,0)
 		var node:=Button.new()
-		node.text="%s · %d/%d · %s · %s" % [d.name,rank,d.max,d.effect,"MAX" if rank>=d.max else str(save.price(id))+" Gold"]
+		node.text="%s · %d/%d · %s\n%s" % [d.name,rank,d.max,"MAX" if rank>=d.max else str(save.price(id))+" Gold",d.effect]
 		node.custom_minimum_size.y=48
 		node.disabled=rank>=d.max or save.data.total_gold<save.price(id)
 		node.pressed.connect(func(): save.buy(id); shop())
@@ -653,7 +659,7 @@ func settings() -> void:
 	rows.add_child(resolution)
 	if window_settings.embedded(get_window()):
 		var hint:=Label.new()
-		hint.text="Window size is controlled by the editor. Run in a separate window to change it."
+		hint.text="Window size: editor controlled. Use a separate window to change it."
 		rows.add_child(hint)
 	if not return_to_pause: button("Reset All Data…",confirm_reset)
 	button("Back",leave_settings)
@@ -686,12 +692,12 @@ func character_details(id: String) -> String:
 	return "%s · %d HP · %d speed\n%s · %s" % [d.display_name,d.values.hp,roundi(d.values.speed*preload("res://resources/pacing.tres").values.player_speed),catalog.get_def(d.values.weapon).display_name,bonus]
 func character_overview() -> void:
 	state="MENU"
-	box("CHARACTERS","Your heroes. Start a run through New Run in the main menu.")
+	box("CHARACTERS")
 	for id in catalog.catalogs.character:
 		var d: Resource=catalog.get_def(id)
 		label(character_details(id) if id in save.data.unlocked_characters else d.display_name,20)
 	button("Back",menu)
-func pause_recipe_text() -> String:
+func pause_recipe_text(detailed: bool=true) -> String:
 	var lines: Array[String]=[]
 	var matching: int=0
 	var ready: int=0
@@ -709,16 +715,16 @@ func pause_recipe_text() -> String:
 		var relevant: bool=matches or model.weapons.has(recipe.id)
 		for base in recipe.values.bases:
 			if model.weapons.has(base): relevant=true
-		if not relevant: continue
+		if not relevant or not detailed: continue
 		var requirements: Array[String]=[]
 		for base in recipe.values.bases:
-			requirements.append("%s Lv%d · %s" % [model.title(base),recipe.values.get("weapon_level",5),"consumed by this evolution" if model.weapons.has(recipe.id) else "ready" if model.weapons.get(base,0)>=recipe.values.get("weapon_level",5) else "current Lv%d" % model.weapons.get(base,0)])
+			requirements.append("%s Lv%d · %s" % [model.title(base),recipe.values.get("weapon_level",5),"consumed" if model.weapons.has(recipe.id) else "ready" if model.weapons.get(base,0)>=recipe.values.get("weapon_level",5) else "current Lv%d" % model.weapons.get(base,0)])
 		var catalyst: String=recipe.values.passive
 		requirements.append("%s Lv%d · %s" % [model.title(catalyst),recipe.values.get("passive_level",5),"ready" if model.passives.get(catalyst,0)>=recipe.values.get("passive_level",5) else "current Lv%d" % model.passives.get(catalyst,0)])
 		lines.append(recipe.display_name+": "+recipe.description+"\n"+" · ".join(requirements))
-	lines.push_front("No evolution recipes currently match your equipped weapons and passives." if matching==0 else "%d matching evolution recipe%s · %d ready for an eligible boss chest" % [matching,"s" if matching!=1 else "",ready])
-	if unknown>0: lines.insert(1,"Matching undiscovered evolution recipes: %d · %d ready" % [unknown,unknown_ready])
-	lines.append("Requires a chest from a boss spawned at 10:00 or later.")
+	lines.push_front("No matching evolution recipes." if matching==0 else "%d matching evolution recipe%s · %d ready" % [matching,"s" if matching!=1 else "",ready])
+	if unknown>0: lines.insert(1,"Undiscovered: %d matching · %d ready" % [unknown,unknown_ready])
+	if detailed: lines.append("Chest: boss spawned at 10:00+.")
 	return "\n".join(lines)
 func confirm_reset() -> void:
 	if return_to_pause: return
@@ -767,15 +773,19 @@ func queue_run_event(kind: String) -> void:
 		events.insert(index,kind)
 	else: events.append(kind)
 func show_instability_warning() -> void:
-	mutation_notice="Rift Instability is Unstable — enemy pressure is rising."
+	mutation_notice="Rift Unstable · Enemy pressure rising"
 	mutation_notice_until=model.time+5
 	audio.play("hurt")
-func instability_details() -> String:
-	var values: Dictionary=model.rift_state.modifiers()
-	var next: String=""
+func instability_details(detailed: bool=false) -> String:
+	var lines: Array[String]=["Rift Instability: %s · %.1f / 100" % [model.rift_state.NAMES[model.rift_state.band()],model.instability]]
 	if model.has_star("rift_sense"):
-		next="\nRift Sense: "+("Maximum band reached" if model.rift_state.band()==4 else "Next threshold: %.0f" % model.rift_state.THRESHOLDS[model.rift_state.band()+1])
-	return next+"\nRift Instability: %.1f / 100 · %s\nEnemy density ×%.2f · Speed ×%.2f · Contact ×%.2f · Boss/Elite gold +%d%%\nRift nodes appear at 06:00 / 12:00 / 18:00 / 24:00 and last 90 run seconds.\nPress F or controller Y within 90 px to stabilize or overcharge.\nAffixes encountered: %s" % [model.instability,model.rift_state.NAMES[model.rift_state.band()],values.spawn,values.speed,values.contact,roundi(values.reward_gold*100),affix_summary()]
+		lines.append("Rift Sense: "+("Maximum band" if model.rift_state.band()==4 else "Next threshold: %.0f" % model.rift_state.THRESHOLDS[model.rift_state.band()+1]))
+	if detailed:
+		var values: Dictionary=model.rift_state.modifiers()
+		lines.append("Enemy density ×%.2f · Speed ×%.2f · Contact damage ×%.2f · Boss/Elite gold +%d%%" % [values.spawn,values.speed,values.contact,roundi(values.reward_gold*100)])
+	lines.append("Nodes: 6:00 / 12:00 / 18:00 / 24:00 · Last 90 run seconds")
+	lines.append("Affixes encountered: "+affix_summary())
+	return "\n".join(lines)
 func choose_rift(overcharge: bool) -> void:
 	if state!="RIFT": return
 	state="TRANSITION"
@@ -790,7 +800,7 @@ func affix_summary() -> String:
 
 func star_map() -> void:
 	state="STAR_MAP"
-	box("STAR MAP","Awaken three constellations. Select a star, inspect its effect, then unlock it.")
+	box("STAR MAP","Permanent bonuses · Applies next run")
 	var map=preload("res://scripts/star_map.gd").new()
 	map.save=save
 	panel.add_child(map)

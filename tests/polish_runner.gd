@@ -159,8 +159,8 @@ func run() -> void:
 	app.events=[]
 	app.build_details()
 	var text: String=labels(app.panel)
-	check(app.state=="BUILD" and paused and text.contains("Empty weapon slot") and text.contains("Current calculated stats"),"Build displays six slots and actual stats while paused")
-	check(not text.contains("Star Piercer") and text.contains("undiscovered evolution"),"Build Details cannot leak secret result or catalyst recipe")
+	check(app.state=="BUILD" and paused and text.contains("Empty weapon slot") and text.contains("Current Stats"),"Build displays six slots and actual stats while paused")
+	check(not text.contains("Star Piercer") and text.contains("Undiscovered:"),"Build Details cannot leak secret result or catalyst recipe")
 	var before: Array=[app.model.time,app.model.xp,app.model.level,app.model.rng.state]
 	await process_frame
 	app.build_details()

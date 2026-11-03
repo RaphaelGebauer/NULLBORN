@@ -24,13 +24,13 @@ func run() -> void:
 	map.nodes.comet_spark.grab_focus()
 	check(map.nodes.veil_seed.get_theme_stylebox("normal").border_width_left==3 and map.nodes.comet_spark.get_theme_stylebox("normal").border_width_left==1,"Persistent unique three-pixel selection ring survives pointer/focus movement")
 	map.buy_selected()
-	check(map.selected=="veil_seed" and map.purchase.disabled and map.purchase.text=="Owned" and map.nodes.veil_seed.text.begins_with("✦"),"Bought star stays selected with Owned state")
+	check(map.selected=="veil_seed" and map.purchase.disabled and map.purchase.text=="Unlocked" and map.nodes.veil_seed.text.begins_with("✦"),"Bought star stays selected with Owned state")
 	map.buy_selected()
-	check(map.detail.text.contains("This star is already unlocked."),"Owned restriction is precise")
+	check(map.detail.text.contains("Already unlocked."),"Owned restriction is precise")
 	map.select("last_star")
-	check(map.detail.text.contains("Requires Still Heart to be unlocked first."),"Prerequisite takes priority over insufficient currency")
+	check(map.detail.text.contains("Requires: Still Heart"),"Prerequisite takes priority over insufficient currency")
 	map.select("quiet_pulse")
-	check(map.detail.text.contains("Not enough Starlight. Required: 2, Available: 1."),"Unaffordable selection states exact cost and wallet")
+	check(map.detail.text.contains("Not enough Starlight (1 / 2)."),"Unaffordable selection states exact cost and wallet")
 	map.buy_selected()
 	check(app.save.warning.is_empty() and not app.save.pending_write,"Ordinary purchase hints never become global save warnings")
 	app.menu()
@@ -56,7 +56,7 @@ func run() -> void:
 	app.save.data.evolved_recipes=[]
 	app.model.weapons={"arcane_needle":1}
 	app.model.passives={}
-	check(app.pause_recipe_text().begins_with("No evolution recipes currently match"),"Weapon without catalyst matches zero recipes")
+	check(app.pause_recipe_text().begins_with("No matching evolution recipes"),"Weapon without catalyst matches zero recipes")
 	app.model.weapons.arcane_needle=3
 	app.model.passives={"power_core":2}
 	check(app.pause_recipe_text().begins_with("1 matching evolution recipe · 0 ready"),"All components below thresholds match but are not ready")
@@ -82,7 +82,7 @@ func run() -> void:
 	check(app.model.evolution(true)=="dusk_storm","Actual eligible chest still prioritizes fusion")
 	check(not app.model.recipe_matches(fusion) and not app.model.weapons.has("ash_bow") and not app.model.weapons.has("frost_shard"),"Consumed bases and completed recipe cannot count again")
 	app.save.mark_evolved("dusk_storm")
-	check(app.pause_recipe_text().contains(fusion.display_name) and app.pause_recipe_text().contains("consumed by this evolution"),"Actually discovered recipes retain detailed requirements")
+	check(app.pause_recipe_text().contains(fusion.display_name) and app.pause_recipe_text().contains("consumed"),"Actually discovered recipes retain detailed requirements")
 	app.save.persistent=false
 	app.menu()
 	app.return_to_pause=false

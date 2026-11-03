@@ -320,7 +320,7 @@ func run() -> void:
 	scene.save.mark_seen("star_piercer")
 	scene.record_inventory()
 	var hidden_text: String=scene.pause_recipe_text()
-	check(not hidden_text.contains("Star Piercer") and hidden_text.contains("undiscovered evolution"),"Owning components or legacy seen flags does not reveal recipes")
+	check(not hidden_text.contains("Star Piercer") and hidden_text.contains("Undiscovered:"),"Owning components or legacy seen flags does not reveal recipes")
 	check(not scene.save.discovered("star_piercer","evolution"),"Collection recipes also require a completed evolution")
 	check(scene.model.evolution(true)=="star_piercer","Discover through an actual eligible evolution")
 	scene.record_inventory()

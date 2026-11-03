@@ -199,7 +199,7 @@ func run() -> void:
 	app.save.data.starlight=5
 	app.star_map()
 	var map=app.panel.get_child(2)
-	check(map.nodes.size()==18 and map.nodes.comet_spark.tooltip_text.contains("Requires:"),"Real star map creates all nodes and descriptive tooltips")
+	check(map.nodes.size()==18 and map.nodes.quiet_pulse.tooltip_text.contains("Requires:"),"Real star map creates all nodes and descriptive tooltips")
 	map.select("comet_spark")
 	map.buy_selected()
 	check(app.save.data.constellation_nodes==["comet_spark"],"Star map purchase uses real save transaction")

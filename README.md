@@ -77,6 +77,8 @@ Only in debug builds and while playing: F6/F7/F8/F9 jump to 09:50/10:00/20:00/29
 
 ## Editing
 
+Codex sessions: read [AGENTS.md](AGENTS.md) first. Maintenance findings and incremental recommendations: [Architecture Review](docs/ARCHITECTURE_REVIEW.md).
+
 `resources/` contains editable typed `.tres` definitions. `tools/generate_data.py` regenerates that catalog and overwrites its definition files: keep changes to the generator and resources consistent. `scripts/run_model.gd` owns run stats/progression, `combat.gd` owns attack behavior, `world.gd` owns enemies/loot, `save_manager.gd` owns meta/unlocks, and `window_settings.gd` isolates native window changes.
 
 Automatic combat, minute waves, three upgrade choices, 6+6 slots and chest evolutions are genre inspirations. Names, graphics, audio, world and balance are original. `CODEX_MASTERPROMPT.md` preserves the original German brief; later user-requested changes documented here supersede its original language/balance requirements.

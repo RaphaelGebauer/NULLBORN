@@ -2,6 +2,16 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## Maintenance documentation — AGENTS and architecture review
+
+Code baseline: `26b5b4e` (E1–E6). Added root AGENTS.md as the concise Codex entry point and docs/ARCHITECTURE_REVIEW.md with incremental recommendations. README/DESIGN link them; SMOKE_TEST removes one obsolete “pending E2–E6” sentence. Only Markdown changes: no runtime/test/generator/resource changes, balance adjustments, refactors or removed features.
+
+Findings: App (757 lines) and World (602) combine multiple responsibilities; runtime dictionaries and World/helper access are implicit contracts; Registry imports data from gameplay helpers; generator/save/unlock assumptions are distributed. Legacy meta buy() ignores write failure, unlike transactional Star Map purchases. These are documented follow-up tasks, not implemented changes.
+
+Verification this session: Godot 4.7.2 Stable via tools/check.sh. First attempt: 178 base checks passed, one existing discovery assertion failed, so the script correctly stopped. A full rerun in fresh isolated XDG directories passed **976 / 976**, with no script errors/leaks. Investigation confirmed an existing flaky fixture: an earlier random choose(0) can select Prism Disc, but a later assertion expects it unselected. A temporary diagnostic copy outside the repo reproduces exactly this false failure with RNG seed 115 before the first LEVELUP offer. Actual acquisition correctly reveals the entry; game and repository tests were not modified. Fresh XDG directories alone do not fix this within-run random dependency. Prioritize fixture isolation in a future task.
+
+Documentation validation passed: 17 relative Markdown links across six changed documents, 15 explicit project paths in AGENTS, shell syntax of both check scripts and the AGENTS command block, and git diff --check. No new stress, thirty-minute or graphical runs were required for Markdown-only edits; E6 results below remain historical evidence, not tests newly executed by this task. Architecture review follow-ups are explicitly still open.
+
 ## Phase E6 — complete; E1–E6 final acceptance passed
 
 E5 implementation/publication: **5e474ca**. E6 implementation/publication: **8eda910**, verified by ls-remote plus a fresh bare clone containing the actual project, new helpers, final report and unchanged catalog counts. Final detailed report: docs/FINAL_REPORT_PHASE_E.md. Older sections below are historical checkpoints; their continuation instructions are superseded by this section.

@@ -21,7 +21,7 @@ Manual target-hardware checks still recommended:
 
 Embedded editor windows are deliberately controlled by the editor. Run standalone to test native window sizing.
 
-Phase E1 adds legacy-save migration, bounded hit statistics, reversible instability-band state and fusion element-union tests. Phase E graphical acceptance remains pending E2–E6 implementation.
+Phase E1 adds legacy-save migration, bounded hit statistics, reversible instability-band state and fusion element-union tests. The later E2–E6 sections below record the completed graphical acceptance.
 
 Phase E2: `tests/mutation_runner.gd` tests all 45 base/evolved effects, slot and chest rules, fusion imprint variants, Echo cadence, per-impact accounting, definition immutability and modal ordering. `tests/mutation_visual_runner.gd` captures selection at 1280×720, inherited evolution at 1600×900 and fusion imprints at 1920×1080. Full-run and stress fixtures now create mutations and evolutions through the real model APIs.
 

@@ -45,3 +45,7 @@ RunStatistics records actual capped damage, highest critical hit, XP credited, g
 App builds fixed-action detail pages outside the scroll area. Build Details uses the live model snapshot and explicit completed-recipe discovery, including known requirement readiness; it never infers secret recipes from component ownership. Mid-run unlock events are retained through finish. Failed reward saves roll back and expose a retry action; pending rewards are labeled honestly.
 
 Feedback never consumes gameplay RNG: short desaturated local flashes, capped critical impacts/text, deterministic length-bounded camera decay. Ordinary damage produces no shake. Screen Shake off clears camera offset immediately even during paused settings. New Star Map content scales inside its own canvas for the 1.2 UI-scale setting without losing constellation nodes.
+
+## Maintenance guidance
+
+[AGENTS.md](AGENTS.md) is the concise Codex entry point. The [architecture review](docs/ARCHITECTURE_REVIEW.md) records responsibility hotspots, dependency risks and a proposed incremental order; it does not authorize or perform refactoring.

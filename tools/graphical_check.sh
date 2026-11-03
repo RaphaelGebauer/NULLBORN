@@ -27,4 +27,5 @@ else
  run reaction-visual -s res://tests/reaction_visual_runner.gd
  run star-visual -s res://tests/star_visual_runner.gd
  run polish-visual -s res://tests/polish_visual_runner.gd
+ run maintenance-visual -s res://tests/maintenance_visual_runner.gd
 fi

@@ -2,6 +2,14 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## Maintenance M2 — complete; M3–M5 next
+
+M1 commit a3222a5 is published. Extracted exactly one view: scripts/ui/collection_view.gd. App still owns navigation, Back callback, session/pause and modal state; the component receives only Registry and a discovery-query Callable, owns no save/model and preserves original labels, ordering and scroll dimensions. No redesign or second state machine. Other views remain in App deliberately.
+
+Validation: **1001 functional PASS / 0 FAIL** (976 original + 25 maintenance). Three new component contracts verify hidden entries, completed-only recipes and read-only rendering. Full native graphical suite passes plus 15 new maintenance visual assertions: Collection hidden/known, purchase failure/unchanged wallet and pending-progress pause/focus/retry at 1280×720, 1600×900 and 1920×1080. Existing mutation/rift/build/Star Map/window/input captures pass; Collection 1280 capture inspected. Only known software VSync warning. No script errors/leaks. test-results/maintenance-m2.log and maintenance-visual.log.
+
+Next M3: extract pure affix/reaction definitions, retain helper constant aliases and build a safe staging-only generator check. M4 only drawing extraction, not simulation rewrite; M5 full acceptance after all changes.
+
 ## Maintenance M1 — implemented and tested; M2–M5 next
 
 Fixed discovery test isolation without changing gameplay randomness: the modal fixture has a controlled optional STERNENBRUCH_TEST_SEED, and discovery assertions use their own fresh SaveManager. Five isolated unit runs (seeds 1, 42, 115, 72047, 115) each passed all 179 checks.

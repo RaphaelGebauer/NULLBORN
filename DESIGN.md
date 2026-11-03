@@ -53,3 +53,7 @@ Feedback never consumes gameplay RNG: short desaturated local flashes, capped cr
 ## M1 persistence maintenance
 
 SaveManager centralizes write failures and commit/rollback for meta/star purchases, reset and run finish. Earned discovery/settings changes remain pending in RAM on failure, with explicit UI feedback and retry; transactional failures restore both prior data and prior pending status. Retry clears errors only after successful storage. Inventory/unlock recording shares one write where possible. Test fixture randomness is controlled independently of normal randomized gameplay.
+
+## M2 Collection component
+
+`ui/collection_view.gd` is a read-only ScrollContainer. `populate(registry, discovered)` receives an explicit query callback rather than SaveManager or App. App constructs the original page/header and Back/error controls and retains all navigation/session state. Similar presentation-only views may be extracted later, one at a time; Settings is intentionally not changed because it owns live native-display/audio callbacks.

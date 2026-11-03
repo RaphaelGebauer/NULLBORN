@@ -535,21 +535,10 @@ func stage_select() -> void:
 	button("Back",character_select)
 func collection() -> void:
 	box("COLLECTION / BESTIARY","%d discoveries · %d achievements · %d total kills" % [save.data.seen.size(),save.data.achievements.size(),save.data.stats.kills])
-	var scroll:=ScrollContainer.new()
-	scroll.custom_minimum_size=Vector2(900,450)
-	panel.add_child(scroll)
-	var text:=RichTextLabel.new()
-	text.custom_minimum_size=Vector2(850,0)
-	text.fit_content=true
-	var lines: String=""
-	for kind in catalog.catalogs:
-		if kind=="mutation": continue
-		lines+="\n"+{"weapon":"WEAPONS","passive":"PASSIVES","enemy":"BESTIARY","character":"HEROES","wave":"WAVES","evolution":"RECIPES","rune":"RUNES","stage":"ARENAS","mutation":"MUTATIONS"}[kind]+"\n"
-		for d in catalog.catalogs[kind].values():
-			var discovered: bool=save.discovered(d.id,kind)
-			lines+=(d.display_name+" · "+d.description if discovered else "??? · Not yet discovered")+"\n"
-	text.text=lines
-	scroll.add_child(text)
+	var view=preload("res://scripts/ui/collection_view.gd").new()
+	panel.add_child(view)
+	view.populate(catalog,save.discovered)
+	save_feedback(collection)
 	button("Back",menu)
 func confirm_end() -> void:
 	box("END THIS RUN?","This ends the run as a defeat. Earned gold and eligible Starlight are kept.")

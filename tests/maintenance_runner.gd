@@ -69,6 +69,22 @@ func run() -> void:
 	var app=load("res://scenes/main_menu.tscn").instantiate()
 	app.save.path="user://maintenance-ui.json"
 	root.add_child(app)
+
+	app.save.data.seen=[]
+	app.save.data.evolved_recipes=[]
+	app.collection()
+	var view: ScrollContainer=app.panel.get_child(2)
+	check(not view.get_child(0).text.contains("Arcane Needle") and view.get_child(0).text.contains("???"),"Extracted collection preserves hidden acquisitions")
+	app.save.mark_seen("arcane_needle")
+	app.save.mark_seen("star_piercer")
+	app.collection()
+	view=app.panel.get_child(2)
+	check(view.get_child(0).text.contains("Arcane Needle") and not view.get_child(0).text.contains("Star Piercer"),"Collection callback distinguishes acquired items from completed recipes")
+	app.save.mark_evolved("star_piercer")
+	var data_before: Dictionary=app.save.data.duplicate(true)
+	app.collection()
+	view=app.panel.get_child(2)
+	check(view.get_child(0).text.contains("Star Piercer") and app.save.data==data_before,"Collection displays completed recipes without mutating save data")
 	app.save.data.total_gold=1000
 	block_write(app.save)
 	app.save.buy("might")

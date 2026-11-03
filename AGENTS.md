@@ -17,7 +17,7 @@
 | `scripts/world.gd`, `spatial_hash.gd` | Entity pools, hit pipeline, AI/update loop, collision, drops, hazards and procedural drawing |
 | `scripts/combat.gd`, `mutation_effects.gd` | Existing attack behaviors and shared mutation hooks/budgets |
 | `scripts/boss_patterns.gd`, `elite_affixes.gd`, `rift_nodes.gd`, `rift_instability.gd`, `element_reactions.gd` | Bounded helpers using the existing World/Model APIs |
-| `scripts/app.gd` | UI/session orchestration, modal queue, pause, discovery and settings routing |
+| `scripts/app.gd`, `scripts/ui/collection_view.gd` | App owns session/modal/navigation; Collection is a read-only query/callback component |
 | `scripts/run_report.gd`, `run_statistics.gd` | Read-only reports; measured event counters, attribution and bounded DPS buckets |
 | `scripts/star_map.gd`, `scripts/data/constellations.gd` | Connected constellation UI; permanent node definitions/prerequisites/costs |
 | `scripts/save_manager.gd`, `window_settings.gd`, `audio_manager.gd`, `player.gd` | Persistence/unlocks; native-window isolation; audio; movement/facing |

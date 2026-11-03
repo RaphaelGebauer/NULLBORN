@@ -67,6 +67,8 @@ func spawn_enemy(id: String="wisp",pos: Vector2=Vector2.INF,child: bool=false) -
 	var v: Dictionary=model.registry.get_def(id).values
 	var m: int=mini(29,int(model.time/60))
 	var hp_scale: float=(1+.055*m+.0025*m*m)*(1+.006*maxi(model.level-1,0))*(1+.10*floori(m/5.0))*(1+model.curse)
+	# Apply once to fresh spawn HP, including children/summons; bosses keep their existing HP.
+	if not boss: hp_scale*=model.pacing.values.get("normal_enemy_hp",1.0)
 	var e: Dictionary={} if enemy_pool.is_empty() else enemy_pool.pop_back()
 	e.clear()
 	e.merge({"id":serial,"kind":id,"pos":pos,"hp":v.hp*hp_scale,"max_hp":v.hp*hp_scale,"speed":v.speed*minf(1.35,1+.012*m)*(1+.35*model.curse),"damage":v.damage*(1+.035*m),"xp":v.xp,"radius":float(v.radius),"velocity":Vector2.ZERO,"boss":boss,"timer":2.0,"phase":0,"charge":Vector2.ZERO,"age":0.0,"hits":{},"statuses":{},"dot":0.0,"child":child,"spawn_minute":m,"flash":0.0,"leech_source":"","death_fire_source":""})

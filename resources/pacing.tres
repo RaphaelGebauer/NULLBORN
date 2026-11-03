@@ -5,4 +5,4 @@ script = ExtResource("1")
 id = "opening_pace"
 display_name = "Opening pace"
 description = "A measured opening with generous movement advantage and a gradual eight-minute ramp."
-values = {"player_speed": 0.7125, "player_damage": 0.93, "enemy_speed": 0.65, "spawn_rate": 0.4, "projectile_speed": 0.8, "attack_interval": 1.2, "ramp_seconds": 480.0}
+values = {"player_speed": 0.57, "player_damage": 0.93, "normal_enemy_hp": 1.2, "enemy_speed": 0.65, "spawn_rate": 0.4, "projectile_speed": 0.8, "attack_interval": 1.2, "ramp_seconds": 480.0}

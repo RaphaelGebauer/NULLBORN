@@ -11,8 +11,8 @@ func run() -> void:
 		var model=Model.new()
 		model.hero=hero
 		model.recalculate()
-		var old_speed: float=model.registry.get_def(hero).values.speed*.75
-		check(is_equal_approx(model.speed,old_speed*.95),"Exactly proportional five percent reduction: "+hero)
+		var old_speed: float=model.registry.get_def(hero).values.speed*.7125
+		check(is_equal_approx(model.speed,old_speed*.8),"Exactly proportional additional twenty percent reduction: "+hero)
 		model.meta={"speed":3,"long_stride":2,"evasive_instinct":2,"might":2}
 		model.passives={"runner_boots":3,"momentum_feather":2,"power_core":3}
 		model.constellation_nodes=["comet_spark","far_traveler","rush_of_stars"]
@@ -23,11 +23,11 @@ func run() -> void:
 		var current: float=model.speed
 		var damage: float=model.might
 		model.pacing=model.pacing.duplicate(true)
-		model.pacing.values.player_speed=.75
+		model.pacing.values.player_speed=.7125
 		model.pacing.values.player_damage=1.0
 		model.recalculate()
-		check(is_equal_approx(current,model.speed*.95) and is_equal_approx(damage,model.might*.93),"Meta/passive/timed/low-health/star bonuses stay proportional: "+hero)
-		model.pacing.values.player_speed=.7125
+		check(is_equal_approx(current,model.speed*.8) and is_equal_approx(damage,model.might*.93),"Meta/passive/timed/low-health/star bonuses stay proportional: "+hero)
+		model.pacing.values.player_speed=.57
 		model.pacing.values.player_damage=.93
 		model.recalculate()
 		for i in range(10): model.recalculate()

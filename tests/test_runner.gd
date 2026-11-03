@@ -226,14 +226,14 @@ func run() -> void:
 	check(is_equal_approx(combat_world.combat.params(duration_values).duration,duration_values.duration*combat_world.model.duration*1.25),"Zeitanker verlängert echten Beam")
 	var pace=load("res://scripts/run_model.gd").new()
 	pace.recalculate()
-	check(is_equal_approx(pace.speed,156.75),"Slower starting movement")
+	check(is_equal_approx(pace.speed,125.4),"Slower starting movement")
 	pace.meta={"long_stride":2}
 	pace.recalculate()
 	pace.tick(120)
-	check(pace.speed>156.75 and is_equal_approx(pace.speed,156.75*1.04),"Long Stride increases movement with game time")
+	check(pace.speed>125.4 and is_equal_approx(pace.speed,125.4*1.04),"Long Stride increases movement with game time")
 	pace.passives={"momentum_feather":2,"recovery_moss":4}
 	pace.recalculate()
-	check(pace.speed>156.75*1.04 and pace.regeneration==1,"Momentum Feather and Recovery Moss have real effects")
+	check(pace.speed>125.4*1.04 and pace.regeneration==1,"Momentum Feather and Recovery Moss have real effects")
 	var discovery_fixture=load("res://scripts/save_manager.gd").new()
 	discovery_fixture.persistent=false
 	check(not discovery_fixture.discovered("prism_disc","weapon") and not discovery_fixture.discovered("brann","character"),"Unselected equipment and characters stay hidden")
@@ -375,7 +375,7 @@ func run() -> void:
 	for hero_id in registry.catalogs.character:
 		slow_model.hero=hero_id
 		slow_model.recalculate()
-		check(slow_model.speed>early_mite.velocity.length()*1.3,"Safe early kiting margin for "+hero_id)
+		check(is_equal_approx(slow_model.speed,registry.get_def(hero_id).values.speed*.57) and slow_model.speed>early_mite.velocity.length(),"Requested base speed remains above early mite speed: "+hero_id)
 	slow_model.hero="lyra"
 	slow_model.recalculate()
 	pace_world.combat.update(.001)
@@ -385,7 +385,7 @@ func run() -> void:
 	check(is_equal_approx(pace_world.shots[-1].velocity.length(),120),"Hostile projectiles are slowed as well")
 	slow_model.meta={"projectile_speed":5,"battle_rhythm":5,"pickup_speed":5,"evasive_instinct":5,"speed":5}
 	slow_model.recalculate()
-	check(slow_model.speed>156.75 and slow_model.projectile_speed==1.3 and slow_model.pickup_speed==1.6,"Movement, missile and gathering meta upgrades take effect")
+	check(slow_model.speed>125.4 and slow_model.projectile_speed==1.3 and slow_model.pickup_speed==1.6,"Movement, missile and gathering meta upgrades take effect")
 	slow_model.time=600
 	slow_model.tick(0)
 	check(is_equal_approx(slow_model.cooldown,.5),"Battle Rhythm accelerates weapons over time")

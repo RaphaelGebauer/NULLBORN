@@ -179,7 +179,7 @@ func hit(e: Dictionary,value: float,values: Dictionary={},source: String="",proc
 			model.chain_cooldown=.25
 			for other in grid.query(e.pos,180):
 				if other.id!=e.id:
-					hit(other,8,{},"chain",true)
+					hit(other,model.base_player_damage(8),{},"chain",true)
 					break
 	for lantern in lanterns:
 		if lantern.hp>0 and lantern.pos.distance_to(e.pos)<35: lantern.hp-=value
@@ -199,7 +199,7 @@ func hurt_player(value: float,boss_hit: bool=false) -> bool:
 	if boss_hit and value>=15: request_shake(1.5,.07)
 	sound_requested.emit("hurt")
 	if model.passives.get("frost_thorns",0)>0:
-		combat.area_hit(player.position,100,5*model.passives.frost_thorns,{"slow":1},"frost_thorns")
+		combat.area_hit(player.position,100,model.base_player_damage(5*model.passives.frost_thorns),{"slow":1},"frost_thorns")
 	if model.weapons.has("blood_thorns"):
 		combat.area_hit(player.position,70,20,{"mutation_secondary":true},"blood_thorns")
 	return model.statistics.damage_taken>previous_damage
@@ -398,7 +398,7 @@ func kill_enemy(e: Dictionary) -> void:
 		for i in range(2): spawn_enemy("mite",e.pos+Vector2(i*20-10,0),true)
 	if e.kind=="bomber": hazard(e.pos,65,.8,12)
 	if e.statuses.has("death_fire") and not e.get("no_death_proc",false):
-		combat.add_effect({"pos":e.pos,"radius":60.0,"damage":16.0,"life":.35,"values":{"burn":1,"mutation_secondary":true},"source":e.death_fire_source if not e.death_fire_source.is_empty() else "fire_death"})
+		combat.add_effect({"pos":e.pos,"radius":60.0,"damage":model.base_player_damage(16.0),"life":.35,"values":{"burn":1,"mutation_secondary":true},"source":e.death_fire_source if not e.death_fire_source.is_empty() else "fire_death"})
 	if e.leech_source!="":
 		zone_kills+=1
 		if zone_kills%20==0: model.heal(1)
@@ -491,7 +491,7 @@ func _draw() -> void:
 func hit_dot(e: Dictionary,status: String,damage: float) -> void:
 	var source: String=e.dot_sources.get(status,status)
 	var reaction: bool=source==reactions.SOURCE
-	hit(e,damage*(.5 if reaction and e.boss else 1),{"reaction":reaction,"dot_element":"fire" if status=="burn" else "toxin"},source,true)
+	hit(e,model.base_player_damage(damage)*(.5 if reaction and e.boss else 1),{"reaction":reaction,"dot_element":"fire" if status=="burn" else "toxin"},source,true)
 
 func request_shake(amplitude: float,duration: float) -> void:
 	if not screen_shake: return

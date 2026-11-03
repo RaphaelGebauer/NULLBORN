@@ -50,7 +50,7 @@ func run() -> void:
 	check(model.skip() and model.skips==0,"Skip mit XP und Charge")
 	model.passives={"blood_vial":5,"power_core":5,"multiplicity":5,"clockwork":5}
 	model.recalculate()
-	check(model.max_hp==175 and model.might==1.5 and model.amount==2 and is_equal_approx(model.projectile_damage,1.15),"Passivwerte deterministisch")
+	check(model.max_hp==175 and is_equal_approx(model.might,1.5*.93) and model.amount==2 and is_equal_approx(model.projectile_damage,1.15),"Passivwerte deterministisch")
 	model.recalculate()
 	check(model.max_hp==175,"Keine multiplikative Stat-Drift")
 	var combat_world=scene.world
@@ -226,14 +226,14 @@ func run() -> void:
 	check(is_equal_approx(combat_world.combat.params(duration_values).duration,duration_values.duration*combat_world.model.duration*1.25),"Zeitanker verlängert echten Beam")
 	var pace=load("res://scripts/run_model.gd").new()
 	pace.recalculate()
-	check(is_equal_approx(pace.speed,165),"Slower starting movement")
+	check(is_equal_approx(pace.speed,156.75),"Slower starting movement")
 	pace.meta={"long_stride":2}
 	pace.recalculate()
 	pace.tick(120)
-	check(pace.speed>165 and is_equal_approx(pace.speed,165*1.04),"Long Stride increases movement with game time")
+	check(pace.speed>156.75 and is_equal_approx(pace.speed,156.75*1.04),"Long Stride increases movement with game time")
 	pace.passives={"momentum_feather":2,"recovery_moss":4}
 	pace.recalculate()
-	check(pace.speed>165*1.04 and pace.regeneration==1,"Momentum Feather and Recovery Moss have real effects")
+	check(pace.speed>156.75*1.04 and pace.regeneration==1,"Momentum Feather and Recovery Moss have real effects")
 	var discovery_fixture=load("res://scripts/save_manager.gd").new()
 	discovery_fixture.persistent=false
 	check(not discovery_fixture.discovered("prism_disc","weapon") and not discovery_fixture.discovered("brann","character"),"Unselected equipment and characters stay hidden")
@@ -347,7 +347,7 @@ func run() -> void:
 	check(scene.save.data.total_gold==500,"Reset confirmation alone never deletes progress")
 	for child in scene.panel.get_children():
 		if child is Button and child.text=="Cancel": child.pressed.emit(); break
-	check(scene.save.data.total_gold==500 and scene.state=="MENU","Cancel preserves progress")
+	check(scene.save.data.total_gold==500 and scene.state=="SETTINGS","Cancel preserves progress and returns to Settings")
 	scene.selected_hero="brann"
 	scene.selected_stage="ash"
 	scene.confirm_reset()
@@ -385,7 +385,7 @@ func run() -> void:
 	check(is_equal_approx(pace_world.shots[-1].velocity.length(),120),"Hostile projectiles are slowed as well")
 	slow_model.meta={"projectile_speed":5,"battle_rhythm":5,"pickup_speed":5,"evasive_instinct":5,"speed":5}
 	slow_model.recalculate()
-	check(slow_model.speed>165 and slow_model.projectile_speed==1.3 and slow_model.pickup_speed==1.6,"Movement, missile and gathering meta upgrades take effect")
+	check(slow_model.speed>156.75 and slow_model.projectile_speed==1.3 and slow_model.pickup_speed==1.6,"Movement, missile and gathering meta upgrades take effect")
 	slow_model.time=600
 	slow_model.tick(0)
 	check(is_equal_approx(slow_model.cooldown,.5),"Battle Rhythm accelerates weapons over time")

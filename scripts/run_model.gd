@@ -95,6 +95,10 @@ var speed_bonus: float=1
 var cooldown_base: float=1
 var pickup_speed: float=1
 var pacing: Resource=preload("res://resources/pacing.tres")
+# Apply to raw player damage once. Weapon Might includes this factor already;
+# hit-derived mutation/reaction damage must never call this again.
+func base_player_damage(value: float) -> float:
+	return value*pacing.values.player_damage
 func opening_factor(kind: String) -> float:
 	return lerpf(float(pacing.values[kind]),1.0,clampf(time/pacing.values.ramp_seconds,0,1))
 func update_attack_speed() -> void:
@@ -239,7 +243,7 @@ func recalculate() -> void:
 	speed_base=h.speed*pacing.values.player_speed
 	speed_bonus=stats.speed
 	update_movement_speed()
-	might=stats.might
+	might=base_player_damage(stats.might)
 	cooldown_base=maxf(.15,stats.cooldown)
 	update_attack_speed()
 	area=minf(3,stats.area)

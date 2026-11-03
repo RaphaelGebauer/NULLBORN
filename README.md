@@ -25,7 +25,7 @@ Godot's embedded game view belongs to the editor and cannot be resized by the ga
 
 ## Progression and pacing
 
-The opening is deliberately measured across movement, enemy pressure and combat. Hero base movement is 75% of the original values (Lyra: 165 px/s); enemies start at 65% speed and spawns at 40% density. Projectiles and orbit/beam rotation begin at 80% speed, while weapon/AI intervals begin 20% longer. Opening modifiers reach normal values smoothly over **eight in-game minutes**. The run clock and boss schedule are unchanged. Heroes retain a generous early speed advantage over normal pursuers.
+The opening is deliberately measured across movement, enemy pressure and combat. Hero base movement is 71.25% of the original values (Lyra: 156.75 px/s); enemies start at 65% speed and spawns at 40% density. Projectiles and orbit/beam rotation begin at 80% speed, while weapon/AI intervals begin 20% longer. Opening modifiers reach normal values smoothly over **eight in-game minutes**. The run clock and boss schedule are unchanged. Heroes retain a generous early speed advantage over normal pursuers.
 
 The Star Forge offers **20 permanent upgrades**. Fleet Foot grants +5% immediate movement speed per rank, starting at 40 gold; Long Stride grants +1% movement speed per in-game minute **per rank**, capped after ten minutes. Additional tempo upgrades include **Swift Missiles** (+6% projectile speed per rank), **Battle Rhythm** (-1% cooldown per minute per rank, capped at ten minutes), **Gathering Flow** (+12% pickup attraction speed per rank) and **Evasive Instinct** (+3% movement per rank while below 50% HP). Regeneration, crit chance, area, duration and instant cooldown upgrades remain available. Reroll, skip and banish must be purchased first. Treasure Hunter can add a reroll only after that feature is unlocked.
 
@@ -47,7 +47,7 @@ An evolution requires:
 2. Its matching passive at **level 5**.
 3. A chest from a boss **spawned at 10:00 or later**. Opening an older chest later does not upgrade its eligibility.
 
-Example: **Arcane Needle Lv5+ + Power Core Lv5 → Star Piercer** in an eligible boss chest. The weapon is replaced and the passive is kept. Passives do not evolve independently. Fusions require both base weapons at Lv5+ and their matching passive at Lv5; both bases become one weapon, freeing a slot. Recipes are listed in the pause screen and collection **only after successfully performing that evolution or fusion**. Until then, pause shows only a count of undiscovered paths involving your current weapons. Merely owning components does not reveal names or recipes.
+Example: **Arcane Needle Lv5+ + Power Core Lv5 → Star Piercer** in an eligible boss chest. The weapon is replaced and the passive is kept. Passives do not evolve independently. Fusions require both base weapons at Lv5+ and their matching passive at Lv5; both bases become one weapon, freeing a slot. Recipes are listed in the pause screen and collection **only after successfully performing that evolution or fusion**. Until then, pause shows only counts of matching undiscovered recipes with all required weapons and passives equipped, plus how many meet the level requirements. Merely owning components does not reveal names or recipes.
 
 ## Save compatibility
 
@@ -113,7 +113,7 @@ Short names/rings identify reactions in combat; Pause includes a general legend 
 
 ## Star Map
 
-Open **Star Map** in the main menu to inspect three connected constellations with eighteen stars. Each path costs 1/2/3/4/5/6 Starlight in order (63 total). Boss kills (up to three), victory (+3), twenty minutes (+1) and peak instability 75+ (+1) award up to eight per run, including earned defeat rewards. Purchases persist immediately and apply from the next run. Hover or focus a star to see effects/prerequisites, then select Unlock. Arrow keys/D-pad navigate the map; Back returns to the menu.
+Open **Star Map** in the main menu to inspect three connected constellations with eighteen stars. Each path costs 1/2/3/4/5/6 Starlight in order (63 total). Boss kills (up to three), victory (+3), twenty minutes (+1) and peak instability 75+ (+1) award up to eight per run, including earned defeat rewards. Purchases persist immediately and apply from the next run. Click a star or confirm its keyboard/controller focus with Enter/A to select it, then choose Unlock. Hover/focus alone does not change the persistent colored selection. Arrow keys/D-pad navigate the map; Back returns to the menu.
 
 ## Build Details and measured results
 

@@ -28,4 +28,5 @@ else
  run star-visual -s res://tests/star_visual_runner.gd
  run polish-visual -s res://tests/polish_visual_runner.gd
  run maintenance-visual -s res://tests/maintenance_visual_runner.gd
+ run render-readonly -s res://tests/render_readonly_runner.gd
 fi

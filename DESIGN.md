@@ -61,3 +61,7 @@ SaveManager centralizes write failures and commit/rollback for meta/star purchas
 ## M3 data boundaries
 
 Registry and gameplay share pure `data/elite_affix_definitions.gd` / `data/element_reaction_definitions.gd`; helper aliases preserve callers without duplicated constants. Safe generator checks run in disposable trees, validate explicit stable-ID baselines and compare every owned output byte without writing the project. Detailed ownership and the remaining positional Markdown input dependency are documented in docs/GENERATORS.md.
+
+## M4 rendering boundary
+
+World passes a bounded, synchronous borrowed view to `world_renderer.gd`. Canvas commands remain inside the World draw notification; no per-frame deep state copies, retained pooled references or second simulation exist. The renderer may only read its view and use non-advancing mutation parameters. Model/FX/AI updates, hits, rewards and feedback timers retain their original World order. State immutability is tested on real draw frames; a one-time pre-extraction pixel oracle also passed.

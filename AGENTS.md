@@ -14,7 +14,7 @@
 | `project.godot`, `scenes/` | Entry: `main_menu.tscn`; gameplay `game.tscn`; `player.tscn` |
 | `resources/`, `scripts/data/registry.gd` | Typed immutable catalogs, IDs, dependency validation; separate `resources/pacing.tres` |
 | `scripts/run_model.gd` | Authoritative run state, inventory, stats, offers, mutations/evolution, run clock and permanent-bonus snapshots |
-| `scripts/world.gd`, `spatial_hash.gd` | Entity pools, hit pipeline, AI/update loop, collision, drops, hazards and procedural drawing |
+| `scripts/world.gd`, `spatial_hash.gd`, `world_renderer.gd` | Authoritative pools/hits/AI/collision/drops/hazards; synchronous read-only renderer, no retained entity views |
 | `scripts/combat.gd`, `mutation_effects.gd` | Existing attack behaviors and shared mutation hooks/budgets |
 | `scripts/boss_patterns.gd`, `elite_affixes.gd`, `rift_nodes.gd`, `rift_instability.gd`, `element_reactions.gd` | Bounded helpers using the existing World/Model APIs |
 | `scripts/app.gd`, `scripts/ui/collection_view.gd` | App owns session/modal/navigation; Collection is a read-only query/callback component |

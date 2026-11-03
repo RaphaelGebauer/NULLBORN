@@ -2,6 +2,14 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## Maintenance M4 — complete; M5 acceptance next
+
+Published: M1 a3222a5, M2 9f5b4b6, M3 cebf835. World drawing now delegates to scripts/world_renderer.gd through one synchronous borrowed render-view dictionary. Renderer stores no view/entity references, schedules no effects and calls no simulation methods. World retains authoritative simulation, hit/death/drop order, pools, spatial hash and feedback scheduling/camera decay. No combat or damage-engine rewrite. World reduced from 602 to 510 lines; the extracted renderer is 116 lines.
+
+Validation: 1004 Godot checks + seven generator tests pass. Real SubViewport rendering preserves all snapshotted gameplay/RNG/pool/stat/cadence data. A temporary pre-M4 _draw reference recovered from commit 9f5b4b6 (outside repo) renders **pixel-identically**, with identical runtime snapshots: four graphical assertions passed. Permanent render_readonly_runner covers real output and read-only state, and is part of graphical_check.sh. No engine errors/leaks; only known VSync warning. test-results/render-m4.log.
+
+Intentionally deferred: splitting damage/AI/pools or moving feedback update ownership; those would need broader lifecycle contracts and offer no necessary benefit here. M5 next: complete normal/Quick simulations, stress, all suites, multi-seed fixture runs, all native/embedded UI checks and final diff/data verification.
+
 ## Maintenance M3 — complete; M4/M5 next
 
 Published prior phases: M1 a3222a5, M2 9f5b4b6. Affix/reaction constants now live in pure scripts/data/elite_affix_definitions.gd and element_reaction_definitions.gd. Registry imports only pure data; gameplay keeps compatible DEFINITIONS aliases pointing to the exact same objects. Values/IDs/behavior unchanged; no cycles or second data source introduced.

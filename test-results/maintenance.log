@@ -1,0 +1,36 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Affix data has one shared pure source with compatible gameplay alias
+PASS Reaction data has one shared pure source with compatible gameplay alias
+PASS Decoupled Registry validates without gameplay definition imports
+PASS Real baseline save succeeds
+PASS Failed meta buy rolls back every field
+PASS Failed write leaves previous durable save intact and reports error
+PASS Star purchase uses identical rollback semantics
+PASS Reset failure preserves full existing save
+PASS Failed finish keeps gold/stars/records unbooked
+PASS Retry meta purchase charges exactly once
+PASS Recovered finish banks once with exact star reward
+PASS Recovered star purchase charges once
+PASS All recovered transactions survive reload
+PASS Actual rename failure rolls back the transaction
+PASS Rename failure cannot destroy the existing destination
+PASS Failed discovery write keeps earned pending progress
+PASS Failed purchase cannot erase earlier pending discoveries
+PASS Failed reset also preserves pending discoveries
+PASS Progress retry clears pending/error only on successful save
+PASS Retried discoveries survive restart
+PASS Extracted collection preserves hidden acquisitions
+PASS Collection callback distinguishes acquired items from completed recipes
+PASS Collection displays completed recipes without mutating save data
+PASS Shop displays real purchase error without spending gold
+PASS Failed inventory discovery is visible during gameplay
+PASS Pause provides a reachable pending-progress retry
+PASS Pending progress retry receives keyboard/controller focus
+PASS Retry preserves pause/session state
+PASS Main Menu cannot discard unsaved finish rewards
+PASS Try Again cannot replace an unbanked run
+PASS Recovered leave action persists finish rewards once before navigating
+PASS Quit refuses to silently discard pending progress after failed retry
+PASS Cancel from storage error preserves pending progress and returns to menu
+Maintenance checks: 33 PASS / 0 FAIL

@@ -124,3 +124,9 @@ Victory and defeat show actual damage, sorted per-source damage/shares/DPS, high
 Normal hits do not move the camera. Boss hits/deaths have optional capped, decaying movement; Reduce Flashes suppresses hit flashes and dims impacts/explosions. Damage Numbers can be disabled. Existing settings persist.
 
 Full verification: `./tools/check.sh --long`. Graphical checks on an existing X11 display: `DISPLAY=:99 ./tools/graphical_check.sh`; a native host window can be supplied with `--wid <decimal-window-id>`. Both scripts verify Godot 4.7.2. [Final report](docs/FINAL_REPORT_PHASE_E.md).
+
+## Maintenance M1–M5
+
+The discovery fixture, save transactions/retry and pending-reward navigation are repaired. Collection, pure affix/reaction definitions and read-only world drawing have explicit boundaries; generator checks run in disposable directories. Gameplay, saves, catalog IDs and balance are preserved. [Maintenance report and current test results](docs/MAINTENANCE_REPORT.md).
+
+Storage errors remain visible. Retry Saving persists pending progress; failed result saves keep the run available until recovery. Quit keeps the session open when a pending write still fails. Forced termination can lose RAM-only pending changes while storage is unavailable.

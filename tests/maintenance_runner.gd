@@ -112,6 +112,35 @@ func run() -> void:
 	unblock(app.save)
 	app.save_retry_button.pressed.emit()
 	check(not app.save.pending_write and app.state=="PAUSED" and paused,"Retry preserves pause/session state")
+
+	app.model.upgrade("reward_gold")
+	var wallet_before: int=app.save.data.total_gold
+	var pending_model: RefCounted=app.model
+	block_write(app.save)
+	app.model.finish(false)
+	for action in app.detail_actions.get_children():
+		if action.text=="Main Menu": action.pressed.emit(); break
+	check(app.state=="DEFEAT" and is_same(app.model,pending_model) and not app.model.banked,"Main Menu cannot discard unsaved finish rewards")
+	for action in app.detail_actions.get_children():
+		if action.text=="Try Again": action.pressed.emit(); break
+	check(app.state=="DEFEAT" and is_same(app.model,pending_model) and not app.model.banked,"Try Again cannot replace an unbanked run")
+	unblock(app.save)
+	for action in app.detail_actions.get_children():
+		if action.text=="Main Menu": action.pressed.emit(); break
+	check(app.state=="MENU" and pending_model.banked and app.save.data.total_gold==wallet_before+25,"Recovered leave action persists finish rewards once before navigating")
+
+	block_write(app.save)
+	app.save.mark_seen("gravity_mine")
+	app.save.save()
+	app.quit_game()
+	check(app.state=="SAVE_ERROR" and app.save.pending_write,"Quit refuses to silently discard pending progress after failed retry")
+	var cancel:=InputEventAction.new()
+	cancel.action="ui_cancel"
+	cancel.pressed=true
+	app._unhandled_input(cancel)
+	check(app.state=="MENU" and app.save.pending_write,"Cancel from storage error preserves pending progress and returns to menu")
+	unblock(app.save)
+	app.save.save()
 	app.save.persistent=false
 	app.menu()
 	app.queue_free()

@@ -2,6 +2,8 @@
 
 Prüfstand: `26b5b4e` (E1–E6). Quelltext-/Dokumentationsprüfung mit den unten beschriebenen Funktionstests; keine Performance-Messung dieses Berichts. Zeilenzahlen beschreiben diesen Stand und sind keine Refactoring-Schwellen. Diese Änderung ergänzt ausschließlich Dokumentation; sie entfernt keine Features und ändert keine Gameplaywerte.
 
+Dieser Ausgangsbefund ist historisch. Der Abschnitt **Wartung M1–M5** am Ende beschreibt den aktuellen Stand; die dort behobenen Probleme sind keine offenen Aufgaben mehr.
+
 ## Einschätzung
 
 Die vorhandene Aufteilung ist für das aktuelle Spiel tragfähig: Model als Laufzustand, Combat/World als tatsächlicher Kampfpfad, Registry mit Ressourcen, separate Helfer für Boss-/Elite-/Riss-/Reaktionslogik und bereits getrennte Statistik-/Reportmodule. Pooling, Spatial Hash, begrenzte Proc-Budgets und die Testabdeckung sollten erhalten bleiben. Ein Neuaufbau oder eine zweite Combat-/Save-Engine wäre unnötig riskant.
@@ -38,3 +40,13 @@ Keine dieser Empfehlungen wird durch diese Dokumentationsänderung umgesetzt ode
 ## Maintenance outcome M1
 
 The recommendations above describe the original checkpoint. M1 now fixes the discovery isolation and unchecked meta transaction. New real open/rename-failure tests cover rollback, pending discovery preservation, recovery/reload and UI retry/focus. Gameplay RNG and balance are unchanged. Remaining structural recommendations are M2–M4 work, not silently completed.
+
+## Wartung M1–M5 — aktueller Stand
+
+- **M1 behoben:** isolierte Discovery-Fixture, kontrollierter Modal-RNG; echte Open-/Rename-Fehler getestet. Einheitliche Speichertransaktionen stellen Guthaben/Ränge/Pending-Status wieder her; Discovery bleibt explizit bis zum Retry ausstehend. M5 schützt zusätzlich Ergebnisnavigation und Quit vor stiller Verwerfung.
+- **M2 umgesetzt:** genau Collection als read-only `scripts/ui/collection_view.gd` ausgelagert (Registry + Query-Callback). App behält Lifecycle, Pause, Modals, Navigation und Fehleraktionen. Die App ist durch neue Sicherheitsbehandlung insgesamt nicht kleiner (793 Zeilen); der Nutzen liegt in getrennten Zuständigkeiten. Settings bleibt wegen unmittelbarer Audio-/Display-/Pause-Abhängigkeiten bewusst zentral.
+- **M3 umgesetzt:** Affix-/Reaktionskonstanten liegen in reinen Datendateien, Registry/Helfer teilen dieselben Objekte. Generatoren werden temporär ausgeführt und gegen IDs, Dateimengen und Bytes geprüft; [Dateieigentum](GENERATORS.md) ist dokumentiert.
+- **M4 umgesetzt:** World von 602 auf 510 Zeilen reduziert, 116-zeiliger synchroner Renderer ohne gehaltene Pool-Referenzen. Reale Zeichnungen sind zustandsneutral und im geprüften Fixture pixelidentisch zum alten Code. Kein Damage-/AI-Umbau.
+- **M5 verifiziert:** 1009 Godot-Funktionstests, sieben Python-Tests, 53 native/embedded grafische Assertions, Normal-/Quick-Langlauf und Stress bestanden. Details und Einschränkungen: [Wartungsbericht](MAINTENANCE_REPORT.md).
+
+Weiter sinnvoll, jeweils nur mit eigenem Auftrag und Nutzen: weitere reine Report-/Übersichtsansichten einzeln auslagern; Dictionary-Feldschemata/Pool-Reset-Verträge dokumentieren und gezielt typisieren; die positionsabhängige Mutations-Markdownquelle durch strukturierte stabile IDs ersetzen. Ein späterer Damage-Service benötigt zuerst explizite Proc-/Attributions-/Zielbonusverträge. Feedback-Timer und Kamera-Abklingen bleiben bei World, weil ihre Trennung zusätzliche Update-/Pause-Lifecycle-Verträge erfordert. Keine dieser größeren Änderungen war zur sicheren Wartung nötig.

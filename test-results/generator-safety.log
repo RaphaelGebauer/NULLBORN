@@ -1,0 +1,6 @@
+PASS staged generators: exact catalog file set and byte-identical definitions/scripts; project untouched
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.449s
+
+OK

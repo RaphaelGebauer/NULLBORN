@@ -6,5 +6,5 @@ STRESS 60 s · Gegner 372 · Projektile 218
 STRESS 90 s · Gegner 367 · Projektile 210
 STRESS 120 s · Gegner 372 · Projektile 215
 STRESS 150 s · Gegner 371 · Projektile 210
-PASS 180 simulierte Sekunden / 5400 Schritte; Laufzeit 50.294 s; Peaks Gegner/Projektile/Pickups: 382/261/300; Kills 12585
+PASS 180 simulierte Sekunden / 5400 Schritte; Laufzeit 51.381 s; Peaks Gegner/Projektile/Pickups: 382/261/300; Kills 12585
 E4: reaction events 7186; capped visual peak <=6; hazards <=100

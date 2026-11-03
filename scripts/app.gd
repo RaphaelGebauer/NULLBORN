@@ -132,7 +132,7 @@ func menu() -> void:
 	button("Star Map · %d Starlight" % save.data.starlight,star_map)
 	button("Settings",func(): return_to_pause=false; settings())
 	save_feedback(menu)
-	button("Quit",func(): get_tree().quit())
+	button("Quit",quit_game)
 func start_run() -> void:
 	model=Model.new()
 	model.rng.randomize()
@@ -341,13 +341,14 @@ func result(victory: bool) -> void:
 	state="VICTORY" if victory else "DEFEAT"
 	get_tree().paused=true
 	var subtitle: String="%s · %s · %02d:%02d · Level %d · %d kills · %d bosses · %d elites" % [model.title(model.hero),model.title(model.stage),int(model.time)/60,int(model.time)%60,model.level,model.kills,model.bosses,model.elite_kills]
-	var actions: Array=[["Try Again",func(): menu(); start_run()],["Main Menu",menu]]
+	var actions: Array=[["Try Again",leave_result.bind(victory,true)],["Main Menu",leave_result.bind(victory,false)]]
 	if not model.banked: actions.push_front(["Retry Saving",result.bind(victory)])
 	detail_page("THE RIFT IS SEALED" if victory else "YOUR STAR FADES",subtitle,actions)
 	report_label("%s Gold: %d · %s Starlight +%d · Quick Mode: %s · Curse: %.0f%%" % ["Banked" if model.banked else "Pending",roundi(model.gold*(1+model.curse)),"Earned" if model.banked else "Pending",model.starlight_earned,"On" if model.fast else "Off",model.curse*100],21)
 	report_label("Starlight: first three bosses +1 each · Victory +3 · 20 minutes +1 · Peak instability 75+ +1 · Maximum 8",14)
 	if not model.banked:
 		report_label(save.warning,17)
+		report_label("Rewards remain pending. Retry saving before returning to the menu or starting another run.",15)
 	report_label(Report.metrics(model),18)
 	label("Damage by Source",26)
 	report_label("Base and evolved damage remain separate. Mutation damage belongs to its weapon; reactions are counted separately.",14)
@@ -431,6 +432,9 @@ func _input(event: InputEvent) -> void:
 			detail_scroll.scroll_vertical+=65 if event.is_action_pressed("ui_down") else -65
 			get_viewport().set_input_as_handled()
 func _unhandled_input(event: InputEvent) -> void:
+	if state=="SAVE_ERROR" and event.is_action_pressed("ui_cancel"):
+		menu()
+		return
 	if state=="BUILD" and event.is_action_pressed("ui_cancel"):
 		pause_game()
 		return
@@ -771,3 +775,19 @@ func save_feedback(redraw: Callable) -> void:
 		if save.save(): redraw.call(),false)
 	save_retry_button.visible=save.pending_write
 	if save.pending_write: focus_button.call_deferred(save_retry_button)
+
+func leave_result(victory: bool,restart: bool) -> void:
+	if not model.banked: result(victory)
+	if not model.banked: return
+	menu()
+	if restart: start_run()
+
+func quit_game() -> void:
+	if save.pending_write and not save.save():
+		state="SAVE_ERROR"
+		box("PROGRESS NOT SAVED",save.warning+"\nKeep this session open and retry saving before quitting.")
+		button("Retry Saving and Quit",quit_game)
+		var back: Button=button("Back to Main Menu",menu)
+		focus_button.call_deferred(back)
+		return
+	get_tree().quit()

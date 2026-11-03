@@ -46,7 +46,17 @@ func run() -> void:
 		check(app.save_retry_button.visible and paused and root.gui_get_focus_owner()==app.save_retry_button,"Paused error/controller focus "+str(resolution))
 		app.save.persistent=false
 		app.save_retry_button.pressed.emit()
+
 		check(not app.save.pending_write and paused,"Retry retains pause "+str(resolution))
+		app.save.persistent=true
+		app.model.upgrade("reward_gold")
+		app.model.finish(false)
+		await capture("maintenance-result-pending-%d"%resolution.x)
+		var visible: bool=app.detail_actions.get_child_count()==3 and not app.model.banked
+		for action in app.detail_actions.get_children(): visible=visible and root.get_visible_rect().encloses(action.get_global_rect())
+		check(visible,"Unbanked result keeps error/retry/navigation actions visible "+str(resolution))
+		app.save.persistent=false
+		app.result(false)
 	app.menu()
 	app.queue_free()
 	await create_timer(.25,true).timeout

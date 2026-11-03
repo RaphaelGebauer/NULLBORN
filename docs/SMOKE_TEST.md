@@ -44,3 +44,9 @@ Inspected screenshots: `star-map-1280.png`, `star-map-scaled.png`, `build-detail
 Remaining manual checks listed above are still open: physical devices, real desktop editor/window-manager/DPI behavior, audible balancing, actual GPU frame pacing, release exports and human thirty-minute difficulty. No such manual/hardware claim is inferred from automation. See FINAL_REPORT_PHASE_E.md.
 
 The final five constellation cases explicitly cover fresh secondary bonuses, inherited target-factor normalization, no bonus leakage to normal enemies, reaction-chain recipients and pooled mutation pulses.
+
+## Maintenance regression runners
+
+`tools/check.sh` additionally runs the staging-only generator diff and seven Python safety cases, then `maintenance_runner.gd`: real open/rename failures, rollback/retry/reload, pending discovery, UI focus, no discarded finish rewards, pure-definition identity and Collection privacy. No player save is used. Repeat the unit fixture with `STERNENBRUCH_TEST_SEED=115` (also 1, 42, 72047) in fresh XDG directories.
+
+`tools/graphical_check.sh` includes `maintenance_visual_runner.gd` (hidden/known Collection, purchase errors, paused retry and pending results at all three sizes) and `render_readonly_runner.gd` (real draw output with state/RNG/pool/cadence snapshots). Movement fixtures finish the final physics callback before measuring. The optional renderer oracle accepts `STERNENBRUCH_RENDER_REFERENCE` pointing to a separately recovered pre-extraction draw script outside the project; it is not required for the normal suite. Current acceptance evidence and limitations: [MAINTENANCE_REPORT.md](MAINTENANCE_REPORT.md).

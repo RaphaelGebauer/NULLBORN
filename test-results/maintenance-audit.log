@@ -1,0 +1,10 @@
+m1-seed-1-84u_f61r: 179 PASS / 0 FAIL
+m1-seed-115-3zv5g3aj: 179 PASS / 0 FAIL
+m1-seed-115-mvk707qv: 179 PASS / 0 FAIL
+m1-seed-42-gkza85j8: 179 PASS / 0 FAIL
+m1-seed-72047-dyc2cl17: 179 PASS / 0 FAIL
+Five independent XDG/save fixtures; gameplay RNG unchanged.
+full-run: complete log identical to c0a6fc7 apart from CPU wall time.
+quick-run: complete log identical to c0a6fc7 apart from CPU wall time.
+All resources/project settings and core combat/model/mutation/boss/instability/statistics files unchanged.
+Final logs: no script/runtime errors, failed assertions, leaked instances or embedded resize warnings. Graphical driver VSync warning only.

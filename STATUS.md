@@ -2,6 +2,20 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## Maintenance M5 — complete; M1–M5 accepted (2026-11-03)
+
+All five maintenance phases are complete in the existing project. Published phase commits: M1 `a3222a5`, M2 `9f5b4b6`, M3 `cebf835`, M4 `b7ee0dc`; M5 is the commit containing this section. Full changes, evidence, limits and follow-ups: [maintenance report](docs/MAINTENANCE_REPORT.md). Older continuation instructions below are historical.
+
+Final safety fixes: failed reward saves now prevent Main Menu/Try Again from discarding the unbanked Model, retry before navigating and bank once after recovery. Quit retries pending discovery/settings and stays on an explicit storage-error page if still blocked. Forced termination/crash cannot preserve RAM-only progress on an unwritable disk. No save schema/version changes. A graphical movement fixture now waits until its final physics tick finishes before measuring; distance assertions remain intact.
+
+Final Godot **4.7.2.stable.official.ed1daf0bf**: **1009 functional PASS / 0 FAIL** (976 original + 33 maintenance), **7 Python generator tests**, clean import/parser. Five earlier isolated seeds 1/42/115/72047/115 each pass 179 unit checks. Native graphical suite: **45 assertions**, real embedded host: **8 assertions**, plus captures for mutation/rift/reaction screens at three resolutions. All final logs are free of engine errors/leaks; only the software-driver VSync warning remains. Read-only rendering passes actual draw checks; M4 pixel oracle passed four assertions against the pre-extraction implementation. Pending-result 1280 and renderer captures inspected.
+
+Normal full simulation: 30:00 / 1800 combat seconds, 26,343 kills, 23 elites, six boss phase transitions, 18,490 reactions, one victory; 101.709 s CPU wall time. Quick: same 30:00 schedule / 900 combat seconds, 13,013 kills, 22 elites, six phase transitions, 8,809 reactions, one victory; 50.629 s. Both logs match baseline c0a6fc7 exactly apart from wall time. Stress: 5400 steps / 180 simulated seconds, peaks 382 enemies / 261 projectiles / 300 pickups, 12,585 kills, 7,186 reactions; 51.381 s.
+
+Legacy-save migration and corruption/reload tests pass. All 153 catalog resources and nine generated scripts match staged generator outputs; every resource and project setting is unchanged versus c0a6fc7. No gameplay/balance/pace changes. App remains lifecycle owner; only Collection was extracted. World simulation/hits/pools/feedback timers remain authoritative; only drawing was extracted. Larger UI/damage/entity-schema changes and generator source migration remain separate future tasks. Physical devices, audible checks, desktop DPI/GPU performance, release export and human balance are not claimed tested.
+
+Evidence: current test-results/*.log, maintenance-audit.log, maintenance-seeds.log, render-m4.log and docs/screenshots/. Final publication must be verified with a fresh remote ref/tree; the published M5 hash is reported in the final response.
+
 ## Maintenance M4 — complete; M5 acceptance next
 
 Published: M1 a3222a5, M2 9f5b4b6, M3 cebf835. World drawing now delegates to scripts/world_renderer.gd through one synchronous borrowed render-view dictionary. Renderer stores no view/entity references, schedules no effects and calls no simulation methods. World retains authoritative simulation, hit/death/drop order, pools, spatial hash and feedback scheduling/camera decay. No combat or damage-engine rewrite. World reduced from 602 to 510 lines; the extracted renderer is 116 lines.

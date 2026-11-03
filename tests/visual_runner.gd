@@ -29,6 +29,8 @@ func run() -> void:
 	Input.parse_input_event(key)
 	var start: Vector2=app.world.player.position
 	for i in range(40): await physics_frame
+	# physics_frame is emitted before node physics callbacks; finish the last tick.
+	await process_frame
 	key.pressed=false
 	Input.parse_input_event(key)
 	var moved: float=app.world.player.position.distance_to(start)
@@ -43,6 +45,7 @@ func run() -> void:
 	Input.parse_input_event(stick)
 	start=app.world.player.position
 	for i in range(20): await physics_frame
+	await process_frame
 	stick.axis_value=0
 	Input.parse_input_event(stick)
 	moved=app.world.player.position.distance_to(start)

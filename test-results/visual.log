@@ -7,8 +7,8 @@ CAPTURE 01-menu (1920, 1080)
 CAPTURE 02-characters (1920, 1080)
 CAPTURE 03-stages (1920, 1080)
 CAPTURE 04-rune (1920, 1080)
-PASS keyboard movement 107.250007629395
-PASS simulated controller stick 52.322322845459
+PASS keyboard movement 110.000007629395
+PASS simulated controller stick 55.0000038146973
 CAPTURE 05-arena (1920, 1080)
 CAPTURE 06-level (1920, 1080)
 CAPTURE 07-result (1920, 1080)

@@ -3,3 +3,7 @@
 
 # Documentation captures are not gameplay assets.
 docs/screenshots/*.png.import
+
+# Python tooling/test caches
+__pycache__/
+*.py[cod]

@@ -16,6 +16,11 @@ func block_write(s: RefCounted) -> void:
 func unblock(s: RefCounted) -> void:
 	DirAccess.remove_absolute(s.path+".tmp")
 func run() -> void:
+
+	var registry=load("res://scripts/data/registry.gd").new()
+	check(is_same(registry.affix_definitions,preload("res://scripts/data/elite_affix_definitions.gd").DEFINITIONS) and is_same(registry.affix_definitions,preload("res://scripts/elite_affixes.gd").DEFINITIONS),"Affix data has one shared pure source with compatible gameplay alias")
+	check(is_same(registry.reaction_definitions,preload("res://scripts/data/element_reaction_definitions.gd").DEFINITIONS) and is_same(registry.reaction_definitions,preload("res://scripts/element_reactions.gd").DEFINITIONS),"Reaction data has one shared pure source with compatible gameplay alias")
+	check(registry.errors.is_empty(),"Decoupled Registry validates without gameplay definition imports")
 	var s=Save.new()
 	s.path="user://maintenance-save.json"
 	s.data.total_gold=1000

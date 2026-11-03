@@ -2,6 +2,14 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## Maintenance M3 — complete; M4/M5 next
+
+Published prior phases: M1 a3222a5, M2 9f5b4b6. Affix/reaction constants now live in pure scripts/data/elite_affix_definitions.gd and element_reaction_definitions.gd. Registry imports only pure data; gameplay keeps compatible DEFINITIONS aliases pointing to the exact same objects. Values/IDs/behavior unchanged; no cycles or second data source introduced.
+
+Safe tools/check_generated.py stages both existing generators outside the project, checks stable catalog IDs via tools/catalog_ids.json and exact file sets/bytes (153 resources + nine generated scripts). It has no apply mode. Seven Python tests prove no writes and detect numeric/ID/missing/extra/script drift plus generator errors. docs/GENERATORS.md explicitly lists all overwritten paths and remaining mutation-brief coupling. No generator was applied to production resources.
+
+Validation: **1004 Godot functional PASS / 0 FAIL**, seven Python safety tests pass and staging generation is byte-identical. Three new maintenance tests confirm shared data identity and Registry validation. No script errors/leaks; no balance/resource diff. Logs: test-results/maintenance-m3.log. Next M4: extract drawing only with render-state immutability/pixel comparison; keep combat/update/feedback timing in World. Then full M5 acceptance.
+
 ## Maintenance M2 — complete; M3–M5 next
 
 M1 commit a3222a5 is published. Extracted exactly one view: scripts/ui/collection_view.gd. App still owns navigation, Back callback, session/pause and modal state; the component receives only Registry and a discovery-query Callable, owns no save/model and preserves original labels, ordering and scroll dimensions. No redesign or second state machine. Other views remain in App deliberately.

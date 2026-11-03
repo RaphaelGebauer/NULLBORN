@@ -57,3 +57,7 @@ SaveManager centralizes write failures and commit/rollback for meta/star purchas
 ## M2 Collection component
 
 `ui/collection_view.gd` is a read-only ScrollContainer. `populate(registry, discovered)` receives an explicit query callback rather than SaveManager or App. App constructs the original page/header and Back/error controls and retains all navigation/session state. Similar presentation-only views may be extracted later, one at a time; Settings is intentionally not changed because it owns live native-display/audio callbacks.
+
+## M3 data boundaries
+
+Registry and gameplay share pure `data/elite_affix_definitions.gd` / `data/element_reaction_definitions.gd`; helper aliases preserve callers without duplicated constants. Safe generator checks run in disposable trees, validate explicit stable-ID baselines and compare every owned output byte without writing the project. Detailed ownership and the remaining positional Markdown input dependency are documented in docs/GENERATORS.md.

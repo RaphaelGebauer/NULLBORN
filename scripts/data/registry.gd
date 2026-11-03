@@ -1,8 +1,8 @@
 extends RefCounted
 var catalogs: Dictionary = {}
 var errors: Array[String] = []
-var reaction_definitions: Array=preload("res://scripts/element_reactions.gd").DEFINITIONS
-var affix_definitions: Dictionary=preload("res://scripts/elite_affixes.gd").DEFINITIONS
+var reaction_definitions: Array=preload("res://scripts/data/element_reaction_definitions.gd").DEFINITIONS
+var affix_definitions: Dictionary=preload("res://scripts/data/elite_affix_definitions.gd").DEFINITIONS
 func _init() -> void:
 	var ids: Dictionary={}
 	errors.append_array(preload("res://scripts/data/constellations.gd").validate())

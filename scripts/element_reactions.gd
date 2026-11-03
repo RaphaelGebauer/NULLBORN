@@ -4,11 +4,7 @@ const WINDOW: float=3.0
 const COOLDOWN: float=1.5
 const EVENTS_PER_SECOND: int=40
 const SOURCE: String="Elemental Reactions"
-const DEFINITIONS: Array[Dictionary]=[
-	{"id":"arc_freeze","name":"Arc Freeze","elements":["frost","storm"],"bonus":.35,"secondary":.30,"radius":120.0,"targets":1},
-	{"id":"blightburst","name":"Blightburst","elements":["fire","toxin"],"bonus":.45,"secondary":.45,"radius":60.0,"targets":8},
-	{"id":"void_shatter","name":"Void Shatter","elements":["frost","void"],"bonus":.50,"secondary":0.0,"radius":0.0,"targets":0},
-	{"id":"rift_conduction","name":"Rift Conduction","elements":["storm","void"],"bonus":0.0,"secondary":.25,"radius":140.0,"targets":2}]
+const DEFINITIONS: Array[Dictionary]=preload("res://scripts/data/element_reaction_definitions.gd").DEFINITIONS
 var world: Node2D
 var cached_tags: Dictionary={}
 var budget_second: int=-1

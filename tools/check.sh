@@ -17,6 +17,8 @@ check() {
  cat "$log_dir/$name.log"
  if rg -q 'SCRIPT ERROR|ERROR:|FAIL |instances were leaked' "$log_dir/$name.log"; then return 1; fi
 }
+python3 tools/check_generated.py
+python3 -m unittest discover -s tests -p test_generator_safety.py
 check import --headless --editor --path . --quit
 check unit --headless --path . -s res://tests/test_runner.gd
 check mutations --headless --path . -s res://tests/mutation_runner.gd

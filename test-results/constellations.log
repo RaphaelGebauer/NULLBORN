@@ -86,8 +86,9 @@ PASS Reaction keeps boss primary bonus once and removes it from normal chain tar
 PASS Mutation pulse forwards inherited target factor through pooled effect
 PASS Real star map creates all nodes and descriptive tooltips
 PASS Star map purchase uses real save transaction
-PASS Keyboard/controller focus updates inspector
+PASS Keyboard/controller focus alone preserves selection
+PASS Keyboard/controller confirmation updates inspector
 PASS Run snapshot isolated from subsequent purchases
 PASS Next threshold hidden without Rift Sense
 PASS Rift Sense reveals next threshold
-Constellation checks: 90 PASS / 0 FAIL
+Constellation checks: 91 PASS / 0 FAIL

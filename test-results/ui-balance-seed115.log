@@ -1,0 +1,182 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Standardheld
+PASS XP-Startkurve
+PASS XP-Overflow und Level-Queue
+PASS Drei eindeutige Karten
+PASS Heilungsdeckel
+PASS Echtes automatisches Projektil tötet Gegner
+PASS Registry validiert Ressourcen und Abhängigkeiten
+PASS Katalog weapon
+PASS Katalog passive
+PASS Katalog enemy
+PASS Katalog character
+PASS Katalog wave
+PASS Katalog evolution
+PASS Katalog rune
+PASS Katalog stage
+PASS Sieben echte Upgrades: arcane_needle
+PASS Sieben echte Upgrades: ash_bow
+PASS Sieben echte Upgrades: frost_shard
+PASS Sieben echte Upgrades: gravity_mine
+PASS Sieben echte Upgrades: lightning_call
+PASS Sieben echte Upgrades: meteor_rain
+PASS Sieben echte Upgrades: moon_blade
+PASS Sieben echte Upgrades: prism_disc
+PASS Sieben echte Upgrades: reaper_gaze
+PASS Sieben echte Upgrades: shadow_fan
+PASS Sieben echte Upgrades: soul_well
+PASS Sieben echte Upgrades: spark_orbit
+PASS Sieben echte Upgrades: storm_bomb
+PASS Sieben echte Upgrades: sun_beam
+PASS Sieben echte Upgrades: thorn_halo
+PASS 6+6 voll und maximal: keine illegalen Angebote
+PASS Drei verschiedene Fallbacks
+PASS Fresh runs have no unpaid selection tools
+PASS Reroll verbraucht Charge
+PASS Banish schließt Item aus
+PASS Skip mit XP und Charge
+PASS Passivwerte deterministisch
+PASS Keine multiplikative Stat-Drift
+PASS Echter Schaden durch needle
+PASS Echter Schaden durch aura
+PASS Echter Schaden durch orbit
+PASS Echter Schaden durch beam
+PASS Echter Schaden durch bomb
+PASS XP-Merging erhält Wert
+PASS Gold nur einmal gesammelt
+PASS Evolution braucht Katalysator
+PASS Lv4 catalyst cannot evolve weapon
+PASS Alte Boss-Truhe bleibt nicht evolutionsfähig
+PASS Evolution ersetzt Basis, erhält Slotzahl
+PASS Fusion hat Vorrang und gibt Slot frei
+PASS Funktionale Evolutionsdaten blood_thorns
+PASS Funktionale Evolutionsdaten comet_shower
+PASS Funktionale Evolutionsdaten crescent_storm
+PASS Funktionale Evolutionsdaten day_night
+PASS Funktionale Evolutionsdaten dusk_storm
+PASS Funktionale Evolutionsdaten event_horizon
+PASS Funktionale Evolutionsdaten ghost_well
+PASS Funktionale Evolutionsdaten ice_prism
+PASS Funktionale Evolutionsdaten last_judgment
+PASS Funktionale Evolutionsdaten meteor_heart
+PASS Funktionale Evolutionsdaten night_storm
+PASS Funktionale Evolutionsdaten phoenix_fan
+PASS Funktionale Evolutionsdaten solar_orbit
+PASS Funktionale Evolutionsdaten spectral_carousel
+PASS Funktionale Evolutionsdaten star_piercer
+PASS Funktionale Evolutionsdaten thunder_grid
+PASS Funktionale Evolutionsdaten zenith_beam
+PASS Bosswelle 5
+PASS Bosswelle 10
+PASS Bosswelle 29
+PASS Sieg bei 30:00 und genau ein Endereignis
+PASS Level-Modal pausiert SceneTree
+PASS Pause stoppt Timer, Kampf und Welt
+PASS Truhe nach Level-up serialisiert
+PASS Runensegen nach Truhe serialisiert
+PASS Drei Modals ohne Deadlock aufgelöst
+PASS Save-Defaults
+PASS Shop blockiert unbezahlbaren Kauf
+PASS Shop-Kauf und Preis
+PASS Save/Load inklusive Settings
+PASS Korrupter Save wird gesichert und abgefangen
+PASS Save-Schema lehnt falsche Typen ab
+PASS Gold mit Fluchbonus nur einmal verbucht
+PASS Vier Helden und zweite Arena durch echte Erfolge freigeschaltet
+PASS I-Frames verhindern mehrfachen Kontaktschaden
+PASS Rüstung korrekt abgezogen
+PASS Regeneration nutzt Spielzeit
+PASS Max-HP-Änderung erhält HP-Anteil
+PASS Rune registriert: blood_moon
+PASS Rune registriert: chain_spark
+PASS Rune registriert: ice_crown
+PASS Rune registriert: resonance
+PASS Rune registriert: shard_star
+PASS Rune registriert: shield_sign
+PASS Rune registriert: time_anchor
+PASS Rune registriert: treasure
+PASS Blutmond heilt höchstens 30 HP pro Minute
+PASS Kampfresonanz alle 20 Kills
+PASS Resonanz läuft in Spielzeit aus
+PASS Treasure grants gold without bypassing reroll unlock
+PASS Brennen/Gift ticken und Slow bleibt aktiv
+PASS Status-Effekte laufen aus
+PASS Splitterstern erzeugt zusätzliches echtes Projektil
+PASS Zeitanker verlängert echten Beam
+PASS Slower starting movement
+PASS Long Stride increases movement with game time
+PASS Momentum Feather and Recovery Moss have real effects
+PASS Unselected equipment and characters stay hidden
+PASS Selecting equipment reveals its collection entry
+PASS Purchased meta ranks grant exact run charges
+PASS Treasure adds a reroll after its meta unlock
+PASS Audio controls never resize the window
+PASS Native embedded-window arguments detected
+PASS New saves default to 1920x1080
+PASS New weapon damages enemies: prism_disc
+PASS Prism Disc bounces to a different enemy
+PASS New weapon damages enemies: gravity_mine
+PASS Gravity Mine pulls and slows
+PASS New weapon damages enemies: reaper_gaze
+PASS Reaper's Gaze deals triple damage below 35% HP
+PASS Execution Seal amplifies direct damage to wounded enemies
+PASS Frost Thorns retaliates with actual damage and slow
+PASS Tod und Ergebnis
+PASS Charaktermenü gebaut
+PASS Shop, Einstellungen, Sammlung gebaut
+PASS Main-menu Characters is read-only
+PASS Locked overview character shows its name only
+PASS Browsing character overview does not mark a selection
+PASS Unlocked overview character shows details without a launch button
+PASS New Run still has playable character selection
+PASS Owning components or legacy seen flags does not reveal recipes
+PASS Collection recipes also require a completed evolution
+PASS Discover through an actual eligible evolution
+PASS Completed evolution reveals its recipe in pause and collection
+PASS Completed-evolution history survives save/load
+PASS Full reset writes a fresh save
+PASS Reset persists cleared progression and default settings
+PASS Main-menu settings includes a reset entry
+PASS Reset confirmation alone never deletes progress
+PASS Cancel preserves progress and returns to Settings
+PASS Confirmed reset clears all data and stale session selections
+PASS Twenty permanent meta upgrades are available
+PASS Fresh run has lower density and enemy speed
+PASS Opening pace ramps smoothly at its midpoint
+PASS Opening modifiers reach normal pace after eight minutes
+PASS Actual early enemy movement is slower
+PASS Safe early kiting margin for brann
+PASS Safe early kiting margin for eira
+PASS Safe early kiting margin for lyra
+PASS Safe early kiting margin for noctis
+PASS Actual opening auto-attack interval is slower
+PASS Actual friendly projectile starts slower
+PASS Hostile projectiles are slowed as well
+PASS Movement, missile and gathering meta upgrades take effect
+PASS Battle Rhythm accelerates weapons over time
+PASS Evasive Instinct adds escape speed at low HP
+PASS Escape bonus ends on recovery without stacking
+PASS Gathering Flow increases actual pickup movement
+PASS E1 old save gains additive star-map defaults
+PASS E1 migration preserves gold, upgrades, recipes and settings
+PASS E1 rejects invalid starlight values
+PASS E1 rejects duplicate constellation IDs
+PASS E1 full reset includes new persistent fields
+PASS E1 statistics clamp overkill and count real crits
+PASS E1 base and evolved sources stay separate
+PASS E1 bounded rolling DPS buckets age out old hits
+PASS E1 health statistics record actual healing and damage
+PASS E1 neutral and fusion element tags form a unique union
+PASS E1 instability threshold 24.99
+PASS E1 instability threshold 25
+PASS E1 instability threshold 49.99
+PASS E1 instability threshold 50
+PASS E1 instability threshold 74.99
+PASS E1 instability threshold 75
+PASS E1 instability threshold 89.99
+PASS E1 instability threshold 90
+PASS E1 instability threshold 100
+PASS E1 clamp, backward band change and baseline gain
+PASS E1 quick mode shares an explicit run-time delta
+Ergebnis: 0 Fehler

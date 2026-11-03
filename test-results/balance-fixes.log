@@ -1,0 +1,59 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Exactly proportional five percent reduction: lyra
+PASS Meta/passive/timed/low-health/star bonuses stay proportional: lyra
+PASS No recalculation factor stacking: lyra
+PASS Existing speed ceiling retained: lyra
+PASS Exactly proportional five percent reduction: brann
+PASS Meta/passive/timed/low-health/star bonuses stay proportional: brann
+PASS No recalculation factor stacking: brann
+PASS Existing speed ceiling retained: brann
+PASS Exactly proportional five percent reduction: eira
+PASS Meta/passive/timed/low-health/star bonuses stay proportional: eira
+PASS No recalculation factor stacking: eira
+PASS Existing speed ceiling retained: eira
+PASS Exactly proportional five percent reduction: noctis
+PASS Meta/passive/timed/low-health/star bonuses stay proportional: noctis
+PASS No recalculation factor stacking: noctis
+PASS Existing speed ceiling retained: noctis
+PASS One Might damage factor for arcane_needle
+PASS One Might damage factor for ash_bow
+PASS One Might damage factor for frost_shard
+PASS One Might damage factor for gravity_mine
+PASS One Might damage factor for lightning_call
+PASS One Might damage factor for meteor_rain
+PASS One Might damage factor for moon_blade
+PASS One Might damage factor for prism_disc
+PASS One Might damage factor for reaper_gaze
+PASS One Might damage factor for shadow_fan
+PASS One Might damage factor for soul_well
+PASS One Might damage factor for spark_orbit
+PASS One Might damage factor for storm_bomb
+PASS One Might damage factor for sun_beam
+PASS One Might damage factor for thorn_halo
+PASS One Might damage factor for blood_thorns
+PASS One Might damage factor for comet_shower
+PASS One Might damage factor for crescent_storm
+PASS One Might damage factor for day_night
+PASS One Might damage factor for dusk_storm
+PASS One Might damage factor for event_horizon
+PASS One Might damage factor for ghost_well
+PASS One Might damage factor for ice_prism
+PASS One Might damage factor for last_judgment
+PASS One Might damage factor for meteor_heart
+PASS One Might damage factor for night_storm
+PASS One Might damage factor for phoenix_fan
+PASS One Might damage factor for solar_orbit
+PASS One Might damage factor for spectral_carousel
+PASS One Might damage factor for star_piercer
+PASS One Might damage factor for thunder_grid
+PASS One Might damage factor for zenith_beam
+PASS Actual hit and measured damage use adjusted weapon value
+PASS Reaction uses final reduced triggering hit without a second nerf
+PASS Derived mutation pulse avoids double nerf
+PASS Flat death-fire and status sources use the same central raw factor
+PASS Enemy movement/damage/XP definitions unchanged
+PASS Normal/Quick clock and XP curve unchanged
+PASS Day/Night preserves legacy Might bonuses with exactly one global nerf
+PASS Raw pickup nova applies global factor once
+Balance fixes checks: 56 PASS / 0 FAIL

@@ -2,6 +2,16 @@
 
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
+## UI/navigation fixes and small balance adjustment — complete (2026-11-03)
+
+Continued verified GitHub main `7e37c94`; no replacement project or save-schema changes. Star Map now selects only on click/Enter/A, keeps a persistent constellation-colored border and separates local owned/prerequisite/currency reasons from global storage failures. Technical errors, transactional rollback and pending-progress retry remain intact. Pause/Build count matching equipment recipes separately from ready Lv5 recipes without revealing undiscovered names/ingredients; chest gate/fusion priority unchanged. Settings Back/Esc/B returns to Pause without advancing gameplay. Explicit A/B/D-pad/stick menu bindings repair missing built-in controller mappings.
+
+Movement uses 0.7125 (old 0.75 × 0.95): Lyra/Eira 156.75, Brann 146.0625, Noctis 174.5625 px/s before bonuses/cap. Raw player damage factor 0.93 is applied once in the existing stat path and fixed raw sources; derived mutations/reactions do not get a second factor. Enemy definitions, schedules, rewards, HP/healing and save fields are preserved. See [balance calculation](BALANCE.md) and [full correction/acceptance report](docs/UI_BALANCE_REPORT.md).
+
+Godot **4.7.2 Stable**: **1098 functional PASS / 0 FAIL**, seven Python safety tests, exact staged catalog/scripts, clean import/parser; independent seed 115 passes 179 unit checks. Native graphical **81 PASS** (36 new real mouse/Enter/joypad checks), actual embedded host **9 PASS**, all three requested resolutions plus existing UI-scale coverage. Normal full 30:00/1800 combat seconds and Quick 30:00/900 both win; 180-second/5400-step stress peaks 382 enemies/261 shots/300 pickups. Final logs have no engine/script errors or leaks; software VSync warning only. Physical hardware and human balance remain manual checks. Current logs/captures and exact commands are in the report.
+
+Commits: `50b3e4c`, `f93365a`, `4f64766`, `b46cd27`, `ef233f2` controller input and `419c583` fixed-source/fusion factor protection, followed by the QA/documentation commit containing this section. Publication is authorized to main without force; final response reports the hash after actual remote ref/tree verification. Older checkpoints below describe their historical balances and test results.
+
 ## Maintenance M5 — complete; M1–M5 accepted (2026-11-03)
 
 All five maintenance phases are complete in the existing project. Published phase commits: M1 `a3222a5`, M2 `9f5b4b6`, M3 `cebf835`, M4 `b7ee0dc`; M5 is the commit containing this section. Full changes, evidence, limits and follow-ups: [maintenance report](docs/MAINTENANCE_REPORT.md). Older continuation instructions below are historical.

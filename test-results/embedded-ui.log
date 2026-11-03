@@ -4,7 +4,8 @@ WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by 
 OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
 
 PASS Native embedding detected
-PASS Controller action navigates between constellation branches
+PASS Controller focus navigates without selecting
+PASS Controller confirmation selects focused star
 PASS Embedded build view pauses the real run
 PASS Audio and display settings never resize an embedded window
 PASS Embedded defeat retains fixed actions

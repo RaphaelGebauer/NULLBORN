@@ -69,3 +69,13 @@ World passes a bounded, synchronous borrowed view to `world_renderer.gd`. Canvas
 ## M5 acceptance and navigation safety
 
 Result navigation retries unbanked rewards before releasing the run; failed retries keep the original paused Model and fixed actions. Main-menu Quit similarly refuses a failed pending-write retry and offers Back/Retry without a second state owner. Pending state is session-only, not a new save field; an unwritable disk cannot guarantee survival of forced termination. All catalog/balance inputs are unchanged. Normal and Quick simulation logs match the pre-maintenance baseline apart from wall time. See [maintenance acceptance](docs/MAINTENANCE_REPORT.md).
+
+## Explicit selections, recipe queries and Settings origin
+
+Star Map uses pressed for committed selection and theme normal/hover styles for a persistent constellation-colored border; focus draws a separate inset ring. SaveManager.star_purchase_error is read-only and leaves global technical warnings/pending writes untouched. The inspector owns expected purchase hints, so exiting the map destroys them. Existing atomic buy/retry operations remain authoritative.
+
+RunModel.recipe_matches is the read-only equipped-component/level query shared by Pause reporting and chest evolution. UI counts each recipe once, hides undiscovered details and reports ready independently of the unchanged eligible-chest rule. Already evolved weapons cannot supply consumed bases. Settings uses its own SETTINGS state and the existing return_to_pause origin; leave_settings restores Pause/menu, never resumes a run. Explicit controller UI bindings ensure A/B/D-pad/stick reach standard Control focus/pressed handling.
+
+The separate pacing resource now stores player_speed=0.7125 and player_damage=0.93. RunModel applies damage through one raw-value helper, including Might; World only uses it when creating fixed raw effects, never when processing hit-derived secondary values. Details and rounded-damage limits are in BALANCE.md; current acceptance evidence is in docs/UI_BALANCE_REPORT.md.
+
+Day/Night’s legacy orbit-to-beam conversion retains its existing Might bonus formula. A damage_has_global_factor marker excludes the new global factor from the second parameterization, so the fusion receives exactly one 0.93 reduction. Raw Blood Thorns reflection and pickup Nova use the same Model helper as other fixed sources.

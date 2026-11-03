@@ -139,7 +139,7 @@ PASS Full reset writes a fresh save
 PASS Reset persists cleared progression and default settings
 PASS Main-menu settings includes a reset entry
 PASS Reset confirmation alone never deletes progress
-PASS Cancel preserves progress
+PASS Cancel preserves progress and returns to Settings
 PASS Confirmed reset clears all data and stale session selections
 PASS Twenty permanent meta upgrades are available
 PASS Fresh run has lower density and enemy speed

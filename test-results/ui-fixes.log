@@ -1,0 +1,35 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Hover/focus leave selection and inspector unchanged
+PASS Pressed selects correct star and price
+PASS Persistent unique three-pixel selection ring survives pointer/focus movement
+PASS Bought star stays selected with Owned state
+PASS Owned restriction is precise
+PASS Prerequisite takes priority over insufficient currency
+PASS Unaffordable selection states exact cost and wallet
+PASS Ordinary purchase hints never become global save warnings
+PASS Menu does not inherit purchase hints
+PASS Reopening map clears previous local purchase message
+PASS Failed purchase preserves pending progress and rolls back
+PASS Invalid purchase cannot overwrite technical error or pending state
+PASS Technical error and retry survive navigation
+PASS Real storage retry clears error after recovery
+PASS Weapon without catalyst matches zero recipes
+PASS All components below thresholds match but are not ready
+PASS Ready unknown recipe reveals count only
+PASS UI readiness never bypasses chest eligibility
+PASS Fusion requires both bases and catalyst at required levels
+PASS Recipe candidates counted once each including fusion
+PASS Missing fusion component cannot match
+PASS Recipe reporting leaves gameplay and RNG untouched
+PASS Actual eligible chest still prioritizes fusion
+PASS Consumed bases and completed recipe cannot count again
+PASS Actually discovered recipes retain detailed requirements
+PASS Main menu Settings has a distinct navigation state
+PASS Settings Back returns to main menu
+PASS Settings freezes run clock, attacks, XP and player movement
+PASS Pause Settings Back returns paused with controller focus
+PASS Returning to Pause keeps gameplay stopped
+PASS Settings Esc returns to Pause and preserves settings
+PASS Explicit Pause cancel resumes simulation
+UI fixes checks: 32 PASS / 0 FAIL

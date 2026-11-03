@@ -74,6 +74,20 @@ func run() -> void:
 	normal.tick(1)
 	quick.tick(1)
 	check(normal.time==1 and quick.time==2 and normal.required_xp()==quick.required_xp(),"Normal/Quick clock and XP curve unchanged")
+	world.combat.effects.clear()
+	model.weapons={"day_night":1}
+	model.passives={"power_core":5}
+	model.recalculate()
+	var fusion: Dictionary=model.registry.weapon_values("day_night",1)
+	world.combat.timers.day_night=0
+	world.combat.orbit("day_night",fusion,.01)
+	var beams: Array=world.combat.effects.filter(func(effect):return effect.behavior=="beam")
+	check(beams.size()==2 and is_equal_approx(beams[0].damage,fusion.damage*pow(model.might/.93,2)*.93),"Day/Night preserves legacy Might bonuses with exactly one global nerf")
+	model.crit=0
+	e.hp=10000
+	world.drop(world.player.position,1,"nova")
+	world.collect(world.pickups.back())
+	check(e.hp==9907,"Raw pickup nova applies global factor once")
 	world.queue_free()
 	await process_frame
 	await process_frame

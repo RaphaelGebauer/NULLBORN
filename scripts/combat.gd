@@ -48,7 +48,10 @@ func update(delta: float) -> void:
 			free_effects.append(effect)
 func params(v: Dictionary) -> Dictionary:
 	var result: Dictionary=v.duplicate(true)
-	result.damage*=world.model.might
+	# The orbit-to-beam conversion historically applies Might a second time.
+	# Preserve that weapon's existing bonus math, but exclude the global factor
+	# from this second multiplication when it is already present in the input.
+	result.damage*=world.model.might/(world.model.pacing.values.player_damage if v.get("damage_has_global_factor",false) else 1.0)
 	result.radius*=world.model.area
 	result.speed*=world.model.projectile_speed*world.model.opening_factor("projectile_speed")
 	result.rotation=result.get("rotation",2.4)*world.model.opening_factor("projectile_speed")
@@ -116,7 +119,7 @@ func orbit(id: String,v: Dictionary,delta: float) -> void:
 				world.hit(e,p.damage,p,id)
 	if v.get("pulse",0)>0 or v.get("diameter",0)>0:
 		if timers.get(id,0)<=0:
-			if v.get("diameter",0)>0: attack_beam(id,{"behavior":"beam","damage":p.damage,"cooldown":2,"radius":radius*2,"count":2,"duration":.6,"speed":0,"tick":.25}, {})
+			if v.get("diameter",0)>0: attack_beam(id,{"behavior":"beam","damage":p.damage,"damage_has_global_factor":true,"cooldown":2,"radius":radius*2,"count":2,"duration":.6,"speed":0,"tick":.25}, {})
 			else: area_hit(world.player.position,radius+25,p.damage,p,id)
 			timers[id]=2
 func attack_lightning(id: String,v: Dictionary,target: Dictionary) -> void:

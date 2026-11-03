@@ -201,7 +201,7 @@ func hurt_player(value: float,boss_hit: bool=false) -> bool:
 	if model.passives.get("frost_thorns",0)>0:
 		combat.area_hit(player.position,100,model.base_player_damage(5*model.passives.frost_thorns),{"slow":1},"frost_thorns")
 	if model.weapons.has("blood_thorns"):
-		combat.area_hit(player.position,70,20,{"mutation_secondary":true},"blood_thorns")
+		combat.area_hit(player.position,70,model.base_player_damage(20),{"mutation_secondary":true},"blood_thorns")
 	return model.statistics.damage_taken>previous_damage
 func _physics_process(delta: float) -> void:
 	model.tick(delta)
@@ -431,7 +431,7 @@ func collect(p: Dictionary) -> void:
 				if gem.kind=="xp": collect(gem)
 		"freeze": freeze_time=5
 		"nova":
-			for e in visible_enemies(): hit(e,25 if e.boss else 100,{},"nova",true)
+			for e in visible_enemies(): hit(e,model.base_player_damage(25 if e.boss else 100),{},"nova",true)
 		"luck":
 			model.temporary_luck+=.1
 			model.recalculate()

@@ -139,7 +139,7 @@ func run() -> void:
 	world.grid.rebuild(world.enemies)
 	var reflected_before: float=model.statistics.damage_by_source.get("blood_thorns",0)
 	world.hurt_player(1)
-	check(model.statistics.damage_by_source.get("blood_thorns",0)-reflected_before==20,"Blood Thorns reflection keeps weapon attribution without secondary crit/mutation rerolls")
+	check(model.statistics.damage_by_source.get("blood_thorns",0)-reflected_before==round(20*.93),"Blood Thorns reflection keeps weapon attribution without secondary crit/mutation rerolls")
 	world.queue_free()
 	await process_frame
 	await process_frame

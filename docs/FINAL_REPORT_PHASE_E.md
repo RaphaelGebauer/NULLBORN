@@ -1,6 +1,6 @@
 # Phase E final report
 
-All six phases are implemented in the existing STERNENBRUCH project. Engine: **4.7.2.stable.official.ed1daf0bf**, GDScript 2.0, Compatibility renderer. E5 implementation: `5e474ca`. E6 implementation/publication hash is recorded in STATUS.md after commit. Existing Git history, saves and gameplay content are retained.
+All six phases are implemented in the existing STERNENBRUCH project. Engine: **4.7.2.stable.official.ed1daf0bf**, GDScript 2.0, Compatibility renderer. E5 implementation: `5e474ca`. E6 implementation/publication: `8eda910`, verified on GitHub main using ls-remote and a fresh bare clone. E5 is an ancestor of the published E6 commit. Existing Git history, saves and gameplay content are retained.
 
 ## Implemented systems
 
@@ -84,3 +84,5 @@ No known unresolved script/runtime/test failures remain. These manual/platform c
 3. Upgrade base weapon and matching passive to Lv5; collect a chest from a boss spawned at 10:00+ to evolve. Fusions keep Primary/Echo imprints.
 4. Use F/controller Y near rifts. Pause → Build Details to inspect current stats and known paths.
 5. Finish a run to inspect measured results and earn Starlight; unlock permanent stars from Main Menu → Star Map.
+
+Remote tree verification confirmed project.godot, scenes/game.tscn, both new UI/report helpers and this report; catalog counts online: 15 weapons, 17 passives, 45 mutations, 17 normal/fusion recipes, 15 enemy definitions and 30 waves. The final documentation checkpoint follows the implementation commit without rewriting history.

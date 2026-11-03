@@ -4,7 +4,7 @@ Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserv
 
 ## Phase E6 — complete; E1–E6 final acceptance passed
 
-E5 implementation/publication: **5e474ca**. E6 implementation hash recorded after commit. Final detailed report: docs/FINAL_REPORT_PHASE_E.md. Older sections below are historical checkpoints; their continuation instructions are superseded by this section.
+E5 implementation/publication: **5e474ca**. E6 implementation/publication: **8eda910**, verified by ls-remote plus a fresh bare clone containing the actual project, new helpers, final report and unchanged catalog counts. Final detailed report: docs/FINAL_REPORT_PHASE_E.md. Older sections below are historical checkpoints; their continuation instructions are superseded by this section.
 
 All requested E1–E6 systems are implemented in the existing project. No recreation, removed catalog items, reset of valid saves, force-push or changes to resources/pacing.tres. English UI remains intact.
 

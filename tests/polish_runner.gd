@@ -159,7 +159,7 @@ func run() -> void:
 	app.events=[]
 	app.build_details()
 	var text: String=labels(app.panel)
-	check(app.state=="BUILD" and paused and text.contains("Empty weapon slot") and text.contains("Current Stats"),"Build displays six slots and actual stats while paused")
+	check(app.state=="BUILD" and paused and app.equipment_view.weapon_grid.get_child_count()==6 and text.contains("Current Stats"),"Build displays six slots and actual stats while paused")
 	check(not text.contains("Star Piercer") and text.contains("Undiscovered:"),"Build Details cannot leak secret result or catalyst recipe")
 	var before: Array=[app.model.time,app.model.xp,app.model.level,app.model.rng.state]
 	await process_frame
@@ -168,15 +168,17 @@ func run() -> void:
 	app.save.mark_evolved("star_piercer")
 	app.build_details()
 	check(labels(app.panel).contains("Star Piercer") and labels(app.panel).contains("Power Core Lv5 · ready"),"Actually discovered recipe visible")
-	check(app.detail_actions.get_child_count()==2 and app.detail_scroll.offset_bottom==-90,"Build actions live outside scrolling content")
+	check(app.detail_actions.get_child_count()==1 and app.detail_actions.get_child(0).text=="Back" and app.detail_scroll.offset_bottom==-90,"Build actions live outside scrolling content")
 	var cancel:=InputEventAction.new()
 	cancel.action="ui_cancel"
 	cancel.pressed=true
 	app._unhandled_input(cancel)
 	check(app.state=="PAUSED" and paused,"Back from Build returns to Pause without simulation")
 	app.build_details()
-	app.detail_actions.get_child(1).pressed.emit()
-	check(app.state=="RUNNING" and not paused,"Build Resume action works")
+	app.detail_actions.get_child(0).pressed.emit()
+	check(app.state=="PAUSED" and paused,"Build Back action returns paused")
+	app.resume()
+	check(app.state=="RUNNING" and not paused,"Only explicit Pause Resume continues play")
 	app.model.kills=100
 	app.check_unlocks()
 	check("first_100" in app.model.unlocked_this_run,"Mid-run achievements retained for final report")

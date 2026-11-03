@@ -77,7 +77,7 @@ func run() -> void:
 			await capture("star-%d" % resolution.x)
 			app.pause_game()
 			await capture("pause-%d" % resolution.x)
-			check(root.get_visible_rect().encloses(app.panel.get_global_rect()),"Full six-slot Pause fits "+str(resolution))
+			check(root.get_visible_rect().encloses(app.equipment_view.get_global_rect()),"Full six-slot equipment fits "+str(resolution))
 			app.build_details()
 			await capture("build-%d" % resolution.x)
 			check(actions_fit(),"Build actions fit "+str(resolution))

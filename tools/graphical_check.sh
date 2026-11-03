@@ -30,5 +30,6 @@ else
  run maintenance-visual -s res://tests/maintenance_visual_runner.gd
  run ui-fixes-visual -s res://tests/ui_fixes_visual_runner.gd
  run ui-text-visual -s res://tests/ui_text_runner.gd
+ run layout-visual -s res://tests/layout_visual_runner.gd
  run render-readonly -s res://tests/render_readonly_runner.gd
 fi

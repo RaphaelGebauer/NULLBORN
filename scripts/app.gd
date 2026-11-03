@@ -4,6 +4,7 @@ var save_feedback_label: Label
 var save_retry_button: Button
 var save_notice: Label
 var detail_scroll: ScrollContainer
+var equipment_view: VBoxContainer
 var detail_actions: HBoxContainer
 const Model = preload("res://scripts/run_model.gd")
 const World = preload("res://scripts/world.gd")
@@ -220,15 +221,13 @@ func resume() -> void:
 	save_notice.modulate=Color("f0bc82")
 	ui.add_child(save_notice)
 	get_tree().paused=false
-func build_text(include_imprints: bool=true,columns: int=0) -> String:
+func build_text(include_imprints: bool=true) -> String:
 	var rows: Array=[]
 	for pair in [["Weapons",model.weapons],["Passives",model.passives]]:
 		var names: Array=[]
 		for id in pair[1]: names.append("◆ %s Lv%d" % [model.title(id),pair[1][id]])
 		for i in range(6-pair[1].size()): names.append("◇")
-		if columns>0:
-			for first in range(0,names.size(),columns): rows.append((pair[0]+": " if first==0 else "    ")+"  ·  ".join(names.slice(first,first+columns)))
-		else: rows.append(pair[0]+": "+"  ·  ".join(names))
+		rows.append(pair[0]+": "+"  ·  ".join(names))
 	var names: Array=[]
 	for id in model.runes: names.append(model.title(id))
 	rows.append("Runes: "+" · ".join(names))
@@ -382,7 +381,7 @@ func result(victory: bool) -> void:
 	report_label("Unlocked: "+(", ".join(model.unlocked_this_run.map(func(id):return Report.source_name(model,id))) if not model.unlocked_this_run.is_empty() else "None"),17)
 func detail_page(title: String,subtitle: String,actions: Array) -> void:
 	box(title,subtitle)
-	panel.custom_minimum_size.x=1050
+	panel.custom_minimum_size.x=minf(1050,get_viewport().get_visible_rect().size.x-40)
 	panel.get_child(1).autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	detail_scroll=ui.get_child(1)
 	detail_scroll.offset_bottom=-90
@@ -395,10 +394,12 @@ func detail_page(title: String,subtitle: String,actions: Array) -> void:
 	detail_actions.offset_bottom=-14
 	detail_actions.add_theme_constant_override("separation",20)
 	ui.add_child(detail_actions)
+	detail_actions.alignment=BoxContainer.ALIGNMENT_CENTER
 	for action in actions:
 		var node:=Button.new()
 		node.text=action[0]
-		node.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+		node.size_flags_horizontal=Control.SIZE_EXPAND_FILL if actions.size()>1 else Control.SIZE_SHRINK_CENTER
+		node.custom_minimum_size.x=300 if actions.size()==1 else 0
 		node.add_theme_font_size_override("font_size",20)
 		style_button(node)
 		node.pressed.connect(action[1])
@@ -408,7 +409,7 @@ func detail_page(title: String,subtitle: String,actions: Array) -> void:
 	first.focus_neighbor_left=first.get_path_to(last)
 	last.focus_neighbor_right=last.get_path_to(first)
 	focus_button.call_deferred(first)
-	report_label("↑/↓ Scroll · ←/→ Actions · A/Enter Confirm",14)
+	report_label("↑/↓ Scroll · A/Enter Back" if actions.size()==1 else "↑/↓ Scroll · ←/→ Actions · A/Enter Confirm",14)
 func report_label(text: String,size: int=18) -> Label:
 	var node: Label=label(text,size)
 	node.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
@@ -418,20 +419,27 @@ func pause_game() -> void:
 	state="PAUSED"
 	get_tree().paused=true
 	box("PAUSE")
-	panel.custom_minimum_size.x=1000
-	report_label(build_text(false,3),17)
+	panel.custom_minimum_size.x=minf(1050,get_viewport().get_visible_rect().size.x-40)
+	panel.add_theme_constant_override("separation",6)
+	show_equipment(false)
 	label(pause_recipe_text(false),15)
 	label(instability_details(),15)
 	save_feedback(pause_game)
-	button("Resume",resume)
-	button("Build Details",build_details)
-	button("Settings",func(): return_to_pause=true; settings())
-	button("End Run",confirm_end)
+	for action in [["Resume",resume],["Build Details",build_details],["Settings",func(): return_to_pause=true; settings()],["End Run",confirm_end]]:
+		var node: Button=button(action[0],action[1])
+		node.custom_minimum_size.y=44
+		node.add_theme_font_size_override("font_size",18)
+func show_equipment(detailed: bool) -> void:
+	equipment_view=preload("res://scripts/ui/equipment_view.gd").new()
+	equipment_view.model=model
+	equipment_view.detailed=detailed
+	panel.add_child(equipment_view)
 func build_details() -> void:
 	if model.finished: return
 	state="BUILD"
 	get_tree().paused=true
-	detail_page("BUILD DETAILS","Equipment, bonuses & stats",[["Back to Pause",pause_game],["Resume",resume]])
+	detail_page("BUILD DETAILS","Equipment, bonuses & stats",[["Back",pause_game]])
+	show_equipment(true)
 	for section in Report.build_sections(model,world):
 		label(section[0],25)
 		report_label(section[1],18)

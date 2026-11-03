@@ -432,6 +432,9 @@ func _input(event: InputEvent) -> void:
 			detail_scroll.scroll_vertical+=65 if event.is_action_pressed("ui_down") else -65
 			get_viewport().set_input_as_handled()
 func _unhandled_input(event: InputEvent) -> void:
+	if state=="SETTINGS" and event.is_action_pressed("ui_cancel"):
+		leave_settings()
+		return
 	if state=="SAVE_ERROR" and event.is_action_pressed("ui_cancel"):
 		menu()
 		return
@@ -597,6 +600,8 @@ func set_setting(key: String,value: Variant) -> void:
 	save.save()
 	if key=="fullscreen": settings()
 func settings() -> void:
+	state="SETTINGS"
+	if return_to_pause: get_tree().paused=true
 	box("SETTINGS")
 	save_feedback(settings)
 	var scroll:=ScrollContainer.new()
@@ -639,9 +644,11 @@ func settings() -> void:
 		hint.text="Window size is controlled by the editor. Run in a separate window to change it."
 		rows.add_child(hint)
 	if not return_to_pause: button("Reset All Data…",confirm_reset)
-	button("Back",func():
-		if return_to_pause: resume()
-		else: menu())
+	button("Back",leave_settings)
+
+func leave_settings() -> void:
+	if return_to_pause: pause_game()
+	else: menu()
 
 func flat(color: Color,border: Color=Color.TRANSPARENT,width: int=0) -> StyleBoxFlat:
 	var style:=StyleBoxFlat.new()

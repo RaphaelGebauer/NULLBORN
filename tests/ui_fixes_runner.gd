@@ -85,6 +85,41 @@ func run() -> void:
 	check(app.pause_recipe_text().contains(fusion.display_name) and app.pause_recipe_text().contains("consumed by this evolution"),"Actually discovered recipes retain detailed requirements")
 	app.save.persistent=false
 	app.menu()
+	app.return_to_pause=false
+	app.settings()
+	check(app.state=="SETTINGS" and not paused,"Main menu Settings has a distinct navigation state")
+	for child in app.panel.get_children():
+		if child is Button and child.text=="Back": child.pressed.emit(); break
+	check(app.state=="MENU" and not paused,"Settings Back returns to main menu")
+	app.start_run()
+	app.choose_rune(0)
+	app.events=[]
+	app.pause_game()
+	app.return_to_pause=true
+	app.settings()
+	app.set_setting("music",.25)
+	var snapshot: Array=[app.model.time,app.model.xp,app.model.kills,app.world.combat.elapsed,app.world.player.position]
+	await create_timer(.1,true).timeout
+	check(app.state=="SETTINGS" and paused and snapshot==[app.model.time,app.model.xp,app.model.kills,app.world.combat.elapsed,app.world.player.position],"Settings freezes run clock, attacks, XP and player movement")
+	for child in app.panel.get_children():
+		if child is Button and child.text=="Back": child.pressed.emit(); break
+	await process_frame
+	check(app.state=="PAUSED" and paused and root.gui_get_focus_owner() is Button,"Pause Settings Back returns paused with controller focus")
+	await create_timer(.1,true).timeout
+	check(snapshot==[app.model.time,app.model.xp,app.model.kills,app.world.combat.elapsed,app.world.player.position],"Returning to Pause keeps gameplay stopped")
+	app.settings()
+	await process_frame
+	var cancel:=InputEventAction.new()
+	cancel.action="ui_cancel"
+	cancel.pressed=true
+	app._unhandled_input(cancel)
+	await process_frame
+	check(app.state=="PAUSED" and paused and app.save.data.settings.music==.25,"Settings Esc returns to Pause and preserves settings")
+	app._unhandled_input(cancel)
+	await create_timer(.1,true).timeout
+	check(app.state=="RUNNING" and not paused and app.model.time>float(snapshot[0]),"Explicit Pause cancel resumes simulation")
+	app.save.persistent=false
+	app.menu()
 	app.queue_free()
 	await process_frame
 	await process_frame

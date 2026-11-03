@@ -280,6 +280,13 @@ func describe(id: String) -> String:
 		var lv: int=weapons.get(id,0)
 		return "Weapon · Lv %d → %d\n%s" % [lv,lv+1,d.description if lv==0 else d.upgrades[lv-1].text]
 	return "Passives · Lv %d → %d\n%s" % [passives.get(id,0),passives.get(id,0)+1,d.description]
+# Read-only equipment query shared by pause reporting and actual chest eligibility.
+func recipe_matches(recipe: Resource,ready: bool=false) -> bool:
+	if weapons.has(recipe.id): return false
+	if passives.get(recipe.values.passive,0)<(recipe.values.get("passive_level",5) if ready else 1): return false
+	for base in recipe.values.bases:
+		if weapons.get(base,0)<(recipe.values.get("weapon_level",5) if ready else 1): return false
+	return true
 func evolution(eligible: bool) -> String:
 	if not eligible: return ""
 	var recipes: Array=registry.catalogs.evolution.values()
@@ -287,11 +294,7 @@ func evolution(eligible: bool) -> String:
 		if a.values.bases.size()!=b.values.bases.size(): return a.values.bases.size()>b.values.bases.size()
 		return a.id<b.id)
 	for recipe in recipes:
-		if weapons.has(recipe.id) or passives.get(recipe.values.passive,0)<recipe.values.get("passive_level",5): continue
-		var valid: bool=true
-		for base in recipe.values.bases:
-			if weapons.get(base,0)<recipe.values.get("weapon_level",5): valid=false
-		if not valid: continue
+		if not recipe_matches(recipe,true): continue
 		var inherited: Array=[]
 		for i in range(recipe.values.bases.size()):
 			var base: String=recipe.values.bases[i]

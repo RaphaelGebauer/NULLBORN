@@ -52,6 +52,37 @@ func run() -> void:
 	DirAccess.remove_absolute(app.save.path+".tmp")
 	app.save_retry_button.pressed.emit()
 	check(not app.save.pending_write and app.save.warning.is_empty(),"Real storage retry clears error after recovery")
+	app.model=load("res://scripts/run_model.gd").new()
+	app.save.data.evolved_recipes=[]
+	app.model.weapons={"arcane_needle":1}
+	app.model.passives={}
+	check(app.pause_recipe_text().begins_with("No evolution recipes currently match"),"Weapon without catalyst matches zero recipes")
+	app.model.weapons.arcane_needle=3
+	app.model.passives={"power_core":2}
+	check(app.pause_recipe_text().begins_with("1 matching evolution recipe · 0 ready"),"All components below thresholds match but are not ready")
+	app.model.weapons.arcane_needle=5
+	app.model.passives.power_core=5
+	text=app.pause_recipe_text()
+	check(text.begins_with("1 matching evolution recipe · 1 ready") and not text.contains("Star Piercer") and not text.contains("Power Core"),"Ready unknown recipe reveals count only")
+	check(not app.model.evolution(false) and app.model.weapons.has("arcane_needle"),"UI readiness never bypasses chest eligibility")
+	app.model.weapons={"ash_bow":5,"frost_shard":5}
+	app.model.passives={"runner_boots":5}
+	var fusion: Resource=app.catalog.get_def("dusk_storm")
+	check(app.model.recipe_matches(fusion,true),"Fusion requires both bases and catalyst at required levels")
+	var expected: int=0
+	for recipe in app.catalog.catalogs.evolution.values():
+		if app.model.recipe_matches(recipe): expected+=1
+	check(app.pause_recipe_text().begins_with(str(expected)+" matching evolution recipe"),"Recipe candidates counted once each including fusion")
+	app.model.weapons.erase("frost_shard")
+	check(not app.model.recipe_matches(fusion),"Missing fusion component cannot match")
+	app.model.weapons.frost_shard=5
+	var before: Array=[app.model.time,app.model.xp,app.model.rng.state,app.model.weapons.duplicate(true)]
+	app.pause_recipe_text()
+	check(before==[app.model.time,app.model.xp,app.model.rng.state,app.model.weapons],"Recipe reporting leaves gameplay and RNG untouched")
+	check(app.model.evolution(true)=="dusk_storm","Actual eligible chest still prioritizes fusion")
+	check(not app.model.recipe_matches(fusion) and not app.model.weapons.has("ash_bow") and not app.model.weapons.has("frost_shard"),"Consumed bases and completed recipe cannot count again")
+	app.save.mark_evolved("dusk_storm")
+	check(app.pause_recipe_text().contains(fusion.display_name) and app.pause_recipe_text().contains("consumed by this evolution"),"Actually discovered recipes retain detailed requirements")
 	app.save.persistent=false
 	app.menu()
 	app.queue_free()

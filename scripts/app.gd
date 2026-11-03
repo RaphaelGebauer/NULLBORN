@@ -674,23 +674,32 @@ func character_overview() -> void:
 	button("Back",menu)
 func pause_recipe_text() -> String:
 	var lines: Array[String]=[]
+	var matching: int=0
+	var ready: int=0
 	var unknown: int=0
+	var unknown_ready: int=0
 	for recipe in catalog.catalogs.evolution.values():
-		var relevant: bool=model.weapons.has(recipe.id)
+		var matches: bool=model.recipe_matches(recipe)
+		var levels_ready: bool=model.recipe_matches(recipe,true)
+		if matches: matching+=1
+		if levels_ready: ready+=1
+		if not save.discovered(recipe.id,"evolution"):
+			if matches: unknown+=1
+			if levels_ready: unknown_ready+=1
+			continue
+		var relevant: bool=matches or model.weapons.has(recipe.id)
 		for base in recipe.values.bases:
 			if model.weapons.has(base): relevant=true
 		if not relevant: continue
-		if save.discovered(recipe.id,"evolution"):
-			var requirements: Array[String]=[]
-			for base in recipe.values.bases:
-				requirements.append("%s Lv5 · %s" % [model.title(base),"consumed by this evolution" if model.weapons.has(recipe.id) else "ready" if model.weapons.get(base,0)>=5 else "current Lv%d" % model.weapons.get(base,0)])
-			var catalyst: String=recipe.values.passive
-			requirements.append("%s Lv5 · %s" % [model.title(catalyst),"ready" if model.passives.get(catalyst,0)>=5 else "current Lv%d" % model.passives.get(catalyst,0)])
-			lines.append(recipe.display_name+": "+recipe.description+"\n"+" · ".join(requirements)+"\nRequires a chest from a boss spawned at 10:00 or later.")
-		else: unknown+=1
-	if unknown>0:
-		lines.append("Your current weapons connect to %d undiscovered evolution path%s.\nExperiment with equipment to uncover them." % [unknown,"s" if unknown!=1 else ""])
-	if lines.is_empty(): lines.append("No evolution paths for your current weapons.")
+		var requirements: Array[String]=[]
+		for base in recipe.values.bases:
+			requirements.append("%s Lv%d · %s" % [model.title(base),recipe.values.get("weapon_level",5),"consumed by this evolution" if model.weapons.has(recipe.id) else "ready" if model.weapons.get(base,0)>=recipe.values.get("weapon_level",5) else "current Lv%d" % model.weapons.get(base,0)])
+		var catalyst: String=recipe.values.passive
+		requirements.append("%s Lv%d · %s" % [model.title(catalyst),recipe.values.get("passive_level",5),"ready" if model.passives.get(catalyst,0)>=recipe.values.get("passive_level",5) else "current Lv%d" % model.passives.get(catalyst,0)])
+		lines.append(recipe.display_name+": "+recipe.description+"\n"+" · ".join(requirements))
+	lines.push_front("No evolution recipes currently match your equipped weapons and passives." if matching==0 else "%d matching evolution recipe%s · %d ready for an eligible boss chest" % [matching,"s" if matching!=1 else "",ready])
+	if unknown>0: lines.insert(1,"Matching undiscovered evolution recipes: %d · %d ready" % [unknown,unknown_ready])
+	lines.append("Requires a chest from a boss spawned at 10:00 or later.")
 	return "\n".join(lines)
 func confirm_reset() -> void:
 	if return_to_pause: return

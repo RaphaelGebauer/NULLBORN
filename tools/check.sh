@@ -28,6 +28,7 @@ check constellations --headless --path . -s res://tests/constellation_runner.gd
 check polish --headless --path . -s res://tests/polish_runner.gd
 check catalog --headless --path . -s res://tests/catalog_runner.gd
 check maintenance --headless --path . -s res://tests/maintenance_runner.gd
+check ui-fixes --headless --path . -s res://tests/ui_fixes_runner.gd
 if [[ "${1:-}" == "--long" ]]; then
  check stress --headless --path . -s res://tests/stress_runner.gd
  check full-run --headless --path . -s res://tests/full_run_runner.gd

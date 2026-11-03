@@ -767,6 +767,7 @@ func star_map() -> void:
 	map.save=save
 	panel.add_child(map)
 	button("Back to Main Menu",menu)
+	save_feedback(star_map)
 
 func save_feedback(redraw: Callable) -> void:
 	save_feedback_label=label(save.warning,14)

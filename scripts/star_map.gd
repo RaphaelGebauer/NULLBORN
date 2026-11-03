@@ -32,20 +32,7 @@ func _ready() -> void:
 		node.position=Vector2(20+d.path*365+(25 if d.rank%2==0 else 0),60+(d.rank-1)*58)
 		node.size=Vector2(295,47)
 		node.add_theme_font_size_override("font_size",17)
-		var style:=StyleBoxFlat.new()
-		style.bg_color=Color("172c3b")
-		style.border_color=COLORS[d.path].darkened(.45)
-		style.set_border_width_all(1)
-		style.set_corner_radius_all(20)
-		node.add_theme_stylebox_override("normal",style)
-		var focused: StyleBoxFlat=style.duplicate()
-		focused.border_color=COLORS[d.path]
-		focused.set_border_width_all(3)
-		node.add_theme_stylebox_override("focus",focused)
-		node.add_theme_stylebox_override("hover",focused)
 		node.tooltip_text=description(id)
-		node.focus_entered.connect(select.bind(id))
-		node.mouse_entered.connect(select.bind(id))
 		node.pressed.connect(select.bind(id))
 		canvas.add_child(node)
 		nodes[id]=node
@@ -82,23 +69,54 @@ func _ready() -> void:
 func description(id: String) -> String:
 	var d: Dictionary=Stars.NODES[id]
 	var previous: String=Stars.predecessor(id)
-	return "%s · %d Starlight\n%s\nRequires: %s · %s" % [d.name,d.rank,d.effect,"None" if previous.is_empty() else Stars.NODES[previous].name,"Owned" if id in save.data.constellation_nodes else "Available" if save.star_available(id) else "Locked"]
+	var reason: String=save.star_purchase_error(id)
+	return "%s · %d Starlight\n%s\nRequires: %s · %s" % [d.name,d.rank,d.effect,"None" if previous.is_empty() else Stars.NODES[previous].name,"Available" if reason.is_empty() else reason]
 func select(id: String) -> void:
 	selected=id
 	if is_instance_valid(detail):
 		detail.text=description(id)
 		purchase.text="Owned" if id in save.data.constellation_nodes else "Unlock · %d Starlight" % Stars.NODES[id].rank
+		purchase.disabled=id in save.data.constellation_nodes
 		purchase.tooltip_text=description(id)
+		for other in nodes: style_node(other)
+func style_node(id: String) -> void:
+	var color: Color=COLORS[Stars.NODES[id].path]
+	var style:=StyleBoxFlat.new()
+	style.bg_color=Color("172c3b")
+	style.border_color=color if id==selected else color.darkened(.45)
+	style.set_border_width_all(3 if id==selected else 1)
+	style.set_corner_radius_all(20)
+	nodes[id].add_theme_stylebox_override("normal",style)
+	var hover: StyleBoxFlat=style.duplicate()
+	hover.bg_color=style.bg_color.lightened(.08)
+	nodes[id].add_theme_stylebox_override("hover",hover)
+	nodes[id].add_theme_stylebox_override("pressed",hover)
+	# Focus overlays normal/hover: keep it distinct from the persistent outer ring.
+	var focused:=StyleBoxFlat.new()
+	focused.bg_color=Color.TRANSPARENT
+	focused.border_color=color.darkened(.2)
+	focused.set_border_width_all(1)
+	focused.set_corner_radius_all(16)
+	focused.expand_margin_left=-5
+	focused.expand_margin_right=-5
+	focused.expand_margin_top=-5
+	focused.expand_margin_bottom=-5
+	nodes[id].add_theme_stylebox_override("focus",focused)
 func refresh() -> void:
 	wallet.text="%d Starlight · %d / 18 stars awakened · Bonuses begin next run" % [save.data.starlight,save.data.constellation_nodes.size()]
 	for id in nodes:
 		var d: Dictionary=Stars.NODES[id]
 		nodes[id].text=("✦ " if id in save.data.constellation_nodes else "◇ ")+d.name+" · "+str(d.rank)
-		nodes[id].modulate=COLORS[d.path] if id in save.data.constellation_nodes else Color.WHITE if save.star_available(id) else Color(.6,.65,.72)
+		# Modulate text only, so locked selections keep their full-color outline.
+		nodes[id].add_theme_color_override("font_color",COLORS[d.path] if id in save.data.constellation_nodes else Color.WHITE if save.star_available(id) else Color(.6,.65,.72))
 		nodes[id].tooltip_text=description(id)
 	select(selected)
 	queue_redraw()
 func buy_selected() -> void:
+	var reason: String=save.star_purchase_error(selected)
+	if not reason.is_empty():
+		detail.text=description(selected)
+		return
 	if save.buy_star(selected): refresh()
 	else: detail.text=description(selected)+"\n"+save.warning
 func _draw() -> void:

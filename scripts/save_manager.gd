@@ -179,14 +179,20 @@ func finish_run(model: RefCounted,victory: bool) -> Array:
 		if not id in model.unlocked_this_run: model.unlocked_this_run.append(id)
 	return added
 
-func star_available(id: String) -> bool:
-	if not Stars.NODES.has(id) or id in data.constellation_nodes: return false
+func star_purchase_error(id: String) -> String:
+	if not Stars.NODES.has(id): return "Unknown star."
+	if id in data.constellation_nodes: return "This star is already unlocked."
 	var previous: String=Stars.predecessor(id)
-	return (previous.is_empty() or previous in data.constellation_nodes) and data.starlight>=Stars.NODES[id].rank
+	if not previous.is_empty() and not previous in data.constellation_nodes:
+		return "Requires %s to be unlocked first." % Stars.NODES[previous].name
+	if data.starlight<Stars.NODES[id].rank:
+		return "Not enough Starlight. Required: %d, Available: %d." % [Stars.NODES[id].rank,data.starlight]
+	return ""
+func star_available(id: String) -> bool:
+	return star_purchase_error(id).is_empty()
 func buy_star(id: String) -> bool:
-	if not star_available(id):
-		warning="Already owned, missing prerequisite, or not enough Starlight."
-		return false
+	# Expected purchase restrictions are local UI hints, never persistence warnings.
+	if not star_available(id): return false
 	var previous: Dictionary=data.duplicate(true)
 	var was_pending: bool=pending_write
 	data.starlight-=Stars.NODES[id].rank

@@ -23,7 +23,17 @@ func run() -> void:
 	right.pressed=true
 	Input.parse_input_event(right)
 	await process_frame
-	check(map.selected=="veil_seed","Controller action navigates between constellation branches")
+	check(map.selected=="comet_spark" and root.gui_get_focus_owner()==map.nodes.veil_seed,"Controller focus navigates without selecting")
+	var accept:=InputEventAction.new()
+	accept.action="ui_accept"
+	accept.pressed=true
+	Input.parse_input_event(accept)
+	await process_frame
+	accept=accept.duplicate()
+	accept.pressed=false
+	Input.parse_input_event(accept)
+	await process_frame
+	check(map.selected=="veil_seed","Controller confirmation selects focused star")
 	app.start_run()
 	app.choose_rune(0)
 	app.world.set_physics_process(false)

@@ -18,14 +18,14 @@ func run() -> void:
 	await capture("embedded-star-map")
 	var map=app.panel.get_child(2)
 	map.nodes.comet_spark.grab_focus()
-	var right:=InputEventAction.new()
-	right.action="ui_right"
+	var right:=InputEventJoypadButton.new()
+	right.button_index=JOY_BUTTON_DPAD_RIGHT
 	right.pressed=true
 	Input.parse_input_event(right)
 	await process_frame
 	check(map.selected=="comet_spark" and root.gui_get_focus_owner()==map.nodes.veil_seed,"Controller focus navigates without selecting")
-	var accept:=InputEventAction.new()
-	accept.action="ui_accept"
+	var accept:=InputEventJoypadButton.new()
+	accept.button_index=JOY_BUTTON_A
 	accept.pressed=true
 	Input.parse_input_event(accept)
 	await process_frame

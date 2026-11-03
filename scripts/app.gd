@@ -57,6 +57,18 @@ func setup_input() -> void:
 		stick.axis=JOY_AXIS_LEFT_X if action in ["move_left","move_right"] else JOY_AXIS_LEFT_Y
 		stick.axis_value=-1 if action in ["move_left","move_up"] else 1
 		InputMap.action_add_event(action,stick)
+	# This engine's built-in UI actions contain keyboard bindings only.
+	# Bind real controller events, rather than relying on synthetic UI actions.
+	var menu_buttons: Dictionary={"ui_accept":JOY_BUTTON_A,"ui_cancel":JOY_BUTTON_B,"ui_left":JOY_BUTTON_DPAD_LEFT,"ui_right":JOY_BUTTON_DPAD_RIGHT,"ui_up":JOY_BUTTON_DPAD_UP,"ui_down":JOY_BUTTON_DPAD_DOWN}
+	for action in menu_buttons:
+		var event:=InputEventJoypadButton.new()
+		event.button_index=menu_buttons[action]
+		if not InputMap.action_has_event(action,event): InputMap.action_add_event(action,event)
+	for action in ["ui_left","ui_right","ui_up","ui_down"]:
+		var stick:=InputEventJoypadMotion.new()
+		stick.axis=JOY_AXIS_LEFT_X if action in ["ui_left","ui_right"] else JOY_AXIS_LEFT_Y
+		stick.axis_value=-1 if action in ["ui_left","ui_up"] else 1
+		if not InputMap.action_has_event(action,stick): InputMap.action_add_event(action,stick)
 	var start:=InputEventJoypadButton.new()
 	start.button_index=JOY_BUTTON_START
 	InputMap.action_add_event("ui_cancel",start)

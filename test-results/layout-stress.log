@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+STRESS 0 s · Gegner 382 · Projektile 260
+STRESS 30 s · Gegner 373 · Projektile 236
+STRESS 60 s · Gegner 367 · Projektile 217
+STRESS 90 s · Gegner 370 · Projektile 211
+STRESS 120 s · Gegner 373 · Projektile 210
+STRESS 150 s · Gegner 370 · Projektile 209
+PASS 180 simulierte Sekunden / 5400 Schritte; Laufzeit 27.353 s; Peaks Gegner/Projektile/Pickups: 382/260/300; Kills 11905
+E4: reaction events 7200; capped visual peak <=6; hazards <=100

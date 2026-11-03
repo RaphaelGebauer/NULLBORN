@@ -3,6 +3,17 @@
 Engine requirement: **Godot 4.7.2 Stable**, GDScript 2.0. Original brief preserved in `CODEX_MASTERPROMPT.md`; the latest user-requested English, progression and evolution changes override its earlier language/balance requirements.
 
 
+
+## Equipment layout and combat balance — complete (2026-11-03)
+
+Continued published main `9f90a36`. Pause now uses centered, equal-width six-slot weapon/passive rows and centered runes. Build uses compact 3×2 equipment grids with levels/types, effects and full inherited mutations; one fixed centered **Back** action returns to Pause via mouse, Enter/A or Esc/B without advancing the session. App retains navigation ownership and the shared view only reads the live Model, refreshing from inventory/rune signals. Remaining sections and completed-only recipe disclosure are preserved. UI commit `e029bdb`; balance commit `c6872d9`.
+
+Central movement **0.7125 → 0.57** (current speeds ×0.8): Lyra/Eira **156.75 → 125.4 px/s**, Brann **146.0625 → 116.85**, Noctis **174.5625 → 139.65**. All bonuses and 500 cap remain. Non-boss spawn HP **×1.0 → ×1.2** exactly once, including children/summons and before unchanged elite multipliers; bosses are exempt. Player damage remains 0.93. Enemy speed/damage/rewards, schedules, time domains, resources/catalogs and save schema/code are unchanged.
+
+Godot **4.7.2 Stable**: **1238 functional PASS / 0 FAIL**, seven Python tests, exact staged generators; seed 115 passes 179 unit checks. Native graphics **221 assertions** (120 new), real embedded host **9**; all three resolutions and UI scales 1.0/1.2, actual mouse/keyboard/joypad navigation, empty/full grids and inherited fusion imprints. Clean import/parser and final logs; no engine errors/leaks, known software VSync warning only. Normal/Quick both complete 30:00 with correct 1800/900 combat seconds, all boss phase transitions, rifts/reactions and idempotent rewards. Stress stays within entity budgets. [Commands, measurements, screenshots and limits](docs/LAYOUT_BALANCE_REPORT.md).
+
+Opening caution: the seed-115 non-adaptive circular-route probe, without immunity, takes Brann from 180 s alive (7 HP) to defeat at 88.70 s; Lyra improves, Eira/Noctis lose on both settings. The unchanged Mite ramp can overtake base Brann after about 2½ minutes. This is documented pressure for a human opening playtest, not an additional tuning authorization; no compensating balance changes were made. Full-run/stress immunity is only a systems fixture. Physical devices, target GPU/DPI and human difficulty remain manual. Final publication hash is reported after verifying main's remote ref/tree.
+
 ## UI text cleanup — complete (2026-11-03)
 
 Continued GitHub main `e058ab8`, preserving its newer navigation/recipe/balance corrections. English UI now uses shorter labels, one Star Map prerequisite, precise local purchase reasons and **Veil**. Characters/pre-run menus drop redundant introductions; Star Forge uses two-line upgrade entries. Pause keeps compact equipment/count/status rows; Build retains discovered recipes/chest eligibility, mutation details and instability factors. Results keep measured statistics and move calculation/attribution help to a tooltip. Rift F/Y help stays contextual. No gameplay, resource, ID or save-schema changes.

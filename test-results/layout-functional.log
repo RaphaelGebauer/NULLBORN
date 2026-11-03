@@ -1,0 +1,1378 @@
+PASS staged generators: exact catalog file set and byte-identical definitions/scripts; project untouched
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.231s
+
+OK
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (5 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started Scanning actions... (30 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | layout-bonuses-1280-1.0-full.png[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | layout-bonuses-1280-1.2-full.png[39m[0m
+[   6% ] [90m[1m_update_scan_actions[22m | layout-bonuses-1600-1.0-full.png[39m[0m
+[   9% ] [90m[1m_update_scan_actions[22m | layout-bonuses-1600-1.2-full.png[39m[0m
+[  12% ] [90m[1m_update_scan_actions[22m | layout-bonuses-1920-1.0-full.png[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | layout-bonuses-1920-1.2-full.png[39m[0m
+[  19% ] [90m[1m_update_scan_actions[22m | layout-build-1280-1.0-empty.png[39m[0m
+[  22% ] [90m[1m_update_scan_actions[22m | layout-build-1280-1.0-full.png[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | layout-build-1280-1.2-empty.png[39m[0m
+[  29% ] [90m[1m_update_scan_actions[22m | layout-build-1280-1.2-full.png[39m[0m
+[  32% ] [90m[1m_update_scan_actions[22m | layout-build-1600-1.0-empty.png[39m[0m
+[  35% ] [90m[1m_update_scan_actions[22m | layout-build-1600-1.0-full.png[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | layout-build-1600-1.2-empty.png[39m[0m
+[  41% ] [90m[1m_update_scan_actions[22m | layout-build-1600-1.2-full.png[39m[0m
+[  45% ] [90m[1m_update_scan_actions[22m | layout-build-1920-1.0-empty.png[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | layout-build-1920-1.0-full.png[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | layout-build-1920-1.2-empty.png[39m[0m
+[  54% ] [90m[1m_update_scan_actions[22m | layout-build-1920-1.2-full.png[39m[0m
+[  58% ] [90m[1m_update_scan_actions[22m | layout-pause-1280-1.0-empty.png[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | layout-pause-1280-1.0-full.png[39m[0m
+[  64% ] [90m[1m_update_scan_actions[22m | layout-pause-1280-1.2-empty.png[39m[0m
+[  67% ] [90m[1m_update_scan_actions[22m | layout-pause-1280-1.2-full.png[39m[0m
+[  70% ] [90m[1m_update_scan_actions[22m | layout-pause-1600-1.0-empty.png[39m[0m
+[  74% ] [90m[1m_update_scan_actions[22m | layout-pause-1600-1.0-full.png[39m[0m
+[  77% ] [90m[1m_update_scan_actions[22m | layout-pause-1600-1.2-empty.png[39m[0m
+[  80% ] [90m[1m_update_scan_actions[22m | layout-pause-1600-1.2-full.png[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | layout-pause-1920-1.0-empty.png[39m[0m
+[  87% ] [90m[1m_update_scan_actions[22m | layout-pause-1920-1.0-full.png[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | layout-pause-1920-1.2-empty.png[39m[0m
+[  93% ] [90m[1m_update_scan_actions[22m | layout-pause-1920-1.2-full.png[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (16 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   5% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  11% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  17% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  23% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  29% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  35% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  41% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  47% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  52% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  58% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  64% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  70% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  76% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  82% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  88% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing pre-reimport operations...[39m[0m
+[   0% ] [90m[1mreimport[22m | layout-bonuses-1600-1.0-full.png[39m[0m
+[   5% ] [90m[1mreimport[22m | layout-bonuses-1920-1.2-full.png[39m[0m
+[  11% ] [90m[1mreimport[22m | layout-build-1920-1.2-empty.png[39m[0m
+[  17% ] [90m[1mreimport[22m | layout-build-1920-1.2-full.png[39m[0m
+[  23% ] [90m[1mreimport[22m | layout-pause-1280-1.0-empty.png[39m[0m
+[  29% ] [90m[1mreimport[22m | layout-pause-1280-1.0-full.png[39m[0m
+[  35% ] [90m[1mreimport[22m | layout-pause-1280-1.2-empty.png[39m[0m
+[  41% ] [90m[1mreimport[22m | layout-pause-1280-1.2-full.png[39m[0m
+[  47% ] [90m[1mreimport[22m | layout-pause-1600-1.0-empty.png[39m[0m
+[  52% ] [90m[1mreimport[22m | layout-pause-1600-1.0-full.png[39m[0m
+[  58% ] [90m[1mreimport[22m | layout-pause-1600-1.2-empty.png[39m[0m
+[  64% ] [90m[1mreimport[22m | layout-pause-1600-1.2-full.png[39m[0m
+[  70% ] [90m[1mreimport[22m | layout-pause-1920-1.0-empty.png[39m[0m
+[  76% ] [90m[1mreimport[22m | layout-pause-1920-1.0-full.png[39m[0m
+[  82% ] [90m[1mreimport[22m | layout-pause-1920-1.2-empty.png[39m[0m
+[  88% ] [90m[1mreimport[22m | layout-pause-1920-1.2-full.png[39m[0m
+[  94% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (16 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Standardheld
+PASS XP-Startkurve
+PASS XP-Overflow und Level-Queue
+PASS Drei eindeutige Karten
+PASS Heilungsdeckel
+PASS Echtes automatisches Projektil tötet Gegner
+PASS Registry validiert Ressourcen und Abhängigkeiten
+PASS Katalog weapon
+PASS Katalog passive
+PASS Katalog enemy
+PASS Katalog character
+PASS Katalog wave
+PASS Katalog evolution
+PASS Katalog rune
+PASS Katalog stage
+PASS Sieben echte Upgrades: arcane_needle
+PASS Sieben echte Upgrades: ash_bow
+PASS Sieben echte Upgrades: frost_shard
+PASS Sieben echte Upgrades: gravity_mine
+PASS Sieben echte Upgrades: lightning_call
+PASS Sieben echte Upgrades: meteor_rain
+PASS Sieben echte Upgrades: moon_blade
+PASS Sieben echte Upgrades: prism_disc
+PASS Sieben echte Upgrades: reaper_gaze
+PASS Sieben echte Upgrades: shadow_fan
+PASS Sieben echte Upgrades: soul_well
+PASS Sieben echte Upgrades: spark_orbit
+PASS Sieben echte Upgrades: storm_bomb
+PASS Sieben echte Upgrades: sun_beam
+PASS Sieben echte Upgrades: thorn_halo
+PASS 6+6 voll und maximal: keine illegalen Angebote
+PASS Drei verschiedene Fallbacks
+PASS Fresh runs have no unpaid selection tools
+PASS Reroll verbraucht Charge
+PASS Banish schließt Item aus
+PASS Skip mit XP und Charge
+PASS Passivwerte deterministisch
+PASS Keine multiplikative Stat-Drift
+PASS Echter Schaden durch needle
+PASS Echter Schaden durch aura
+PASS Echter Schaden durch orbit
+PASS Echter Schaden durch beam
+PASS Echter Schaden durch bomb
+PASS XP-Merging erhält Wert
+PASS Gold nur einmal gesammelt
+PASS Evolution braucht Katalysator
+PASS Lv4 catalyst cannot evolve weapon
+PASS Alte Boss-Truhe bleibt nicht evolutionsfähig
+PASS Evolution ersetzt Basis, erhält Slotzahl
+PASS Fusion hat Vorrang und gibt Slot frei
+PASS Funktionale Evolutionsdaten blood_thorns
+PASS Funktionale Evolutionsdaten comet_shower
+PASS Funktionale Evolutionsdaten crescent_storm
+PASS Funktionale Evolutionsdaten day_night
+PASS Funktionale Evolutionsdaten dusk_storm
+PASS Funktionale Evolutionsdaten event_horizon
+PASS Funktionale Evolutionsdaten ghost_well
+PASS Funktionale Evolutionsdaten ice_prism
+PASS Funktionale Evolutionsdaten last_judgment
+PASS Funktionale Evolutionsdaten meteor_heart
+PASS Funktionale Evolutionsdaten night_storm
+PASS Funktionale Evolutionsdaten phoenix_fan
+PASS Funktionale Evolutionsdaten solar_orbit
+PASS Funktionale Evolutionsdaten spectral_carousel
+PASS Funktionale Evolutionsdaten star_piercer
+PASS Funktionale Evolutionsdaten thunder_grid
+PASS Funktionale Evolutionsdaten zenith_beam
+PASS Bosswelle 5
+PASS Bosswelle 10
+PASS Bosswelle 29
+PASS Sieg bei 30:00 und genau ein Endereignis
+PASS Level-Modal pausiert SceneTree
+PASS Pause stoppt Timer, Kampf und Welt
+PASS Truhe nach Level-up serialisiert
+PASS Runensegen nach Truhe serialisiert
+PASS Drei Modals ohne Deadlock aufgelöst
+PASS Save-Defaults
+PASS Shop blockiert unbezahlbaren Kauf
+PASS Shop-Kauf und Preis
+PASS Save/Load inklusive Settings
+PASS Korrupter Save wird gesichert und abgefangen
+PASS Save-Schema lehnt falsche Typen ab
+PASS Gold mit Fluchbonus nur einmal verbucht
+PASS Vier Helden und zweite Arena durch echte Erfolge freigeschaltet
+PASS I-Frames verhindern mehrfachen Kontaktschaden
+PASS Rüstung korrekt abgezogen
+PASS Regeneration nutzt Spielzeit
+PASS Max-HP-Änderung erhält HP-Anteil
+PASS Rune registriert: blood_moon
+PASS Rune registriert: chain_spark
+PASS Rune registriert: ice_crown
+PASS Rune registriert: resonance
+PASS Rune registriert: shard_star
+PASS Rune registriert: shield_sign
+PASS Rune registriert: time_anchor
+PASS Rune registriert: treasure
+PASS Blutmond heilt höchstens 30 HP pro Minute
+PASS Kampfresonanz alle 20 Kills
+PASS Resonanz läuft in Spielzeit aus
+PASS Treasure grants gold without bypassing reroll unlock
+PASS Brennen/Gift ticken und Slow bleibt aktiv
+PASS Status-Effekte laufen aus
+PASS Splitterstern erzeugt zusätzliches echtes Projektil
+PASS Zeitanker verlängert echten Beam
+PASS Slower starting movement
+PASS Long Stride increases movement with game time
+PASS Momentum Feather and Recovery Moss have real effects
+PASS Unselected equipment and characters stay hidden
+PASS Selecting equipment reveals its collection entry
+PASS Purchased meta ranks grant exact run charges
+PASS Treasure adds a reroll after its meta unlock
+PASS Audio controls never resize the window
+PASS Native embedded-window arguments detected
+PASS New saves default to 1920x1080
+PASS New weapon damages enemies: prism_disc
+PASS Prism Disc bounces to a different enemy
+PASS New weapon damages enemies: gravity_mine
+PASS Gravity Mine pulls and slows
+PASS New weapon damages enemies: reaper_gaze
+PASS Reaper's Gaze deals triple damage below 35% HP
+PASS Execution Seal amplifies direct damage to wounded enemies
+PASS Frost Thorns retaliates with actual damage and slow
+PASS Tod und Ergebnis
+PASS Charaktermenü gebaut
+PASS Shop, Einstellungen, Sammlung gebaut
+PASS Main-menu Characters is read-only
+PASS Locked overview character shows its name only
+PASS Browsing character overview does not mark a selection
+PASS Unlocked overview character shows details without a launch button
+PASS New Run still has playable character selection
+PASS Owning components or legacy seen flags does not reveal recipes
+PASS Collection recipes also require a completed evolution
+PASS Discover through an actual eligible evolution
+PASS Completed evolution reveals its recipe in pause and collection
+PASS Completed-evolution history survives save/load
+PASS Full reset writes a fresh save
+PASS Reset persists cleared progression and default settings
+PASS Main-menu settings includes a reset entry
+PASS Reset confirmation alone never deletes progress
+PASS Cancel preserves progress and returns to Settings
+PASS Confirmed reset clears all data and stale session selections
+PASS Twenty permanent meta upgrades are available
+PASS Fresh run has lower density and enemy speed
+PASS Opening pace ramps smoothly at its midpoint
+PASS Opening modifiers reach normal pace after eight minutes
+PASS Actual early enemy movement is slower
+PASS Requested base speed remains above early mite speed: brann
+PASS Requested base speed remains above early mite speed: eira
+PASS Requested base speed remains above early mite speed: lyra
+PASS Requested base speed remains above early mite speed: noctis
+PASS Actual opening auto-attack interval is slower
+PASS Actual friendly projectile starts slower
+PASS Hostile projectiles are slowed as well
+PASS Movement, missile and gathering meta upgrades take effect
+PASS Battle Rhythm accelerates weapons over time
+PASS Evasive Instinct adds escape speed at low HP
+PASS Escape bonus ends on recovery without stacking
+PASS Gathering Flow increases actual pickup movement
+PASS E1 old save gains additive star-map defaults
+PASS E1 migration preserves gold, upgrades, recipes and settings
+PASS E1 rejects invalid starlight values
+PASS E1 rejects duplicate constellation IDs
+PASS E1 full reset includes new persistent fields
+PASS E1 statistics clamp overkill and count real crits
+PASS E1 base and evolved sources stay separate
+PASS E1 bounded rolling DPS buckets age out old hits
+PASS E1 health statistics record actual healing and damage
+PASS E1 neutral and fusion element tags form a unique union
+PASS E1 instability threshold 24.99
+PASS E1 instability threshold 25
+PASS E1 instability threshold 49.99
+PASS E1 instability threshold 50
+PASS E1 instability threshold 74.99
+PASS E1 instability threshold 75
+PASS E1 instability threshold 89.99
+PASS E1 instability threshold 90
+PASS E1 instability threshold 100
+PASS E1 clamp, backward band change and baseline gain
+PASS E1 quick mode shares an explicit run-time delta
+Ergebnis: 0 Fehler
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS 45 valid unique mutation definitions
+PASS Three choices for arcane_needle
+PASS Lv4 queues once: mutation_hunter_thread
+PASS Select mutation_hunter_thread
+PASS No repeat or slot cost: mutation_hunter_thread
+PASS Functional base effect: mutation_hunter_thread
+PASS Ineligible chest still blocked: mutation_hunter_thread
+PASS Evolve and remove old imprint owner: mutation_hunter_thread
+PASS Full inherited imprint: mutation_hunter_thread
+PASS Functional evolved effect: mutation_hunter_thread
+PASS Lv4 queues once: mutation_split_filament
+PASS Select mutation_split_filament
+PASS No repeat or slot cost: mutation_split_filament
+PASS Functional base effect: mutation_split_filament
+PASS Ineligible chest still blocked: mutation_split_filament
+PASS Evolve and remove old imprint owner: mutation_split_filament
+PASS Full inherited imprint: mutation_split_filament
+PASS Functional evolved effect: mutation_split_filament
+PASS Lv4 queues once: mutation_star_mark
+PASS Select mutation_star_mark
+PASS No repeat or slot cost: mutation_star_mark
+PASS Functional base effect: mutation_star_mark
+PASS Ineligible chest still blocked: mutation_star_mark
+PASS Evolve and remove old imprint owner: mutation_star_mark
+PASS Full inherited imprint: mutation_star_mark
+PASS Functional evolved effect: mutation_star_mark
+PASS Three choices for ash_bow
+PASS Lv4 queues once: mutation_cinder_trail
+PASS Select mutation_cinder_trail
+PASS No repeat or slot cost: mutation_cinder_trail
+PASS Functional base effect: mutation_cinder_trail
+PASS Ineligible chest still blocked: mutation_cinder_trail
+PASS Evolve and remove old imprint owner: mutation_cinder_trail
+PASS Full inherited imprint: mutation_cinder_trail
+PASS Functional evolved effect: mutation_cinder_trail
+PASS Lv4 queues once: mutation_piercing_embers
+PASS Select mutation_piercing_embers
+PASS No repeat or slot cost: mutation_piercing_embers
+PASS Functional base effect: mutation_piercing_embers
+PASS Ineligible chest still blocked: mutation_piercing_embers
+PASS Evolve and remove old imprint owner: mutation_piercing_embers
+PASS Full inherited imprint: mutation_piercing_embers
+PASS Functional evolved effect: mutation_piercing_embers
+PASS Lv4 queues once: mutation_quickdraw
+PASS Select mutation_quickdraw
+PASS No repeat or slot cost: mutation_quickdraw
+PASS Functional base effect: mutation_quickdraw
+PASS Ineligible chest still blocked: mutation_quickdraw
+PASS Evolve and remove old imprint owner: mutation_quickdraw
+PASS Full inherited imprint: mutation_quickdraw
+PASS Functional evolved effect: mutation_quickdraw
+PASS Three choices for frost_shard
+PASS Lv4 queues once: mutation_glacier_bloom
+PASS Select mutation_glacier_bloom
+PASS No repeat or slot cost: mutation_glacier_bloom
+PASS Functional base effect: mutation_glacier_bloom
+PASS Ineligible chest still blocked: mutation_glacier_bloom
+PASS Evolve and remove old imprint owner: mutation_glacier_bloom
+PASS Full inherited imprint: mutation_glacier_bloom
+PASS Functional evolved effect: mutation_glacier_bloom
+PASS Lv4 queues once: mutation_shardsplit
+PASS Select mutation_shardsplit
+PASS No repeat or slot cost: mutation_shardsplit
+PASS Functional base effect: mutation_shardsplit
+PASS Ineligible chest still blocked: mutation_shardsplit
+PASS Evolve and remove old imprint owner: mutation_shardsplit
+PASS Full inherited imprint: mutation_shardsplit
+PASS Functional evolved effect: mutation_shardsplit
+PASS Lv4 queues once: mutation_whiteout
+PASS Select mutation_whiteout
+PASS No repeat or slot cost: mutation_whiteout
+PASS Functional base effect: mutation_whiteout
+PASS Ineligible chest still blocked: mutation_whiteout
+PASS Evolve and remove old imprint owner: mutation_whiteout
+PASS Full inherited imprint: mutation_whiteout
+PASS Functional evolved effect: mutation_whiteout
+PASS Three choices for gravity_mine
+PASS Lv4 queues once: mutation_dense_core
+PASS Select mutation_dense_core
+PASS No repeat or slot cost: mutation_dense_core
+PASS Functional base effect: mutation_dense_core
+PASS Ineligible chest still blocked: mutation_dense_core
+PASS Evolve and remove old imprint owner: mutation_dense_core
+PASS Full inherited imprint: mutation_dense_core
+PASS Functional evolved effect: mutation_dense_core
+PASS Lv4 queues once: mutation_residual_gravity
+PASS Select mutation_residual_gravity
+PASS No repeat or slot cost: mutation_residual_gravity
+PASS Functional base effect: mutation_residual_gravity
+PASS Ineligible chest still blocked: mutation_residual_gravity
+PASS Evolve and remove old imprint owner: mutation_residual_gravity
+PASS Full inherited imprint: mutation_residual_gravity
+PASS Functional evolved effect: mutation_residual_gravity
+PASS Lv4 queues once: mutation_twin_charges
+PASS Select mutation_twin_charges
+PASS No repeat or slot cost: mutation_twin_charges
+PASS Functional base effect: mutation_twin_charges
+PASS Ineligible chest still blocked: mutation_twin_charges
+PASS Evolve and remove old imprint owner: mutation_twin_charges
+PASS Full inherited imprint: mutation_twin_charges
+PASS Functional evolved effect: mutation_twin_charges
+PASS Three choices for lightning_call
+PASS Lv4 queues once: mutation_conductor
+PASS Select mutation_conductor
+PASS No repeat or slot cost: mutation_conductor
+PASS Functional base effect: mutation_conductor
+PASS Ineligible chest still blocked: mutation_conductor
+PASS Evolve and remove old imprint owner: mutation_conductor
+PASS Full inherited imprint: mutation_conductor
+PASS Functional evolved effect: mutation_conductor
+PASS Lv4 queues once: mutation_forked_current
+PASS Select mutation_forked_current
+PASS No repeat or slot cost: mutation_forked_current
+PASS Functional base effect: mutation_forked_current
+PASS Ineligible chest still blocked: mutation_forked_current
+PASS Evolve and remove old imprint owner: mutation_forked_current
+PASS Full inherited imprint: mutation_forked_current
+PASS Functional evolved effect: mutation_forked_current
+PASS Lv4 queues once: mutation_thunder_bind
+PASS Select mutation_thunder_bind
+PASS No repeat or slot cost: mutation_thunder_bind
+PASS Functional base effect: mutation_thunder_bind
+PASS Ineligible chest still blocked: mutation_thunder_bind
+PASS Evolve and remove old imprint owner: mutation_thunder_bind
+PASS Full inherited imprint: mutation_thunder_bind
+PASS Functional evolved effect: mutation_thunder_bind
+PASS Three choices for meteor_rain
+PASS Lv4 queues once: mutation_afterglow
+PASS Select mutation_afterglow
+PASS No repeat or slot cost: mutation_afterglow
+PASS Functional base effect: mutation_afterglow
+PASS Ineligible chest still blocked: mutation_afterglow
+PASS Evolve and remove old imprint owner: mutation_afterglow
+PASS Full inherited imprint: mutation_afterglow
+PASS Functional evolved effect: mutation_afterglow
+PASS Lv4 queues once: mutation_comet_shards
+PASS Select mutation_comet_shards
+PASS No repeat or slot cost: mutation_comet_shards
+PASS Functional base effect: mutation_comet_shards
+PASS Ineligible chest still blocked: mutation_comet_shards
+PASS Evolve and remove old imprint owner: mutation_comet_shards
+PASS Full inherited imprint: mutation_comet_shards
+PASS Functional evolved effect: mutation_comet_shards
+PASS Lv4 queues once: mutation_impact_wave
+PASS Select mutation_impact_wave
+PASS No repeat or slot cost: mutation_impact_wave
+PASS Functional base effect: mutation_impact_wave
+PASS Ineligible chest still blocked: mutation_impact_wave
+PASS Evolve and remove old imprint owner: mutation_impact_wave
+PASS Full inherited imprint: mutation_impact_wave
+PASS Functional evolved effect: mutation_impact_wave
+PASS Three choices for moon_blade
+PASS Lv4 queues once: mutation_crescent_chill
+PASS Select mutation_crescent_chill
+PASS No repeat or slot cost: mutation_crescent_chill
+PASS Functional base effect: mutation_crescent_chill
+PASS Ineligible chest still blocked: mutation_crescent_chill
+PASS Evolve and remove old imprint owner: mutation_crescent_chill
+PASS Full inherited imprint: mutation_crescent_chill
+PASS Functional evolved effect: mutation_crescent_chill
+PASS Lv4 queues once: mutation_lunar_momentum
+PASS Select mutation_lunar_momentum
+PASS No repeat or slot cost: mutation_lunar_momentum
+PASS Functional base effect: mutation_lunar_momentum
+PASS Ineligible chest still blocked: mutation_lunar_momentum
+PASS Evolve and remove old imprint owner: mutation_lunar_momentum
+PASS Full inherited imprint: mutation_lunar_momentum
+PASS Functional evolved effect: mutation_lunar_momentum
+PASS Lv4 queues once: mutation_twin_moon
+PASS Select mutation_twin_moon
+PASS No repeat or slot cost: mutation_twin_moon
+PASS Functional base effect: mutation_twin_moon
+PASS Ineligible chest still blocked: mutation_twin_moon
+PASS Evolve and remove old imprint owner: mutation_twin_moon
+PASS Full inherited imprint: mutation_twin_moon
+PASS Functional evolved effect: mutation_twin_moon
+PASS Three choices for prism_disc
+PASS Lv4 queues once: mutation_crystal_burst
+PASS Select mutation_crystal_burst
+PASS No repeat or slot cost: mutation_crystal_burst
+PASS Functional base effect: mutation_crystal_burst
+PASS Ineligible chest still blocked: mutation_crystal_burst
+PASS Evolve and remove old imprint owner: mutation_crystal_burst
+PASS Full inherited imprint: mutation_crystal_burst
+PASS Functional evolved effect: mutation_crystal_burst
+PASS Lv4 queues once: mutation_extra_facet
+PASS Select mutation_extra_facet
+PASS No repeat or slot cost: mutation_extra_facet
+PASS Functional base effect: mutation_extra_facet
+PASS Ineligible chest still blocked: mutation_extra_facet
+PASS Evolve and remove old imprint owner: mutation_extra_facet
+PASS Full inherited imprint: mutation_extra_facet
+PASS Functional evolved effect: mutation_extra_facet
+PASS Lv4 queues once: mutation_reflective_edge
+PASS Select mutation_reflective_edge
+PASS No repeat or slot cost: mutation_reflective_edge
+PASS Functional base effect: mutation_reflective_edge
+PASS Ineligible chest still blocked: mutation_reflective_edge
+PASS Evolve and remove old imprint owner: mutation_reflective_edge
+PASS Full inherited imprint: mutation_reflective_edge
+PASS Functional evolved effect: mutation_reflective_edge
+PASS Three choices for reaper_gaze
+PASS Lv4 queues once: mutation_last_judgment
+PASS Select mutation_last_judgment
+PASS No repeat or slot cost: mutation_last_judgment
+PASS Functional base effect: mutation_last_judgment
+PASS Ineligible chest still blocked: mutation_last_judgment
+PASS Evolve and remove old imprint owner: mutation_last_judgment
+PASS Full inherited imprint: mutation_last_judgment
+PASS Functional evolved effect: mutation_last_judgment
+PASS Lv4 queues once: mutation_long_stare
+PASS Select mutation_long_stare
+PASS No repeat or slot cost: mutation_long_stare
+PASS Functional base effect: mutation_long_stare
+PASS Ineligible chest still blocked: mutation_long_stare
+PASS Evolve and remove old imprint owner: mutation_long_stare
+PASS Full inherited imprint: mutation_long_stare
+PASS Functional evolved effect: mutation_long_stare
+PASS Lv4 queues once: mutation_soul_chain
+PASS Select mutation_soul_chain
+PASS No repeat or slot cost: mutation_soul_chain
+PASS Functional base effect: mutation_soul_chain
+PASS Ineligible chest still blocked: mutation_soul_chain
+PASS Evolve and remove old imprint owner: mutation_soul_chain
+PASS Full inherited imprint: mutation_soul_chain
+PASS Functional evolved effect: mutation_soul_chain
+PASS Three choices for shadow_fan
+PASS Lv4 queues once: mutation_dark_reach
+PASS Select mutation_dark_reach
+PASS No repeat or slot cost: mutation_dark_reach
+PASS Functional base effect: mutation_dark_reach
+PASS Ineligible chest still blocked: mutation_dark_reach
+PASS Evolve and remove old imprint owner: mutation_dark_reach
+PASS Full inherited imprint: mutation_dark_reach
+PASS Functional evolved effect: mutation_dark_reach
+PASS Lv4 queues once: mutation_night_volley
+PASS Select mutation_night_volley
+PASS No repeat or slot cost: mutation_night_volley
+PASS Functional base effect: mutation_night_volley
+PASS Ineligible chest still blocked: mutation_night_volley
+PASS Evolve and remove old imprint owner: mutation_night_volley
+PASS Full inherited imprint: mutation_night_volley
+PASS Functional evolved effect: mutation_night_volley
+PASS Lv4 queues once: mutation_withering_cut
+PASS Select mutation_withering_cut
+PASS No repeat or slot cost: mutation_withering_cut
+PASS Functional base effect: mutation_withering_cut
+PASS Ineligible chest still blocked: mutation_withering_cut
+PASS Evolve and remove old imprint owner: mutation_withering_cut
+PASS Full inherited imprint: mutation_withering_cut
+PASS Functional evolved effect: mutation_withering_cut
+PASS Three choices for soul_well
+PASS Lv4 queues once: mutation_echo_well
+PASS Select mutation_echo_well
+PASS No repeat or slot cost: mutation_echo_well
+PASS Functional base effect: mutation_echo_well
+PASS Ineligible chest still blocked: mutation_echo_well
+PASS Evolve and remove old imprint owner: mutation_echo_well
+PASS Full inherited imprint: mutation_echo_well
+PASS Functional evolved effect: mutation_echo_well
+PASS Lv4 queues once: mutation_lingering_well
+PASS Select mutation_lingering_well
+PASS No repeat or slot cost: mutation_lingering_well
+PASS Functional base effect: mutation_lingering_well
+PASS Ineligible chest still blocked: mutation_lingering_well
+PASS Evolve and remove old imprint owner: mutation_lingering_well
+PASS Full inherited imprint: mutation_lingering_well
+PASS Functional evolved effect: mutation_lingering_well
+PASS Lv4 queues once: mutation_soul_snare
+PASS Select mutation_soul_snare
+PASS No repeat or slot cost: mutation_soul_snare
+PASS Functional base effect: mutation_soul_snare
+PASS Ineligible chest still blocked: mutation_soul_snare
+PASS Evolve and remove old imprint owner: mutation_soul_snare
+PASS Full inherited imprint: mutation_soul_snare
+PASS Functional evolved effect: mutation_soul_snare
+PASS Three choices for spark_orbit
+PASS Lv4 queues once: mutation_aurora_pulse
+PASS Select mutation_aurora_pulse
+PASS No repeat or slot cost: mutation_aurora_pulse
+PASS Functional base effect: mutation_aurora_pulse
+PASS Ineligible chest still blocked: mutation_aurora_pulse
+PASS Evolve and remove old imprint owner: mutation_aurora_pulse
+PASS Full inherited imprint: mutation_aurora_pulse
+PASS Functional evolved effect: mutation_aurora_pulse
+PASS Lv4 queues once: mutation_outer_orbit
+PASS Select mutation_outer_orbit
+PASS No repeat or slot cost: mutation_outer_orbit
+PASS Functional base effect: mutation_outer_orbit
+PASS Ineligible chest still blocked: mutation_outer_orbit
+PASS Evolve and remove old imprint owner: mutation_outer_orbit
+PASS Full inherited imprint: mutation_outer_orbit
+PASS Functional evolved effect: mutation_outer_orbit
+PASS Lv4 queues once: mutation_static_touch
+PASS Select mutation_static_touch
+PASS No repeat or slot cost: mutation_static_touch
+PASS Functional base effect: mutation_static_touch
+PASS Ineligible chest still blocked: mutation_static_touch
+PASS Evolve and remove old imprint owner: mutation_static_touch
+PASS Full inherited imprint: mutation_static_touch
+PASS Functional evolved effect: mutation_static_touch
+PASS Three choices for storm_bomb
+PASS Lv4 queues once: mutation_charged_air
+PASS Select mutation_charged_air
+PASS No repeat or slot cost: mutation_charged_air
+PASS Functional base effect: mutation_charged_air
+PASS Ineligible chest still blocked: mutation_charged_air
+PASS Evolve and remove old imprint owner: mutation_charged_air
+PASS Full inherited imprint: mutation_charged_air
+PASS Functional evolved effect: mutation_charged_air
+PASS Lv4 queues once: mutation_rolling_thunder
+PASS Select mutation_rolling_thunder
+PASS No repeat or slot cost: mutation_rolling_thunder
+PASS Functional base effect: mutation_rolling_thunder
+PASS Ineligible chest still blocked: mutation_rolling_thunder
+PASS Evolve and remove old imprint owner: mutation_rolling_thunder
+PASS Full inherited imprint: mutation_rolling_thunder
+PASS Functional evolved effect: mutation_rolling_thunder
+PASS Lv4 queues once: mutation_second_impact
+PASS Select mutation_second_impact
+PASS No repeat or slot cost: mutation_second_impact
+PASS Functional base effect: mutation_second_impact
+PASS Ineligible chest still blocked: mutation_second_impact
+PASS Evolve and remove old imprint owner: mutation_second_impact
+PASS Full inherited imprint: mutation_second_impact
+PASS Functional evolved effect: mutation_second_impact
+PASS Three choices for sun_beam
+PASS Lv4 queues once: mutation_prism_ray
+PASS Select mutation_prism_ray
+PASS No repeat or slot cost: mutation_prism_ray
+PASS Functional base effect: mutation_prism_ray
+PASS Ineligible chest still blocked: mutation_prism_ray
+PASS Evolve and remove old imprint owner: mutation_prism_ray
+PASS Full inherited imprint: mutation_prism_ray
+PASS Functional evolved effect: mutation_prism_ray
+PASS Lv4 queues once: mutation_solar_focus
+PASS Select mutation_solar_focus
+PASS No repeat or slot cost: mutation_solar_focus
+PASS Functional base effect: mutation_solar_focus
+PASS Ineligible chest still blocked: mutation_solar_focus
+PASS Evolve and remove old imprint owner: mutation_solar_focus
+PASS Full inherited imprint: mutation_solar_focus
+PASS Functional evolved effect: mutation_solar_focus
+PASS Lv4 queues once: mutation_sunburn
+PASS Select mutation_sunburn
+PASS No repeat or slot cost: mutation_sunburn
+PASS Functional base effect: mutation_sunburn
+PASS Ineligible chest still blocked: mutation_sunburn
+PASS Evolve and remove old imprint owner: mutation_sunburn
+PASS Full inherited imprint: mutation_sunburn
+PASS Functional evolved effect: mutation_sunburn
+PASS Three choices for thorn_halo
+PASS Lv4 queues once: mutation_blood_sap
+PASS Select mutation_blood_sap
+PASS No repeat or slot cost: mutation_blood_sap
+PASS Functional base effect: mutation_blood_sap
+PASS Ineligible chest still blocked: mutation_blood_sap
+PASS Evolve and remove old imprint owner: mutation_blood_sap
+PASS Full inherited imprint: mutation_blood_sap
+PASS Functional evolved effect: mutation_blood_sap
+PASS Lv4 queues once: mutation_briar_guard
+PASS Select mutation_briar_guard
+PASS No repeat or slot cost: mutation_briar_guard
+PASS Functional base effect: mutation_briar_guard
+PASS Ineligible chest still blocked: mutation_briar_guard
+PASS Evolve and remove old imprint owner: mutation_briar_guard
+PASS Full inherited imprint: mutation_briar_guard
+PASS Functional evolved effect: mutation_briar_guard
+PASS Lv4 queues once: mutation_venom_thorns
+PASS Select mutation_venom_thorns
+PASS No repeat or slot cost: mutation_venom_thorns
+PASS Functional base effect: mutation_venom_thorns
+PASS Ineligible chest still blocked: mutation_venom_thorns
+PASS Evolve and remove old imprint owner: mutation_venom_thorns
+PASS Full inherited imprint: mutation_venom_thorns
+PASS Functional evolved effect: mutation_venom_thorns
+PASS Combat leaves shared weapon definitions immutable
+PASS Fusion priority and slots dusk_storm0
+PASS No missing/phantom fusion imprint dusk_storm0
+PASS Fusion priority and slots dusk_storm1
+PASS No missing/phantom fusion imprint dusk_storm1
+PASS Fusion priority and slots dusk_storm2
+PASS No missing/phantom fusion imprint dusk_storm2
+PASS Secondary fusion imprint is Echo 50%
+PASS Fusion priority and slots dusk_storm3
+PASS No missing/phantom fusion imprint dusk_storm3
+PASS Secondary fusion imprint is Echo 50%
+PASS Fusion priority and slots day_night0
+PASS No missing/phantom fusion imprint day_night0
+PASS Fusion priority and slots day_night1
+PASS No missing/phantom fusion imprint day_night1
+PASS Fusion priority and slots day_night2
+PASS No missing/phantom fusion imprint day_night2
+PASS Secondary fusion imprint is Echo 50%
+PASS Fusion priority and slots day_night3
+PASS No missing/phantom fusion imprint day_night3
+PASS Secondary fusion imprint is Echo 50%
+PASS Echo quantization fires every sixth eligible attack
+PASS One AoE impact cannot count twenty times
+PASS Fourth distinct impact triggers Comet Shards exactly once
+PASS Mutation immediately precedes pending modals
+PASS Back cannot escape mandatory mutation
+PASS Mutation continues existing FIFO without unpausing
+PASS Mutation never reveals secret evolution
+Mutation checks: 404 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Seven validated affix definitions
+PASS Quick Mode shares run clock and instability
+PASS Exact factors band 0
+PASS Exact factors band 1
+PASS Exact factors band 2
+PASS Exact factors band 3
+PASS Exact factors band 4
+PASS Backwards band and lower clamp
+PASS Upper clamp and persistent peak
+PASS Unstable warning cannot repeat with threshold flutter
+PASS No early rift
+PASS Rift schedule 1
+PASS Rift requires proximity
+PASS Rift interaction queues once
+PASS Rift choice is single-use
+PASS Stabilize reduces and heals actual HP
+PASS Rift schedule 2
+PASS Rift requires proximity
+PASS Rift interaction queues once
+PASS Rift choice is single-use
+PASS Overcharge gold and unscaled XP
+PASS Rift schedule 3
+PASS Rift requires proximity
+PASS Rift interaction queues once
+PASS Rift choice is single-use
+PASS Stabilize reduces and heals actual HP
+PASS Rift schedule 4
+PASS Rift requires proximity
+PASS Rift interaction queues once
+PASS Rift choice is single-use
+PASS Overcharge gold and unscaled XP
+PASS Four choices and truthful counters
+PASS Rift expires at 90 run seconds
+PASS No elite before minute five
+PASS No elite bosses or children
+PASS Splitters cannot become elites
+PASS Unique affixes and no endless healing combination
+PASS Two-elite capacity 0
+PASS Two-elite capacity 1
+PASS Dormant cap two
+PASS Unstable cap three
+PASS Promote armored
+PASS Armored reduces actual damage once
+PASS Promote swift
+PASS Swift and base elite scaling
+PASS Promote regenerating
+PASS Regenerating actual healing
+PASS Fire suppresses regeneration for three seconds
+PASS Regeneration resumes after fire lock
+PASS Promote vampiric
+PASS Vampiric ignores i-frame/non-hits
+PASS Vampiric heals once during cooldown
+PASS Vampiric three-second cooldown
+PASS Promote blinking
+PASS Blink announces destination for 0.3 seconds
+PASS Blink cannot teleport early
+PASS Blink safe side displacement
+PASS Promote blinking
+PASS Blink warning freezes movement in actual World AI
+PASS World blink displacement remains within exact range
+PASS Promote hexbound
+PASS Hexbound waits six seconds
+PASS Hexbound real slow hostile shot
+PASS Hexbound honors projectile cap
+PASS Promote volatile
+PASS Elite death and volatility booked once
+PASS Elite gold and no evolution chest
+PASS Pooled enemy resets all E3 state
+PASS Pool reuse cannot repeat volatile explosion
+PASS Volatile warning causes no early damage
+PASS Volatile explodes after warning
+PASS Boss half-HP transition immobilizes astral_guardian
+PASS No attack during transition astral_guardian
+PASS HP phase separate from attack step astral_guardian
+PASS Boss spawn-time chest preserved astral_guardian
+PASS Boss half-HP transition immobilizes void_queen
+PASS No attack during transition void_queen
+PASS HP phase separate from attack step void_queen
+PASS Boss spawn-time chest preserved void_queen
+PASS Boss half-HP transition immobilizes storm_core
+PASS No attack during transition storm_core
+PASS HP phase separate from attack step storm_core
+PASS Boss spawn-time chest preserved storm_core
+PASS Guardian telegraphed dash
+PASS Guardian waits whole dash warning
+PASS Guardian fixed direction and 240 speed
+PASS Guardian dash bounded to 0.7 seconds
+PASS Guardian three starfalls leave center corridor
+PASS Crowded World integration keeps Guardian dash straight
+PASS Queen cap six safe children
+PASS Queen two curved warned bolts
+PASS Queen maximum four 1+2.5-second zones
+PASS Null zone telegraph harmless
+PASS Null zone real nonstacking slow
+PASS Null zone damage interval at least 0.8 seconds
+PASS Storm radial safe gap phase 1
+PASS Storm radial safe gap phase 2
+PASS Storm alternates three warned beams
+PASS Boss hazards obey global cap
+PASS Rift follows mutation and preserves pending FIFO
+PASS Rift choice genuinely pauses simulation
+PASS No clock advance during choice
+PASS Choice resumes exactly once
+Rift checks: 103 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Four validated reaction definitions
+PASS First tag cannot react arc_freezefalse
+PASS Bidirectional reaction arc_freezefalse
+PASS Actual primary bonus arc_freezefalse
+PASS Bounded secondary reach arc_freezefalse
+PASS Secondary proc cannot apply reaction elements arc_freezefalse
+PASS Separate attributed reaction damage arc_freezefalse
+PASS Shared target cooldown arc_freezefalse
+PASS Reaction never rolls crit arc_freezefalse
+PASS No damage double-accounting arc_freezefalse
+PASS First tag cannot react arc_freezetrue
+PASS Bidirectional reaction arc_freezetrue
+PASS Actual primary bonus arc_freezetrue
+PASS Bounded secondary reach arc_freezetrue
+PASS Secondary proc cannot apply reaction elements arc_freezetrue
+PASS Separate attributed reaction damage arc_freezetrue
+PASS Shared target cooldown arc_freezetrue
+PASS Reaction never rolls crit arc_freezetrue
+PASS No damage double-accounting arc_freezetrue
+PASS First tag cannot react blightburstfalse
+PASS Bidirectional reaction blightburstfalse
+PASS Actual primary bonus blightburstfalse
+PASS Bounded secondary reach blightburstfalse
+PASS Secondary proc cannot apply reaction elements blightburstfalse
+PASS Separate attributed reaction damage blightburstfalse
+PASS Blightburst applies light burn
+PASS Shared target cooldown blightburstfalse
+PASS Reaction never rolls crit blightburstfalse
+PASS No damage double-accounting blightburstfalse
+PASS First tag cannot react blightbursttrue
+PASS Bidirectional reaction blightbursttrue
+PASS Actual primary bonus blightbursttrue
+PASS Bounded secondary reach blightbursttrue
+PASS Secondary proc cannot apply reaction elements blightbursttrue
+PASS Separate attributed reaction damage blightbursttrue
+PASS Blightburst applies light burn
+PASS Shared target cooldown blightbursttrue
+PASS Reaction never rolls crit blightbursttrue
+PASS No damage double-accounting blightbursttrue
+PASS First tag cannot react void_shatterfalse
+PASS Bidirectional reaction void_shatterfalse
+PASS Actual primary bonus void_shatterfalse
+PASS Bounded secondary reach void_shatterfalse
+PASS Secondary proc cannot apply reaction elements void_shatterfalse
+PASS Separate attributed reaction damage void_shatterfalse
+PASS Void Shatter actual 0.75-second slow
+PASS Shared target cooldown void_shatterfalse
+PASS Reaction never rolls crit void_shatterfalse
+PASS No damage double-accounting void_shatterfalse
+PASS First tag cannot react void_shattertrue
+PASS Bidirectional reaction void_shattertrue
+PASS Actual primary bonus void_shattertrue
+PASS Bounded secondary reach void_shattertrue
+PASS Secondary proc cannot apply reaction elements void_shattertrue
+PASS Separate attributed reaction damage void_shattertrue
+PASS Void Shatter actual 0.75-second slow
+PASS Shared target cooldown void_shattertrue
+PASS Reaction never rolls crit void_shattertrue
+PASS No damage double-accounting void_shattertrue
+PASS First tag cannot react rift_conductionfalse
+PASS Bidirectional reaction rift_conductionfalse
+PASS Actual primary bonus rift_conductionfalse
+PASS Bounded secondary reach rift_conductionfalse
+PASS Secondary proc cannot apply reaction elements rift_conductionfalse
+PASS Separate attributed reaction damage rift_conductionfalse
+PASS Shared target cooldown rift_conductionfalse
+PASS Reaction never rolls crit rift_conductionfalse
+PASS No damage double-accounting rift_conductionfalse
+PASS First tag cannot react rift_conductiontrue
+PASS Bidirectional reaction rift_conductiontrue
+PASS Actual primary bonus rift_conductiontrue
+PASS Bounded secondary reach rift_conductiontrue
+PASS Secondary proc cannot apply reaction elements rift_conductiontrue
+PASS Separate attributed reaction damage rift_conductiontrue
+PASS Shared target cooldown rift_conductiontrue
+PASS Reaction never rolls crit rift_conductiontrue
+PASS No damage double-accounting rift_conductiontrue
+PASS Three-second window edge 2.99
+PASS Three-second window edge 3.0
+PASS Three-second window edge 3.001
+PASS Cooldown not ready at 1.49
+PASS Cooldown ready exactly at 1.5
+PASS Neutral attacks do not create tags
+PASS Same element on two weapons cannot self-react
+PASS Fusion applies union without first-hit self-reaction
+PASS Fusion inherited frost really reacts
+PASS Fixed table priority when multiple pairs match
+PASS Boss bonus damage halved arc_freeze
+PASS Boss bonus damage halved blightburst
+PASS Boss bonus damage halved void_shatter
+PASS Boss Void Shatter slow 0.35 seconds
+PASS Boss bonus damage halved rift_conduction
+PASS Global 40-event cap for fifty targets
+PASS At most six subtle reaction labels
+PASS Global budget replenishes next combat second
+PASS Reaction visuals expire without retained enemy references
+PASS Proc damage neither applies tags nor triggers reaction
+PASS Final crit/execute/armor hit used once for reaction
+PASS Reaction kill blocks explosion/lifesteal cascade
+PASS Pool reuse clears history, cooldown and DoT ownership
+PASS Reaction burn remains attributed and cannot re-enter
+PASS Blightburst cap eight including primary
+PASS Rift Conduction hits only two additional targets
+PASS Select actual Charged Air mutation
+PASS Charged Air participates without recursive mutation procs
+PASS Unrelated hits cannot extend fire regeneration lock
+PASS Actual fire DoT extends regeneration lock
+PASS Arc Freeze exact 120-pixel chain radius ignores expanded broadphase
+PASS Only actually applied status tags enable a neutral weapon reaction
+PASS Unrelated hits never refresh another weapon's element timestamp
+PASS A persistent old burn cannot fake a recent fire hit
+Reaction checks: 111 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Eighteen unique valid nodes across three complete paths
+PASS Cannot skip prerequisites
+PASS Purchase correct chain: comet_spark
+PASS Exact cost and no duplicate purchase: comet_spark
+PASS Purchase correct chain: gathering_tail
+PASS Exact cost and no duplicate purchase: gathering_tail
+PASS Purchase correct chain: swift_orbit
+PASS Exact cost and no duplicate purchase: swift_orbit
+PASS Purchase correct chain: astral_insight
+PASS Exact cost and no duplicate purchase: astral_insight
+PASS Purchase correct chain: rush_of_stars
+PASS Exact cost and no duplicate purchase: rush_of_stars
+PASS Purchase correct chain: far_traveler
+PASS Exact cost and no duplicate purchase: far_traveler
+PASS Purchase correct chain: veil_seed
+PASS Exact cost and no duplicate purchase: veil_seed
+PASS Purchase correct chain: quiet_pulse
+PASS Exact cost and no duplicate purchase: quiet_pulse
+PASS Purchase correct chain: guarded_orbit
+PASS Exact cost and no duplicate purchase: guarded_orbit
+PASS Purchase correct chain: second_breath
+PASS Exact cost and no duplicate purchase: second_breath
+PASS Purchase correct chain: still_heart
+PASS Exact cost and no duplicate purchase: still_heart
+PASS Purchase correct chain: last_star
+PASS Exact cost and no duplicate purchase: last_star
+PASS Purchase correct chain: rift_sense
+PASS Exact cost and no duplicate purchase: rift_sense
+PASS Purchase correct chain: tainted_treasure
+PASS Exact cost and no duplicate purchase: tainted_treasure
+PASS Purchase correct chain: hunters_star
+PASS Exact cost and no duplicate purchase: hunters_star
+PASS Purchase correct chain: clear_horizon
+PASS Exact cost and no duplicate purchase: clear_horizon
+PASS Purchase correct chain: risk_seeker
+PASS Exact cost and no duplicate purchase: risk_seeker
+PASS Purchase correct chain: fracture_mastery
+PASS Exact cost and no duplicate purchase: fracture_mastery
+PASS All stars persist across restart
+PASS Star transactions preserve existing gold and meta
+PASS Invalid and unaffordable purchases are safe
+PASS Failed purchase rolls back currency and node
+PASS Reward capped at eight; defeat retains earned points
+PASS Run rewards credited once
+PASS Failed result save rolls back all rewards and remains retryable
+PASS Retry awards once after storage recovers
+PASS Full reset clears star progression
+PASS Real stat bonus: comet_spark
+PASS No recalculation stacking: comet_spark
+PASS Real stat bonus: gathering_tail
+PASS No recalculation stacking: gathering_tail
+PASS Real stat bonus: swift_orbit
+PASS No recalculation stacking: swift_orbit
+PASS Real stat bonus: astral_insight
+PASS No recalculation stacking: astral_insight
+PASS Real stat bonus: far_traveler
+PASS No recalculation stacking: far_traveler
+PASS Real stat bonus: veil_seed
+PASS No recalculation stacking: veil_seed
+PASS Real stat bonus: quiet_pulse
+PASS No recalculation stacking: quiet_pulse
+PASS Rush of Stars real movement
+PASS Rush refresh never stacks
+PASS Rush expires
+PASS Still Heart heals exactly at five-minute boundary
+PASS Still Heart does not repeat every frame
+PASS Still Heart requires below half HP
+PASS Last Star heals once below 25 percent
+PASS Last Star cannot retrigger
+PASS Six exact Still Heart opportunities; quick=false
+PASS Six exact Still Heart opportunities; quick=true
+PASS Last Star cannot resurrect
+PASS Clear Horizon and Second Breath affect real stabilization
+PASS Risk Seeker applies once without Growth
+PASS Hunter's Star only boosts elite direct hits once
+PASS Tainted Treasure boosts actual elite gold at threshold
+PASS Fracture Mastery boosts boss at Unstable
+PASS Fracture Mastery has no global/low-instability bonus
+PASS Guarded Orbit mitigates actual boss projectile
+PASS Fracture Mastery affects fresh secondary hits
+PASS Derived secondary cannot double-apply the target bonus
+PASS Derived elite/boss damage bonus cannot leak to normal secondary recipients
+PASS Reaction keeps boss primary bonus once and removes it from normal chain target
+PASS Mutation pulse forwards inherited target factor through pooled effect
+PASS Real star map creates all nodes and descriptive tooltips
+PASS Star map purchase uses real save transaction
+PASS Keyboard/controller focus alone preserves selection
+PASS Keyboard/controller confirmation updates inspector
+PASS Run snapshot isolated from subsequent purchases
+PASS Next threshold hidden without Rift Sense
+PASS Rift Sense reveals next threshold
+Constellation checks: 91 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Real critical overkill counts actual ten HP only
+PASS Critical number identity and micro hitflash
+PASS Base, evolution and reactions stay separate
+PASS Sorted source rows use actual combat duration
+PASS Damage table reconciles to measured total
+PASS Quick Mode DPS uses active combat seconds
+PASS Build reports flat character armor without inventing a percentage
+PASS Build reports additive critical multiplier correctly
+PASS Peak ten-second DPS uses fixed eleven buckets
+PASS Actual XP counters apply Growth exactly once
+PASS Gold collected and counted exactly once
+PASS Healing records no overheal
+PASS Only accepted upgrades count
+PASS Mutation/evolution measured on successful actions
+PASS Fusion event counted separately exactly once
+PASS Reduce Flashes suppresses enemy hitflash
+PASS Damage Numbers setting suppresses new text
+PASS Text cap remains seventy
+PASS Normal incoming hit never shakes camera
+PASS Strong boss hit bounded to 1.5 pixels and 0.07 seconds
+PASS Boss-hit camera decays smoothly to zero
+PASS Screen Shake off means exactly zero camera offset
+PASS Boss-death shake bounded to two pixels for 0.1 seconds
+PASS Successful damage remains a real hit when Last Star heals above previous HP
+PASS Blood Thorns reflection keeps weapon attribution without secondary crit/mutation rerolls
+PASS Build displays six slots and actual stats while paused
+PASS Build Details cannot leak secret result or catalyst recipe
+PASS Repeated build inspection neither ticks nor rolls nor grants XP
+PASS Actually discovered recipe visible
+PASS Build actions live outside scrolling content
+PASS Back from Build returns to Pause without simulation
+PASS Build Back action returns paused
+PASS Only explicit Pause Resume continues play
+PASS Mid-run achievements retained for final report
+PASS Repeated result render cannot double-bank gold or stars
+PASS Result presents measured stats and real reward
+PASS Result actions always reachable outside scroll
+PASS Try Again starts a fresh real run
+PASS Real fatal damage reaches defeat result
+PASS Storage failure labels pending rewards and exposes fixed controller-accessible retry
+PASS Result retry saves once and restores normal fixed actions
+Polish checks: 41 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Actual attack algorithm deals attributed damage: arcane_needle
+PASS Actual attack algorithm deals attributed damage: ash_bow
+PASS Actual attack algorithm deals attributed damage: frost_shard
+PASS Actual attack algorithm deals attributed damage: gravity_mine
+PASS Actual attack algorithm deals attributed damage: lightning_call
+PASS Actual attack algorithm deals attributed damage: meteor_rain
+PASS Actual attack algorithm deals attributed damage: moon_blade
+PASS Actual attack algorithm deals attributed damage: prism_disc
+PASS Actual attack algorithm deals attributed damage: reaper_gaze
+PASS Actual attack algorithm deals attributed damage: shadow_fan
+PASS Actual attack algorithm deals attributed damage: soul_well
+PASS Actual attack algorithm deals attributed damage: spark_orbit
+PASS Actual attack algorithm deals attributed damage: storm_bomb
+PASS Actual attack algorithm deals attributed damage: sun_beam
+PASS Actual attack algorithm deals attributed damage: thorn_halo
+PASS Actual attack algorithm deals attributed damage: blood_thorns
+PASS Actual attack algorithm deals attributed damage: comet_shower
+PASS Actual attack algorithm deals attributed damage: crescent_storm
+PASS Actual attack algorithm deals attributed damage: day_night
+PASS Actual attack algorithm deals attributed damage: dusk_storm
+PASS Actual attack algorithm deals attributed damage: event_horizon
+PASS Actual attack algorithm deals attributed damage: ghost_well
+PASS Actual attack algorithm deals attributed damage: ice_prism
+PASS Actual attack algorithm deals attributed damage: last_judgment
+PASS Actual attack algorithm deals attributed damage: meteor_heart
+PASS Actual attack algorithm deals attributed damage: night_storm
+PASS Actual attack algorithm deals attributed damage: phoenix_fan
+PASS Actual attack algorithm deals attributed damage: solar_orbit
+PASS Actual attack algorithm deals attributed damage: spectral_carousel
+PASS Actual attack algorithm deals attributed damage: star_piercer
+PASS Actual attack algorithm deals attributed damage: thunder_grid
+PASS Actual attack algorithm deals attributed damage: zenith_beam
+PASS Live enemy AI and finite movement: astral_guardian
+PASS Live enemy AI and finite movement: bomber
+PASS Live enemy AI and finite movement: charger
+PASS Live enemy AI and finite movement: crawler
+PASS Live enemy AI and finite movement: elite_hunter
+PASS Live enemy AI and finite movement: guardian
+PASS Live enemy AI and finite movement: healer
+PASS Live enemy AI and finite movement: mite
+PASS Live enemy AI and finite movement: shield
+PASS Live enemy AI and finite movement: sniper
+PASS Live enemy AI and finite movement: splitter
+PASS Live enemy AI and finite movement: storm_core
+PASS Live enemy AI and finite movement: void_queen
+PASS Live enemy AI and finite movement: wisp
+PASS Live enemy AI and finite movement: zigzag
+PASS Arena begins its real wave pipeline: ash
+PASS Arena begins its real wave pipeline: mist
+Catalog checks: 49 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Affix data has one shared pure source with compatible gameplay alias
+PASS Reaction data has one shared pure source with compatible gameplay alias
+PASS Decoupled Registry validates without gameplay definition imports
+PASS Real baseline save succeeds
+PASS Failed meta buy rolls back every field
+PASS Failed write leaves previous durable save intact and reports error
+PASS Star purchase uses identical rollback semantics
+PASS Reset failure preserves full existing save
+PASS Failed finish keeps gold/stars/records unbooked
+PASS Retry meta purchase charges exactly once
+PASS Recovered finish banks once with exact star reward
+PASS Recovered star purchase charges once
+PASS All recovered transactions survive reload
+PASS Actual rename failure rolls back the transaction
+PASS Rename failure cannot destroy the existing destination
+PASS Failed discovery write keeps earned pending progress
+PASS Failed purchase cannot erase earlier pending discoveries
+PASS Failed reset also preserves pending discoveries
+PASS Progress retry clears pending/error only on successful save
+PASS Retried discoveries survive restart
+PASS Extracted collection preserves hidden acquisitions
+PASS Collection callback distinguishes acquired items from completed recipes
+PASS Collection displays completed recipes without mutating save data
+PASS Shop displays real purchase error without spending gold
+PASS Failed inventory discovery is visible during gameplay
+PASS Pause provides a reachable pending-progress retry
+PASS Pending progress retry receives keyboard/controller focus
+PASS Retry preserves pause/session state
+PASS Main Menu cannot discard unsaved finish rewards
+PASS Try Again cannot replace an unbanked run
+PASS Recovered leave action persists finish rewards once before navigating
+PASS Quit refuses to silently discard pending progress after failed retry
+PASS Cancel from storage error preserves pending progress and returns to menu
+Maintenance checks: 33 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Exactly proportional additional twenty percent reduction: lyra
+PASS Meta/passive/timed/low-health/star bonuses stay proportional: lyra
+PASS No recalculation factor stacking: lyra
+PASS Existing speed ceiling retained: lyra
+PASS Exactly proportional additional twenty percent reduction: brann
+PASS Meta/passive/timed/low-health/star bonuses stay proportional: brann
+PASS No recalculation factor stacking: brann
+PASS Existing speed ceiling retained: brann
+PASS Exactly proportional additional twenty percent reduction: eira
+PASS Meta/passive/timed/low-health/star bonuses stay proportional: eira
+PASS No recalculation factor stacking: eira
+PASS Existing speed ceiling retained: eira
+PASS Exactly proportional additional twenty percent reduction: noctis
+PASS Meta/passive/timed/low-health/star bonuses stay proportional: noctis
+PASS No recalculation factor stacking: noctis
+PASS Existing speed ceiling retained: noctis
+PASS One Might damage factor for arcane_needle
+PASS One Might damage factor for ash_bow
+PASS One Might damage factor for frost_shard
+PASS One Might damage factor for gravity_mine
+PASS One Might damage factor for lightning_call
+PASS One Might damage factor for meteor_rain
+PASS One Might damage factor for moon_blade
+PASS One Might damage factor for prism_disc
+PASS One Might damage factor for reaper_gaze
+PASS One Might damage factor for shadow_fan
+PASS One Might damage factor for soul_well
+PASS One Might damage factor for spark_orbit
+PASS One Might damage factor for storm_bomb
+PASS One Might damage factor for sun_beam
+PASS One Might damage factor for thorn_halo
+PASS One Might damage factor for blood_thorns
+PASS One Might damage factor for comet_shower
+PASS One Might damage factor for crescent_storm
+PASS One Might damage factor for day_night
+PASS One Might damage factor for dusk_storm
+PASS One Might damage factor for event_horizon
+PASS One Might damage factor for ghost_well
+PASS One Might damage factor for ice_prism
+PASS One Might damage factor for last_judgment
+PASS One Might damage factor for meteor_heart
+PASS One Might damage factor for night_storm
+PASS One Might damage factor for phoenix_fan
+PASS One Might damage factor for solar_orbit
+PASS One Might damage factor for spectral_carousel
+PASS One Might damage factor for star_piercer
+PASS One Might damage factor for thunder_grid
+PASS One Might damage factor for zenith_beam
+PASS Actual hit and measured damage use adjusted weapon value
+PASS Reaction uses final reduced triggering hit without a second nerf
+PASS Derived mutation pulse avoids double nerf
+PASS Flat death-fire and status sources use the same central raw factor
+PASS Enemy movement/damage/XP definitions unchanged
+PASS Normal/Quick clock and XP curve unchanged
+PASS Day/Night preserves legacy Might bonuses with exactly one global nerf
+PASS Raw pickup nova applies global factor once
+Balance fixes checks: 56 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Hover/focus leave selection and inspector unchanged
+PASS Pressed selects correct star and price
+PASS Persistent unique three-pixel selection ring survives pointer/focus movement
+PASS Bought star stays selected with Owned state
+PASS Owned restriction is precise
+PASS Prerequisite takes priority over insufficient currency
+PASS Unaffordable selection states exact cost and wallet
+PASS Ordinary purchase hints never become global save warnings
+PASS Menu does not inherit purchase hints
+PASS Reopening map clears previous local purchase message
+PASS Failed purchase preserves pending progress and rolls back
+PASS Invalid purchase cannot overwrite technical error or pending state
+PASS Technical error and retry survive navigation
+PASS Real storage retry clears error after recovery
+PASS Weapon without catalyst matches zero recipes
+PASS All components below thresholds match but are not ready
+PASS Ready unknown recipe reveals count only
+PASS UI readiness never bypasses chest eligibility
+PASS Fusion requires both bases and catalyst at required levels
+PASS Recipe candidates counted once each including fusion
+PASS Missing fusion component cannot match
+PASS Recipe reporting leaves gameplay and RNG untouched
+PASS Actual eligible chest still prioritizes fusion
+PASS Consumed bases and completed recipe cannot count again
+PASS Actually discovered recipes retain detailed requirements
+PASS Main menu Settings has a distinct navigation state
+PASS Settings Back returns to main menu
+PASS Settings freezes run clock, attacks, XP and player movement
+PASS Pause Settings Back returns paused with controller focus
+PASS Returning to Pause keeps gameplay stopped
+PASS Settings Esc returns to Pause and preserves settings
+PASS Explicit Pause cancel resumes simulation
+UI fixes checks: 32 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS All 18 locked stars retain effects/costs and at most one requirement; hints stay local
+PASS Veil display name preserves technical IDs
+PASS Wallet and prerequisite shown once each
+PASS Unlocked state has one precise message
+PASS Pause keeps recipe counts; discovered requirements and chest gate live in Build
+PASS Instability factors move to Build; schedule and lifetime stay in Pause
+PASS Rift input help appears in range
+PASS Rift input help disappears out of context
+UI text checks: 8 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS Current base movement ×0.8 for lyra
+PASS All additive speed bonuses retained; Quick=false lyra
+PASS Repeated recalculation never compounds speed lyra
+PASS All additive speed bonuses retained; Quick=true lyra
+PASS Repeated recalculation never compounds speed lyra
+PASS Current base movement ×0.8 for brann
+PASS All additive speed bonuses retained; Quick=false brann
+PASS Repeated recalculation never compounds speed brann
+PASS All additive speed bonuses retained; Quick=true brann
+PASS Repeated recalculation never compounds speed brann
+PASS Current base movement ×0.8 for eira
+PASS All additive speed bonuses retained; Quick=false eira
+PASS Repeated recalculation never compounds speed eira
+PASS All additive speed bonuses retained; Quick=true eira
+PASS Repeated recalculation never compounds speed eira
+PASS Current base movement ×0.8 for noctis
+PASS All additive speed bonuses retained; Quick=false noctis
+PASS Repeated recalculation never compounds speed noctis
+PASS All additive speed bonuses retained; Quick=true noctis
+PASS Repeated recalculation never compounds speed noctis
+PASS Actual normal/elite/boss kill rewards and RNG are identical under old/new HP factor
+PASS Exactly one HP factor, boss exemption: astral_guardian at 0
+PASS Speed/damage/XP unchanged: astral_guardian
+PASS Exactly one HP factor, boss exemption: bomber at 0
+PASS Speed/damage/XP unchanged: bomber
+PASS Exactly one HP factor, boss exemption: charger at 0
+PASS Speed/damage/XP unchanged: charger
+PASS Exactly one HP factor, boss exemption: crawler at 0
+PASS Speed/damage/XP unchanged: crawler
+PASS Exactly one HP factor, boss exemption: elite_hunter at 0
+PASS Speed/damage/XP unchanged: elite_hunter
+PASS Exactly one HP factor, boss exemption: guardian at 0
+PASS Speed/damage/XP unchanged: guardian
+PASS Exactly one HP factor, boss exemption: healer at 0
+PASS Speed/damage/XP unchanged: healer
+PASS Exactly one HP factor, boss exemption: mite at 0
+PASS Speed/damage/XP unchanged: mite
+PASS Exactly one HP factor, boss exemption: shield at 0
+PASS Speed/damage/XP unchanged: shield
+PASS Exactly one HP factor, boss exemption: sniper at 0
+PASS Speed/damage/XP unchanged: sniper
+PASS Exactly one HP factor, boss exemption: splitter at 0
+PASS Speed/damage/XP unchanged: splitter
+PASS Exactly one HP factor, boss exemption: storm_core at 0
+PASS Speed/damage/XP unchanged: storm_core
+PASS Exactly one HP factor, boss exemption: void_queen at 0
+PASS Speed/damage/XP unchanged: void_queen
+PASS Exactly one HP factor, boss exemption: wisp at 0
+PASS Speed/damage/XP unchanged: wisp
+PASS Exactly one HP factor, boss exemption: zigzag at 0
+PASS Speed/damage/XP unchanged: zigzag
+PASS Exactly one HP factor, boss exemption: astral_guardian at 17
+PASS Speed/damage/XP unchanged: astral_guardian
+PASS Exactly one HP factor, boss exemption: bomber at 17
+PASS Speed/damage/XP unchanged: bomber
+PASS Exactly one HP factor, boss exemption: charger at 17
+PASS Speed/damage/XP unchanged: charger
+PASS Exactly one HP factor, boss exemption: crawler at 17
+PASS Speed/damage/XP unchanged: crawler
+PASS Exactly one HP factor, boss exemption: elite_hunter at 17
+PASS Speed/damage/XP unchanged: elite_hunter
+PASS Exactly one HP factor, boss exemption: guardian at 17
+PASS Speed/damage/XP unchanged: guardian
+PASS Exactly one HP factor, boss exemption: healer at 17
+PASS Speed/damage/XP unchanged: healer
+PASS Exactly one HP factor, boss exemption: mite at 17
+PASS Speed/damage/XP unchanged: mite
+PASS Exactly one HP factor, boss exemption: shield at 17
+PASS Speed/damage/XP unchanged: shield
+PASS Exactly one HP factor, boss exemption: sniper at 17
+PASS Speed/damage/XP unchanged: sniper
+PASS Exactly one HP factor, boss exemption: splitter at 17
+PASS Speed/damage/XP unchanged: splitter
+PASS Exactly one HP factor, boss exemption: storm_core at 17
+PASS Speed/damage/XP unchanged: storm_core
+PASS Exactly one HP factor, boss exemption: void_queen at 17
+PASS Speed/damage/XP unchanged: void_queen
+PASS Exactly one HP factor, boss exemption: wisp at 17
+PASS Speed/damage/XP unchanged: wisp
+PASS Exactly one HP factor, boss exemption: zigzag at 17
+PASS Speed/damage/XP unchanged: zigzag
+PASS Exactly one HP factor, boss exemption: astral_guardian at 29
+PASS Speed/damage/XP unchanged: astral_guardian
+PASS Exactly one HP factor, boss exemption: bomber at 29
+PASS Speed/damage/XP unchanged: bomber
+PASS Exactly one HP factor, boss exemption: charger at 29
+PASS Speed/damage/XP unchanged: charger
+PASS Exactly one HP factor, boss exemption: crawler at 29
+PASS Speed/damage/XP unchanged: crawler
+PASS Exactly one HP factor, boss exemption: elite_hunter at 29
+PASS Speed/damage/XP unchanged: elite_hunter
+PASS Exactly one HP factor, boss exemption: guardian at 29
+PASS Speed/damage/XP unchanged: guardian
+PASS Exactly one HP factor, boss exemption: healer at 29
+PASS Speed/damage/XP unchanged: healer
+PASS Exactly one HP factor, boss exemption: mite at 29
+PASS Speed/damage/XP unchanged: mite
+PASS Exactly one HP factor, boss exemption: shield at 29
+PASS Speed/damage/XP unchanged: shield
+PASS Exactly one HP factor, boss exemption: sniper at 29
+PASS Speed/damage/XP unchanged: sniper
+PASS Exactly one HP factor, boss exemption: splitter at 29
+PASS Speed/damage/XP unchanged: splitter
+PASS Exactly one HP factor, boss exemption: storm_core at 29
+PASS Speed/damage/XP unchanged: storm_core
+PASS Exactly one HP factor, boss exemption: void_queen at 29
+PASS Speed/damage/XP unchanged: void_queen
+PASS Exactly one HP factor, boss exemption: wisp at 29
+PASS Speed/damage/XP unchanged: wisp
+PASS Exactly one HP factor, boss exemption: zigzag at 29
+PASS Speed/damage/XP unchanged: zigzag
+PASS Existing elite multiplier after one new HP factor: 1
+PASS Repeated promotion cannot scale HP again
+PASS Existing elite multiplier after one new HP factor: 2
+PASS Repeated promotion cannot scale HP again
+PASS Existing elite multiplier after one new HP factor: 3
+PASS Repeated promotion cannot scale HP again
+PASS Actual splitter children receive HP factor once
+PASS Real Queen summons receive normal HP; boss keeps its HP
+PASS Previous player damage factor unchanged; hit pipeline does not add HP scaling
+PASS Pause has two real rows of six slots
+PASS Inventory signal refreshes projection without another inventory
+PASS Rune signal refreshes centered rune view
+PASS Build equipment is two grids with three columns
+PASS Build has exactly one fixed Back action
+PASS Build rendering and waiting preserve clocks, inventories, movement, attacks, XP, gold and RNG
+PASS Back returns to the same paused session
+PASS Esc/controller Back returns paused without simulation
+PASS Real fusion still prioritizes both bases
+PASS Grid data retains both fusion imprints, strengths and all slots
+PASS Equipment never reveals unknown recipes
+Layout/balance checks: 131 PASS / 0 FAIL

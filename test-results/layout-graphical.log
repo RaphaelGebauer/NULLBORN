@@ -1,0 +1,326 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PASS Ten audio changes cause no native window requests
+PASS Default native window is 1920x1080
+PASS Native resize to (1280, 720)
+PASS Native resize to (1600, 900)
+PASS Native resize to (1920, 1080)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+CAPTURE 01-menu (1920, 1080)
+CAPTURE 02-characters (1920, 1080)
+CAPTURE 03-stages (1920, 1080)
+CAPTURE 04-rune (1920, 1080)
+PASS keyboard movement 83.5999755859375
+PASS simulated controller stick 41.8000030517578
+CAPTURE 05-arena (1920, 1080)
+CAPTURE 06-level (1920, 1080)
+CAPTURE 07-result (1920, 1080)
+CAPTURE 08-shop (1920, 1080)
+CAPTURE 09-settings (1920, 1080)
+CAPTURE 10-collection (1920, 1080)
+CAPTURE 11-ui-scale (1920, 1080)
+CAPTURE 12-character-overview (1920, 1080)
+CAPTURE 13-unknown-recipes (1920, 1080)
+CAPTURE 14-known-recipes (1920, 1080)
+CAPTURE 15-reset-confirmation (1920, 1080)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+CAPTURE mutation-choice-1280 · (1280, 720)
+CAPTURE inherited-evolution-1600 · (1600, 900)
+CAPTURE fusion-imprints-1920 · (1920, 1080)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+CAPTURE rift-node (1280, 720)
+CAPTURE rift-decision (1600, 900)
+CAPTURE boss-phase-two (1920, 1080)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+CAPTURE all four actual reactions at 1280x720; events 4
+CAPTURE actual reaction damage result
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+CAPTURE Star Map (1280, 720)
+CAPTURE Star Map (1600, 900)
+CAPTURE Star Map (1920, 1080)
+PASS All eighteen stars fit at UI scale 1.2
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PASS Real character start brann
+PASS Real character start eira
+PASS Real character start lyra
+PASS Real character start noctis
+CAPTURE build-details-1280 (1280, 720)
+PASS Build fixed actions visible (1280, 720)
+CAPTURE build-paths-1280 (1280, 720)
+PASS Controller build scrolling keeps actions visible (1280, 720)
+CAPTURE build-details-1600 (1600, 900)
+PASS Build fixed actions visible (1600, 900)
+CAPTURE build-paths-1600 (1600, 900)
+PASS Controller build scrolling keeps actions visible (1600, 900)
+CAPTURE build-details-1920 (1920, 1080)
+PASS Build fixed actions visible (1920, 1080)
+CAPTURE build-paths-1920 (1920, 1080)
+PASS Controller build scrolling keeps actions visible (1920, 1080)
+CAPTURE run-result-1280 (1280, 720)
+PASS Result fixed actions visible (1280, 720)
+CAPTURE run-damage-1280 (1280, 720)
+PASS Result actions remain visible after scrolling (1280, 720)
+CAPTURE run-result-1600 (1600, 900)
+PASS Result fixed actions visible (1600, 900)
+CAPTURE run-damage-1600 (1600, 900)
+PASS Result actions remain visible after scrolling (1600, 900)
+CAPTURE run-result-1920 (1920, 1080)
+PASS Result fixed actions visible (1920, 1080)
+CAPTURE run-damage-1920 (1920, 1080)
+PASS Result actions remain visible after scrolling (1920, 1080)
+CAPTURE result-ui-scale (1280, 720)
+PASS Result fixed actions at UI scale 1.2
+Graphical polish checks: 0 failures
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PASS Hidden collection (1280, 720)
+PASS Known collection (1280, 720)
+PASS Purchase error and rollback (1280, 720)
+PASS Paused error/controller focus (1280, 720)
+PASS Retry retains pause (1280, 720)
+PASS Unbanked result keeps error/retry/navigation actions visible (1280, 720)
+PASS Hidden collection (1600, 900)
+PASS Known collection (1600, 900)
+PASS Purchase error and rollback (1600, 900)
+PASS Paused error/controller focus (1600, 900)
+PASS Retry retains pause (1600, 900)
+PASS Unbanked result keeps error/retry/navigation actions visible (1600, 900)
+PASS Hidden collection (1920, 1080)
+PASS Known collection (1920, 1080)
+PASS Purchase error and rollback (1920, 1080)
+PASS Paused error/controller focus (1920, 1080)
+PASS Retry retains pause (1920, 1080)
+PASS Unbanked result keeps error/retry/navigation actions visible (1920, 1080)
+Maintenance graphical checks: 18 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PASS Real mouse hover preserves selection (1280, 720)
+PASS Real mouse click selects (1280, 720)
+PASS Mouse departure keeps selection outline (1280, 720)
+PASS Keyboard Enter selects locked star with precise reason (1280, 720)
+PASS Controller D-pad moves focus without selection (1280, 720)
+PASS Controller A confirms focused star (1280, 720)
+PASS Real purchase keeps owned selection (1280, 720)
+PASS All stars, selected locked outline and inspector fit (1280, 720)
+PASS Mouse opens paused Settings (1280, 720)
+PASS Esc returns to Pause with frozen clock and focus (1280, 720)
+PASS Controller A/B visits Settings and returns paused (1280, 720)
+PASS Controller A on Resume explicitly restarts run (1280, 720)
+PASS Real mouse hover preserves selection (1600, 900)
+PASS Real mouse click selects (1600, 900)
+PASS Mouse departure keeps selection outline (1600, 900)
+PASS Keyboard Enter selects locked star with precise reason (1600, 900)
+PASS Controller D-pad moves focus without selection (1600, 900)
+PASS Controller A confirms focused star (1600, 900)
+PASS Real purchase keeps owned selection (1600, 900)
+PASS All stars, selected locked outline and inspector fit (1600, 900)
+PASS Mouse opens paused Settings (1600, 900)
+PASS Esc returns to Pause with frozen clock and focus (1600, 900)
+PASS Controller A/B visits Settings and returns paused (1600, 900)
+PASS Controller A on Resume explicitly restarts run (1600, 900)
+PASS Real mouse hover preserves selection (1920, 1080)
+PASS Real mouse click selects (1920, 1080)
+PASS Mouse departure keeps selection outline (1920, 1080)
+PASS Keyboard Enter selects locked star with precise reason (1920, 1080)
+PASS Controller D-pad moves focus without selection (1920, 1080)
+PASS Controller A confirms focused star (1920, 1080)
+PASS Real purchase keeps owned selection (1920, 1080)
+PASS All stars, selected locked outline and inspector fit (1920, 1080)
+PASS Mouse opens paused Settings (1920, 1080)
+PASS Esc returns to Pause with frozen clock and focus (1920, 1080)
+PASS Controller A/B visits Settings and returns paused (1920, 1080)
+PASS Controller A on Resume explicitly restarts run (1920, 1080)
+UI fixes graphical checks: 36 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PASS All 18 locked stars retain effects/costs and at most one requirement; hints stay local
+PASS Veil display name preserves technical IDs
+PASS Wallet and prerequisite shown once each
+PASS Unlocked state has one precise message
+PASS Pause keeps recipe counts; discovered requirements and chest gate live in Build
+PASS Instability factors move to Build; schedule and lifetime stay in Pause
+PASS Rift input help appears in range
+PASS Rift input help disappears out of context
+PASS All 18 star inspectors wrap without clipping (1280, 720)
+PASS Full six-slot equipment fits (1280, 720)
+PASS Build actions fit (1280, 720)
+PASS Defeat report and actions fit (1280, 720)
+PASS All 18 star inspectors wrap without clipping (1600, 900)
+PASS Full six-slot equipment fits (1600, 900)
+PASS Build actions fit (1600, 900)
+PASS Defeat report and actions fit (1600, 900)
+PASS All 18 star inspectors wrap without clipping (1920, 1080)
+PASS Full six-slot equipment fits (1920, 1080)
+PASS Build actions fit (1920, 1080)
+PASS Defeat report and actions fit (1920, 1080)
+UI text checks: 20 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PASS Pause equal six-slot rows, no overlap/clipping 1280-1.0-empty
+PASS Pause equipment centered 1280-1.0-empty
+PASS Build three-column cards retain all text 1280-1.0-empty
+PASS One centered fixed Back action 1280-1.0-empty
+PASS Scrolling keeps Back visible 1280-1.0-empty
+PASS Controller Back returns paused 1280-1.0-empty
+PASS Controller A on fixed Back returns paused 1280-1.0-empty
+PASS Keyboard Enter on Back returns paused 1280-1.0-empty
+PASS Keyboard Esc returns paused 1280-1.0-empty
+PASS Mouse Back returns paused 1280-1.0-empty
+PASS Pause equal six-slot rows, no overlap/clipping 1280-1.0-full
+PASS Pause equipment centered 1280-1.0-full
+PASS Build three-column cards retain all text 1280-1.0-full
+PASS One centered fixed Back action 1280-1.0-full
+PASS Scrolling keeps Back visible 1280-1.0-full
+PASS Controller Back returns paused 1280-1.0-full
+PASS Controller A on fixed Back returns paused 1280-1.0-full
+PASS Keyboard Enter on Back returns paused 1280-1.0-full
+PASS Keyboard Esc returns paused 1280-1.0-full
+PASS Mouse Back returns paused 1280-1.0-full
+PASS Pause equal six-slot rows, no overlap/clipping 1280-1.2-empty
+PASS Pause equipment centered 1280-1.2-empty
+PASS Build three-column cards retain all text 1280-1.2-empty
+PASS One centered fixed Back action 1280-1.2-empty
+PASS Scrolling keeps Back visible 1280-1.2-empty
+PASS Controller Back returns paused 1280-1.2-empty
+PASS Controller A on fixed Back returns paused 1280-1.2-empty
+PASS Keyboard Enter on Back returns paused 1280-1.2-empty
+PASS Keyboard Esc returns paused 1280-1.2-empty
+PASS Mouse Back returns paused 1280-1.2-empty
+PASS Pause equal six-slot rows, no overlap/clipping 1280-1.2-full
+PASS Pause equipment centered 1280-1.2-full
+PASS Build three-column cards retain all text 1280-1.2-full
+PASS One centered fixed Back action 1280-1.2-full
+PASS Scrolling keeps Back visible 1280-1.2-full
+PASS Controller Back returns paused 1280-1.2-full
+PASS Controller A on fixed Back returns paused 1280-1.2-full
+PASS Keyboard Enter on Back returns paused 1280-1.2-full
+PASS Keyboard Esc returns paused 1280-1.2-full
+PASS Mouse Back returns paused 1280-1.2-full
+PASS Pause equal six-slot rows, no overlap/clipping 1600-1.0-empty
+PASS Pause equipment centered 1600-1.0-empty
+PASS Build three-column cards retain all text 1600-1.0-empty
+PASS One centered fixed Back action 1600-1.0-empty
+PASS Scrolling keeps Back visible 1600-1.0-empty
+PASS Controller Back returns paused 1600-1.0-empty
+PASS Controller A on fixed Back returns paused 1600-1.0-empty
+PASS Keyboard Enter on Back returns paused 1600-1.0-empty
+PASS Keyboard Esc returns paused 1600-1.0-empty
+PASS Mouse Back returns paused 1600-1.0-empty
+PASS Pause equal six-slot rows, no overlap/clipping 1600-1.0-full
+PASS Pause equipment centered 1600-1.0-full
+PASS Build three-column cards retain all text 1600-1.0-full
+PASS One centered fixed Back action 1600-1.0-full
+PASS Scrolling keeps Back visible 1600-1.0-full
+PASS Controller Back returns paused 1600-1.0-full
+PASS Controller A on fixed Back returns paused 1600-1.0-full
+PASS Keyboard Enter on Back returns paused 1600-1.0-full
+PASS Keyboard Esc returns paused 1600-1.0-full
+PASS Mouse Back returns paused 1600-1.0-full
+PASS Pause equal six-slot rows, no overlap/clipping 1600-1.2-empty
+PASS Pause equipment centered 1600-1.2-empty
+PASS Build three-column cards retain all text 1600-1.2-empty
+PASS One centered fixed Back action 1600-1.2-empty
+PASS Scrolling keeps Back visible 1600-1.2-empty
+PASS Controller Back returns paused 1600-1.2-empty
+PASS Controller A on fixed Back returns paused 1600-1.2-empty
+PASS Keyboard Enter on Back returns paused 1600-1.2-empty
+PASS Keyboard Esc returns paused 1600-1.2-empty
+PASS Mouse Back returns paused 1600-1.2-empty
+PASS Pause equal six-slot rows, no overlap/clipping 1600-1.2-full
+PASS Pause equipment centered 1600-1.2-full
+PASS Build three-column cards retain all text 1600-1.2-full
+PASS One centered fixed Back action 1600-1.2-full
+PASS Scrolling keeps Back visible 1600-1.2-full
+PASS Controller Back returns paused 1600-1.2-full
+PASS Controller A on fixed Back returns paused 1600-1.2-full
+PASS Keyboard Enter on Back returns paused 1600-1.2-full
+PASS Keyboard Esc returns paused 1600-1.2-full
+PASS Mouse Back returns paused 1600-1.2-full
+PASS Pause equal six-slot rows, no overlap/clipping 1920-1.0-empty
+PASS Pause equipment centered 1920-1.0-empty
+PASS Build three-column cards retain all text 1920-1.0-empty
+PASS One centered fixed Back action 1920-1.0-empty
+PASS Scrolling keeps Back visible 1920-1.0-empty
+PASS Controller Back returns paused 1920-1.0-empty
+PASS Controller A on fixed Back returns paused 1920-1.0-empty
+PASS Keyboard Enter on Back returns paused 1920-1.0-empty
+PASS Keyboard Esc returns paused 1920-1.0-empty
+PASS Mouse Back returns paused 1920-1.0-empty
+PASS Pause equal six-slot rows, no overlap/clipping 1920-1.0-full
+PASS Pause equipment centered 1920-1.0-full
+PASS Build three-column cards retain all text 1920-1.0-full
+PASS One centered fixed Back action 1920-1.0-full
+PASS Scrolling keeps Back visible 1920-1.0-full
+PASS Controller Back returns paused 1920-1.0-full
+PASS Controller A on fixed Back returns paused 1920-1.0-full
+PASS Keyboard Enter on Back returns paused 1920-1.0-full
+PASS Keyboard Esc returns paused 1920-1.0-full
+PASS Mouse Back returns paused 1920-1.0-full
+PASS Pause equal six-slot rows, no overlap/clipping 1920-1.2-empty
+PASS Pause equipment centered 1920-1.2-empty
+PASS Build three-column cards retain all text 1920-1.2-empty
+PASS One centered fixed Back action 1920-1.2-empty
+PASS Scrolling keeps Back visible 1920-1.2-empty
+PASS Controller Back returns paused 1920-1.2-empty
+PASS Controller A on fixed Back returns paused 1920-1.2-empty
+PASS Keyboard Enter on Back returns paused 1920-1.2-empty
+PASS Keyboard Esc returns paused 1920-1.2-empty
+PASS Mouse Back returns paused 1920-1.2-empty
+PASS Pause equal six-slot rows, no overlap/clipping 1920-1.2-full
+PASS Pause equipment centered 1920-1.2-full
+PASS Build three-column cards retain all text 1920-1.2-full
+PASS One centered fixed Back action 1920-1.2-full
+PASS Scrolling keeps Back visible 1920-1.2-full
+PASS Controller Back returns paused 1920-1.2-full
+PASS Controller A on fixed Back returns paused 1920-1.2-full
+PASS Keyboard Enter on Back returns paused 1920-1.2-full
+PASS Keyboard Esc returns paused 1920-1.2-full
+PASS Mouse Back returns paused 1920-1.2-full
+Layout visual checks: 120 PASS / 0 FAIL
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PASS Repeated real rendering preserves gameplay, RNG, pools, stats and mutation cadence
+PASS Renderer produces real viewport output
+Render checks: 2 PASS / 0 FAIL

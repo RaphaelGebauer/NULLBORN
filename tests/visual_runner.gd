@@ -35,7 +35,7 @@ func run() -> void:
 	Input.parse_input_event(key)
 	var moved: float=app.world.player.position.distance_to(start)
 	print("PASS keyboard movement ",moved)
-	if moved<100:
+	if absf(moved-app.model.speed*40.0/Engine.physics_ticks_per_second)>app.model.speed*1.5/Engine.physics_ticks_per_second:
 		push_error("FAIL keyboard movement")
 		quit(1)
 		return
@@ -50,7 +50,7 @@ func run() -> void:
 	Input.parse_input_event(stick)
 	moved=app.world.player.position.distance_to(start)
 	print("PASS simulated controller stick ",moved)
-	if moved<50:
+	if absf(moved-app.model.speed*20.0/Engine.physics_ticks_per_second)>app.model.speed*1.5/Engine.physics_ticks_per_second:
 		push_error("FAIL controller movement")
 		quit(1)
 		return

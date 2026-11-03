@@ -25,7 +25,7 @@ Godot's embedded game view belongs to the editor and cannot be resized by the ga
 
 ## Progression and pacing
 
-The opening is deliberately measured across movement, enemy pressure and combat. Hero base movement is 71.25% of the original values (Lyra: 156.75 px/s); enemies start at 65% speed and spawns at 40% density. Projectiles and orbit/beam rotation begin at 80% speed, while weapon/AI intervals begin 20% longer. Opening modifiers reach normal values smoothly over **eight in-game minutes**. The run clock and boss schedule are unchanged. Heroes retain a generous early speed advantage over normal pursuers.
+The opening is deliberately measured across movement, enemy pressure and combat. Hero base movement is 57% of the original values (Lyra/Eira: 125.4 px/s, Brann: 116.85, Noctis: 139.65); enemies start at 65% speed and spawns at 40% density. Projectiles and orbit/beam rotation begin at 80% speed, while weapon/AI intervals begin 20% longer. Opening modifiers reach normal values smoothly over **eight in-game minutes**. The run clock and boss schedule are unchanged. Non-boss enemies spawn with 20% more HP; boss HP, rewards and enemy speeds are unchanged. The early movement margin is narrower, especially for Brann; see [layout and balance acceptance](docs/LAYOUT_BALANCE_REPORT.md).
 
 The Star Forge offers **20 permanent upgrades**. Fleet Foot grants +5% immediate movement speed per rank, starting at 40 gold; Long Stride grants +1% movement speed per in-game minute **per rank**, capped after ten minutes. Additional tempo upgrades include **Swift Missiles** (+6% projectile speed per rank), **Battle Rhythm** (-1% cooldown per minute per rank, capped at ten minutes), **Gathering Flow** (+12% pickup attraction speed per rank) and **Evasive Instinct** (+3% movement per rank while below 50% HP). Regeneration, crit chance, area, duration and instant cooldown upgrades remain available. Reroll, skip and banish must be purchased first. Treasure Hunter can add a reroll only after that feature is unlocked.
 
@@ -117,7 +117,7 @@ Open **Star Map** in the main menu to inspect three connected constellations wit
 
 ## Build Details and measured results
 
-Pause → **Build Details** shows all six weapon/passive slots, levels, inherited mutations and fusion Primary/Echo, character/rune/meta/Star Map bonuses, current stats, temporary durations, elements and discovered recipes. Unknown recipes stay unnamed until actually evolved. Up/Down or the mouse wheel scrolls; Left/Right selects the fixed Back/Resume actions.
+Pause → **Build Details** shows all six weapon/passive slots, levels, inherited mutations and fusion Primary/Echo, character/rune/meta/Star Map bonuses, current stats, temporary durations, elements and discovered recipes. Unknown recipes stay unnamed until actually evolved. Equipment uses compact 3×2 grids. Up/Down or the mouse wheel scrolls; the single fixed **Back** button and Esc/controller B return to Pause without resuming. Pause shows centered rows of six weapon/passive slots; Resume remains in Pause.
 
 Victory and defeat show actual damage, sorted per-source damage/shares/DPS, highest critical hit, damage taken/healing, XP/gold, upgrades/mutations/evolutions/fusions, instability, rifts, achievements and Starlight. Damage excludes overkill. DPS uses active combat seconds (900 combat seconds for a complete Quick run, 1800 in normal mode), separate from the run clock. Try Again/Main Menu remain visible while scrolling.
 

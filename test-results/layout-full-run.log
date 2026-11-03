@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+RUN 0 s · [0, 36, 0] · Kills 0
+RUN 300 s · [2, 141, 268] · Kills 443
+RUN 600 s · [14, 123, 300] · Kills 2018
+RUN 900 s · [27, 111, 300] · Kills 5000
+RUN 1200 s · [86, 68, 300] · Kills 9726
+RUN 1500 s · [68, 78, 300] · Kills 17144
+RUN 1800 s · [144, 16, 300] · Kills 26350
+PASS voller 30-Minuten-Run; Zeit 1800.0; Ergebnis [true]; Runen 3; Laufzeit 60.814 s; Kills 26350
+E3: boss phase transitions [["astral_guardian", 2], ["void_queen", 2], ["astral_guardian", 2], ["void_queen", 2], ["astral_guardian", 2], ["storm_core", 2]]; elites 24; affixes { "volatile": 4, "hexbound": 4, "blinking": 5, "swift": 4, "regenerating": 2, "vampiric": 4, "armored": 3 }; rifts 2/2; peak/final instability 91.7000000000326/91.7000000000326
+E4: reactions 20216; by kind { "rift_conduction": 1346, "blightburst": 7979, "void_shatter": 6835, "arc_freeze": 4056 }; damage 409685.627805402
+E5/E6: stars earned 8; active nodes 18; measured damage 12061518.0157357; measured XP 99.995; average DPS 6700.84334207537; highest critical 123.0; upgrades/mutations/evolutions/fusions [4, 6, 6, 0]

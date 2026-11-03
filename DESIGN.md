@@ -76,10 +76,16 @@ Star Map uses pressed for committed selection and theme normal/hover styles for 
 
 RunModel.recipe_matches is the read-only equipped-component/level query shared by Pause reporting and chest evolution. UI counts each recipe once, hides undiscovered details and reports ready independently of the unchanged eligible-chest rule. Already evolved weapons cannot supply consumed bases. Settings uses its own SETTINGS state and the existing return_to_pause origin; leave_settings restores Pause/menu, never resumes a run. Explicit controller UI bindings ensure A/B/D-pad/stick reach standard Control focus/pressed handling.
 
-The separate pacing resource now stores player_speed=0.7125 and player_damage=0.93. RunModel applies damage through one raw-value helper, including Might; World only uses it when creating fixed raw effects, never when processing hit-derived secondary values. Details and rounded-damage limits are in BALANCE.md; current acceptance evidence is in docs/UI_BALANCE_REPORT.md.
+The separate pacing resource now stores player_speed=0.57, normal_enemy_hp=1.2 and player_damage=0.93. RunModel applies damage through one raw-value helper, including Might; World only uses it when creating fixed raw effects, never when processing hit-derived secondary values. Details and rounded-damage limits are in BALANCE.md; current acceptance evidence is in docs/UI_BALANCE_REPORT.md.
 
 Day/Night’s legacy orbit-to-beam conversion retains its existing Might bonus formula. A damage_has_global_factor marker excludes the new global factor from the second parameterization, so the fusion receives exactly one 0.93 reduction. Raw Blood Thorns reflection and pickup Nova use the same Model helper as other fixed sources.
 
 ## UI text style
 
 English UI uses short labels and contextual help. Pause keeps equipment, recipe counts and rift status; Build Details retains discovered recipe requirements, chest eligibility, mutation effects and instability modifiers. Results retain measured statistics, with damage attribution details in the Damage by Source tooltip. Star Map shows each prerequisite once and uses local purchase reasons; storage failures and retry remain separate. Display names may change (Veil); persistent IDs and gameplay values do not.
+
+## Equipment layout and balance pass
+
+`ui/equipment_view.gd` is a read-only Model projection shared by Pause (six equal-width cards per row, centered runes) and Build (3×2 grids). `RunReport.equipment_slots` formats actual names, levels, type, passive effects and inherited mutation strengths/descriptions; no parallel inventory or gameplay updates exist. Inventory/rune signals refresh the view, and freed views disconnect automatically. Long names wrap within fixed columns. The App keeps ownership of pause/navigation; Build has one centered fixed Back action and returns to Pause on mouse/Enter/A/Esc/B. Remaining build sections and recipe privacy stay intact.
+
+The further 20% movement reduction changes only the existing pacing factor (0.7125 → 0.57), before unchanged additive bonuses/cap. World.spawn_enemy multiplies freshly calculated HP by normal_enemy_hp exactly once for non-bosses; current/max HP agree. Children and summons share that path; pooled dictionaries are cleared before assignment, and elite promotion retains its existing multiplier. Boss HP, damage, speeds, rewards, schedules and all attack/status clocks are unchanged. See BALANCE.md and docs/LAYOUT_BALANCE_REPORT.md for the narrower opening margin and probe limits.
